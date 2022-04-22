@@ -1,0 +1,18 @@
+.ant-layout-header {
+  color: rgb(194, 157, 250) !important;
+  background: #5756a4 !important;
+  height: 64px;
+  padding: 0 50px;
+  text-align: center;
+  font-weight: bold;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 35px;
+  line-height: 64px;
+}
+
+.ant-avatar-circle {
+  margin-bottom: 7px !important;
+  margin-right: 7px !important;
+  background: rgb(194, 157, 250) !important;
+  justify-items: center !important;
+}
