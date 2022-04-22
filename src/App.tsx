@@ -1,7 +1,8 @@
 import { Layout } from 'antd';
-import { Content, Header } from 'antd/lib/layout/layout';
+import { Content } from 'antd/lib/layout/layout';
 import { useEffect } from 'react';
 import './App.css';
+import HeaderBar from './components/HeaderBar/HeaderBar';
 import LeftSideBar from './components/LeftSideBar/LeftSideBar';
 import { useTable } from './store/store';
 
@@ -13,7 +14,7 @@ function App() {
 
   return (
       <Layout style={{ minHeight: "100vh" }}>
-        <Header className="header" style={{ padding: 0 }} />
+        <HeaderBar />
         <Layout>
           <LeftSideBar />
           <Content style={{ margin: "0 16px" }}>
