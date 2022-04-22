@@ -1,4 +1,4 @@
-#components-layout-demo-top-side-2 .logo {
+  #components-layout-demo-top-side-2 .logo {
     float: left;
     width: 120px;
     height: 31px;
@@ -13,4 +13,12 @@
   
   .site-layout-background {
     background: #fff;
+  }
+
+  .sidebar {
+    background: #4c4b8d !important;
+  }
+
+  .ant-layout-sider-trigger {
+    background: #4c4b8d !important;
   }
