@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
-import { Content } from 'antd/lib/layout/layout';
 import { useEffect } from 'react';
 import './App.css';
+import ContentSpace from './components/ContentSpace/ContentSpace';
 import HeaderBar from './components/HeaderBar/HeaderBar';
 import LeftSideBar from './components/LeftSideBar/LeftSideBar';
 import { useTable } from './store/store';
@@ -17,14 +17,7 @@ function App() {
         <HeaderBar />
         <Layout>
           <LeftSideBar />
-          <Content style={{ margin: "0 16px" }}>
-            <div
-              className="site-layout-background"
-              style={{ padding: 24, minHeight: 360 }}
-            >
-              Bill is a cat.
-            </div>
-          </Content>
+          <ContentSpace />
         </Layout>
       </Layout>
   );

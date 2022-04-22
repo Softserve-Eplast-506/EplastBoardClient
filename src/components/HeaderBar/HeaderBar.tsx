@@ -8,7 +8,7 @@ const { Header } = Layout;
 const HeaderBar = () => {
   return (
     <>
-      <Header className="header" style={{ padding: 0 }} >
+      <Header className="header" >
         <Row>
         <Col flex="auto">
           EPlastBoard
