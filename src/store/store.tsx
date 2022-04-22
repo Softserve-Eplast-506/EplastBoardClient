@@ -1,23 +1,45 @@
-import { createStore, createHook } from 'react-sweet-state';
+import { createStore, createHook, Action } from 'react-sweet-state';
+import { getAllColumnsByBoard } from '../api/columnsApi';
+import Board from '../models/Board';
+
+type State = {
+    isSideBarHidden: boolean,
+    boards: Board[],
+};
+
+const initialState: State = {
+    isSideBarHidden: false,
+    boards: [],
+};
+
+// actions that trigger store mutation
+const actions = {
+
+    getBoards:
+        (): Action<State> =>
+            ({ setState, getState }) => {
+                setState({
+                    //boards: getBoards()
+                });
+            },
+
+    hideSideBar:
+        (): Action<State> =>
+            ({ setState, getState }) => {
+                setState({
+                    isSideBarHidden: !getState().isSideBarHidden
+                });
+            },
+};
 
 const Store = createStore({
-  // value of the store on initialisation
-  initialState: {
-    count: 0,
-  },
-  // actions that trigger store mutation
-  actions: {
-    increment:
-      () =>
-      ({ setState, getState }) => {
-        // mutate state synchronously
-        setState({
-          count: getState().count + 1,
-        });
-      },
-  },
-  // optional, mostly used for easy debugging
-  name: 'counter',
+    initialState,
+    actions,
 });
 
-const useCounter = createHook(Store);
+const getBoards = async () => {
+    const response = await getAllColumnsByBoard(1);
+    return response;
+};
+
+export const useTable = createHook(Store);

@@ -10,7 +10,7 @@ const get = async (url: string, data?: any): Promise<HttpResponse> => {
   return response;
 };
 
-const post = async (url: string, data?: any) => {
+const post = async (url: string, data?: any): Promise<HttpResponse> => {
   const response = await axios.post(BASE_URL + url, data);
   return response;
 };

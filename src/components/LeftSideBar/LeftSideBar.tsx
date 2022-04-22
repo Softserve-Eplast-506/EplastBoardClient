@@ -1,34 +1,36 @@
-import { useState } from "react";
+import { useTable } from '../../store/store';
 import { Layout, Menu } from "antd";
 import {
-  DesktopOutlined,
   PieChartOutlined,
-  FileOutlined,
 } from "@ant-design/icons";
 import './LeftSideBar.css';
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
+import Board from '../../models/Board';
 
 const { Sider } = Layout;
 
 const LeftSideBar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [state, actions] = useTable();
 
   const onCollapse = () => {
-    setCollapsed(!collapsed);
+    actions.hideSideBar();
   };
 
+  const test = () => {
+    return (
+      state.boards.map((x: Board) => {
+        <Menu.Item key={x.id} icon={<PieChartOutlined />}>
+          {x.title}
+        </Menu.Item>
+      })
+    )
+  }
   return (
     <>
-      <Sider className="sidebar" collapsible collapsed={collapsed} onCollapse={onCollapse} >
+      <Sider className="sidebar" collapsible collapsed={state.isSideBarHidden} onCollapse={onCollapse} >
         <div className="logo" />
         <Menu theme="dark" className="sidebar" defaultSelectedKeys={["1"]} mode="inline">
-          <Menu.Item key="1" icon={<PieChartOutlined />}>
-            Option 1
-          </Menu.Item>
-          <Menu.Item key="2" icon={<DesktopOutlined />}>
-            Option 2
-          </Menu.Item>
-          <Menu.Item key="3" icon={<FileOutlined />} />
+          {test()}
         </Menu>
       </Sider>
     </>
