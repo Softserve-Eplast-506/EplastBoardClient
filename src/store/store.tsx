@@ -1,10 +1,10 @@
 import { createStore, createHook, Action } from 'react-sweet-state';
-import { getAllColumnsByBoard } from '../api/columnsApi';
+import { getAllBoards } from '../api/boardsApi';
 import Board from '../models/Board';
 
 type State = {
     isSideBarHidden: boolean,
-    boards: Board[],
+    boards: any,
 };
 
 const initialState: State = {
@@ -12,14 +12,13 @@ const initialState: State = {
     boards: [],
 };
 
-// actions that trigger store mutation
 const actions = {
 
     getBoards:
         (): Action<State> =>
             ({ setState, getState }) => {
                 setState({
-                    //boards: getBoards()
+                    boards: getBoards()
                 });
             },
 
@@ -38,8 +37,8 @@ const Store = createStore({
 });
 
 const getBoards = async () => {
-    const response = await getAllColumnsByBoard(1);
-    return response;
+    const response = await getAllBoards();
+    return response.data;
 };
 
 export const useTable = createHook(Store);
