@@ -3,6 +3,7 @@ import './ContentSpace.css';
 import "antd/dist/antd.min.css";
 import { useTable } from "../../store/store";
 import CardM from "../../models/Card";
+import { useEffect } from "react";
 
 const { Content } = Layout;
 
@@ -10,13 +11,16 @@ const ContentSpace = () => {
 
   const [state, actions] = useTable();
 
+  useEffect(() => {
+    actions.getAllCards();
+  }, []);
 
 
-  const test = () => {
+  const test = (): any => {
     return (
       state.cards.map((x: CardM) => {
        
-
+        console.log(x);
         <Card key={x.id} title={x.title} bordered={false} style={{ width: 300 }}>
         <p>Card content</p>
         <p>Card content</p>
