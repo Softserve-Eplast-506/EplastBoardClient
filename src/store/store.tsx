@@ -11,12 +11,16 @@ type State = {
     isSideBarHidden: boolean,
     menuItems: MenuItem[],
     cards: CardM[],
+    isInputPanelHidden: boolean,
+    boardName: string
 };
 
 const initialState: State = {
     isSideBarHidden: false,
     menuItems: [],
     cards: [],
+    isInputPanelHidden: true,
+    boardName: ""
 };
 
 const actions = {
@@ -42,13 +46,30 @@ const actions = {
                     isSideBarHidden: !getState().isSideBarHidden
                 });
             },
-            getAllCards:
+    getAllCards:
             (): Action<State> =>
                 async ({ setState, getState }) => {
                     setState({
                         cards: await getCards()
                     });
                 },
+    
+    openInputPanel:
+        (): Action<State> =>
+            ({setState, getState}) => {
+                setState({
+                    isInputPanelHidden: !getState().isInputPanelHidden
+                });
+            },
+            
+    setBoardName:
+        (name: string): Action<State> =>
+        ({setState, getState}) => {
+            setState({
+                boardName: name
+            });
+        },
+
 };
 
 const Store = createStore({
