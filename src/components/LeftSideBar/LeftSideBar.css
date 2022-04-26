@@ -1,34 +1,40 @@
-  #components-layout-demo-top-side-2 .logo {
-    float: left;
-    width: 120px;
-    height: 31px;
-    margin: 16px 24px 16px 0;
-    background: rgba(255, 255, 255, 0.3);
-  }
-  
-  .ant-row-rtl #components-layout-demo-top-side-2 .logo {
-    float: right;
-    margin: 16px 0 16px 24px;
-  }
-  
-  .site-layout-background {
-    background: #fff;
-  }
+.sidebar {
+  background: #4c4b8d !important;
+}
 
-  .sidebar {
-    background: #4c4b8d !important;
-  }
+.white-text {
+  color: #fff;
+}
 
-  .ant-menu-item-selected {
-    background-color: #8482b1 !important;
-  }
+.ant-menu-item-selected {
+  background-color: #8482b1 !important;
+}
 
-  .ant-menu-item {
-    margin-bottom: 0 !important;
-    margin-top: 0 !important;
-    height: 32px !important;
-  }
+.ant-menu-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  height: 32px !important;
+}
 
-  .menu{
-    background: #4c4b8d !important;
-  }
+.menu {
+  background: #4c4b8d !important;
+}
+
+.collapsedButton {
+  cursor: pointer;
+  text-align: center;
+  color: #fff;
+  width: 100%;
+  line-height: 40px;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: thin solid #c29dfa;
+}
+
+.collapsedButtonHide {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}

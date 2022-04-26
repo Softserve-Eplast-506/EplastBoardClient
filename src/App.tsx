@@ -7,7 +7,7 @@ import LeftSideBar from './components/LeftSideBar/LeftSideBar';
 import { useTable } from './store/store';
 
 function App() {
-  const [state, actions] = useTable();
+  const [, actions] = useTable();
   useEffect(() =>{
     actions.getBoards();
   },[])
