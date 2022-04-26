@@ -1,31 +1,38 @@
+import { MenuProps } from 'antd';
 import { createStore, createHook, Action } from 'react-sweet-state';
+import { getAllBoards } from '../api/boardsApi';
 import { getAllCards } from '../api/cardsApi';
-import { getAllColumnsByBoard } from '../api/columnsApi';
 import Board from '../models/Board';
 import CardM from '../models/Card';
 
+type MenuItem = Required<MenuProps>['items'][number];
+
 type State = {
     isSideBarHidden: boolean,
-    boards: Board[],
+    menuItems: MenuItem[],
     cards: CardM[],
-    
 };
 
 const initialState: State = {
     isSideBarHidden: false,
-    boards: [],
-    cards: []
+    menuItems: [],
+    cards: [],
 };
 
-// actions that trigger store mutation
-const  actions = {
-
+const actions = {
+      
     getBoards:
-        (): Action<State> =>
-            ({ setState, getState }) => {
+        (): Action<State> => 
+            async ({ setState, getState }) => {
+                const boards: Board[] = (await getAllBoards()).data;
+                let items: MenuItem[] = [];
+                boards.map((board: Board) => {
+                    items.push(getItem(board.title, board.id));
+                })
                 setState({
-                    //boards: getBoards()
+                    menuItems: items
                 });
+
             },
 
     hideSideBar:
@@ -42,8 +49,6 @@ const  actions = {
                         cards: await getCards()
                     });
                 },
-
-
 };
 
 const Store = createStore({
@@ -51,14 +56,21 @@ const Store = createStore({
     actions,
 });
 
-const getBoards = async () => {
-    const response = await getAllColumnsByBoard(1);
-    return response;
-};
+function getItem(
+    label: React.ReactNode,
+    key: React.Key,
+    icon?: React.ReactNode,
+  ): MenuItem {
+    return {
+      key,
+      icon,
+      label,
+    } as MenuItem;
+  }
+        
 const getCards = async () => {
     const response = await getAllCards();
     return response.data;
 };
-
 
 export const useTable = createHook(Store);

@@ -37,7 +37,6 @@ const ContentSpace = () => {
     <Content className="content"
         style={{
           padding: 24,
-          marginTop: 64,
           backgroundImage: `url("https://assets.hongkiat.com/uploads/holographic-gradient-background/5.jpg")`,
           backgroundSize: 'cover'
         }}
