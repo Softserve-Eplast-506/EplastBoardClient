@@ -21,7 +21,7 @@ const ContentSpace = () => {
       state.cards.map((x: CardM) => {
        
         return (
-        <Card key={x.id} title={x.title} bordered={false} style={{ width: 300 }}>
+        <Card key={x.id} title={x.title} bordered={false} style={{ width: 300 }}  onClick = {actions.hideEditCardModal}>
         <p>Card content</p>
         <p>Card content</p>
         <p>Card content</p>
@@ -40,6 +40,7 @@ const ContentSpace = () => {
           backgroundImage: `url("https://assets.hongkiat.com/uploads/holographic-gradient-background/5.jpg")`,
           backgroundSize: 'cover'
         }}
+       
     >
     
     <div className="site-card-border-less-wrapper">
