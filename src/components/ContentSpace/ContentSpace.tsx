@@ -20,13 +20,13 @@ const ContentSpace = () => {
     return (
       state.cards.map((x: CardM) => {
        
-        console.log(x);
+        return (
         <Card key={x.id} title={x.title} bordered={false} style={{ width: 300 }}>
         <p>Card content</p>
         <p>Card content</p>
         <p>Card content</p>
       </Card>
-
+        )
 
       })
     )

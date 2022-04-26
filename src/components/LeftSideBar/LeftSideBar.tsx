@@ -30,7 +30,7 @@ const LeftSideBar = () => {
       <Sider className="sidebar" collapsible collapsed={state.isSideBarHidden} onCollapse={onCollapse} >
         <div className="logo" />
         <Menu theme="dark" className="sidebar" defaultSelectedKeys={["1"]} mode="inline">
-          {test()}
+          {/* {test()} */}
         </Menu>
       </Sider>
     </>

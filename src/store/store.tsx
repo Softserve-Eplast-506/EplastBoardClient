@@ -57,12 +57,7 @@ const getBoards = async () => {
 };
 const getCards = async () => {
     const response = await getAllCards();
-    //  const obj =new JSONObject(response);
-   // JSON.stringify(response.data)
-
-    const obj = JSON.parse(response.data);
-
-    return obj;
+    return response.data;
 };
 
 
