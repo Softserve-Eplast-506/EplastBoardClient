@@ -19,6 +19,16 @@
     background: #4c4b8d !important;
   }
 
-  .ant-layout-sider-trigger {
+  .ant-menu-item-selected {
+    background-color: #8482b1 !important;
+  }
+
+  .ant-menu-item {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    height: 32px !important;
+  }
+
+  .menu{
     background: #4c4b8d !important;
   }

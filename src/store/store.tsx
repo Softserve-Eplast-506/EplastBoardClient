@@ -2,7 +2,6 @@ import { MenuProps } from 'antd';
 import { createStore, createHook, Action } from 'react-sweet-state';
 import { getAllBoards } from '../api/boardsApi';
 import { getAllCards } from '../api/cardsApi';
-import { getAllColumnsByBoard } from '../api/columnsApi';
 import Board from '../models/Board';
 import CardM from '../models/Card';
 

@@ -17,7 +17,7 @@ const LeftSideBar = () => {
     <>
       <Sider className="sidebar" collapsedWidth={30} breakpoint='lg' collapsible collapsed={state.isSideBarHidden} onCollapse={onCollapse} >
         <div className="logo" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={state.menuItems} />
+        <Menu theme="dark" className='menu' defaultSelectedKeys={['1']} mode="inline" items={state.menuItems} />
       </Sider>
     </>
 

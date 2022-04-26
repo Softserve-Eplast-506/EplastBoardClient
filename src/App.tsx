@@ -15,7 +15,7 @@ function App() {
   return (
       <Layout style={{ minHeight: "100vh" }}>
         <HeaderBar />
-        <Layout>
+        <Layout className='layoutStyles'>
           <LeftSideBar />
           <ContentSpace />
         </Layout>
