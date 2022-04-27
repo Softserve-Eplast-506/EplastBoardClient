@@ -10,9 +10,11 @@ import { useTable } from "./store/store";
 
 function App() {
   const [state, actions] = useTable();
+  
   useEffect(() => {
     actions.getBoards();
-  }, [actions]);
+    actions.setInitialCurrentBoard();// треба зробити так щоб ця функція дочекалась закінчення асинхронного виконання попередньої
+  }, []);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>

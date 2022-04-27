@@ -1,4 +1,5 @@
 import { useTable } from "../../store/store";
+import { useEffect } from "react";
 import { Button, Layout, Menu } from "antd";
 import "./LeftSideBar.css";
 import "antd/dist/antd.min.css";
@@ -15,19 +16,19 @@ const { Sider } = Layout;
 
 const LeftSideBar = () => {
   const [state, actions] = useTable();
+  
+  useEffect(() => {
+    actions.getBoards(); 
+    actions.setInitialCurrentBoard();
+  }, [state.render]);
 
   const handleCollapseSideBar = async () => {
     actions.hideSideBar();
   };
 
-  const handleCollapseSideBarOnBreakpoint = async () => {
-    if (!state.isSideBarHidden) {
-      handleCollapseSideBar();
-    }};
-
   const handleBoardDelete = async () =>{
       await deleteBoardById(state.currentBoard.id);
-      actions.getBoards();
+      actions.setRender();
   }
   const handleShowEditBoardModal = () => {
     actions.showEditBoardModal()

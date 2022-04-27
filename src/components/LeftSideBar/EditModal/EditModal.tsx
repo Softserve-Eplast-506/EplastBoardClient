@@ -18,7 +18,8 @@ const EditModal = () => {
     renamedBoard.title=state.editBoardName;
     actions.showEditBoardModal();
     await editBoardNameddBoard(renamedBoard);
-    actions.getBoards();
+    actions.getBoards(); 
+    // actions.setRender();
   };
 
   const handleCancel = () => {
