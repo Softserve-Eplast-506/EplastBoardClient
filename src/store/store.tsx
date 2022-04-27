@@ -18,7 +18,9 @@ type State = {
     isInputPanelHidden: boolean,
     isInputPanelHiddenColumn: boolean,
     addingBoardName: string,
+    editingColumnName: string,
     hiddenPanelColumn: number,
+    currentColumn: Column;
 };
 
 const initialState: State = {
@@ -30,7 +32,9 @@ const initialState: State = {
     isInputPanelHidden: true,
     isInputPanelHiddenColumn: true,
     addingBoardName: "",
+    editingColumnName: "",
     hiddenPanelColumn: 0,
+    currentColumn: new Column(),
 };
 
 const actions = {
@@ -87,6 +91,14 @@ const actions = {
         ({setState, getState}) => {
             setState({
                 addingBoardName: name
+            });
+        },
+    
+    editColumnName:
+        (name: string): Action<State> =>
+        ({setState, getState}) => {
+            setState({
+                editingColumnName: name
             });
         },
 
