@@ -63,6 +63,7 @@ const actions = {
                 isEditCardModalHidden: !getState().isEditCardModalHidden
             });
         },
+
     getAllCards:
     (): Action<State> =>
         async ({ setState, getState }) => {
@@ -70,6 +71,7 @@ const actions = {
                 cards: await getCards()
             });
         },
+        
     createCard:
     (Card: CardM): Action<State> =>
         async ({ setState, getState }) => {

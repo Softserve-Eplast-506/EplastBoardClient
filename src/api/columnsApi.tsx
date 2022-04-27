@@ -14,7 +14,7 @@ const getColumnById = async (id: number) => {
 };
 
 const editColumnName = async (Column: Column) => {
-    return await api.put(`EditColumnName/${Column}`).catch((error) => {
+    return await api.put(`Columns/EditColumnName/${Column}`).catch((error) => {
       throw new Error(error);
     });
 };
@@ -31,4 +31,4 @@ const deleteColumnById = async (id: number) => {
     });
 };
 
-export default {addColumn, getColumnById}
+export default {addColumn, getColumnById, editColumnName}

@@ -8,8 +8,6 @@ import columnsApi from "../../api/columnsApi"
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import Item from "antd/lib/list/Item";
 
-
-
 const { Content } = Layout;
 
 class Column {
@@ -109,9 +107,6 @@ const ContentSpace = () => {
   //  { test()}
 
   // </div>
-
-
-
           
   //   </Content>
   //   </>
