@@ -3,7 +3,8 @@ import { Layout, Menu } from "antd";
 import './LeftSideBar.css';
 import "antd/dist/antd.min.css";
 import AddPanel from './AddPanel/AddPanel';
-import { DoubleRightOutlined, LeftOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DoubleRightOutlined, LeftOutlined } from '@ant-design/icons';
+import { ItemType } from 'rc-menu/lib/interface';
 
 const { Sider } = Layout;
 
@@ -17,16 +18,19 @@ const LeftSideBar = () => {
   const collapseSideBarOnBreakpoint = async () => {
     if (!state.isSideBarHidden){
       collapseSideBar();
-    }
-  };
+    }};
+    
   return (
     <>
       <div className="sidebar">
-        <div className="collapsedButton trigger" onClick={collapseSideBar}>
+        <div className="collapsedButton trigger" >
           {state.isSideBarHidden ? (
-            <div><DoubleRightOutlined/></div>
+            <><div onClick={collapseSideBar}><DoubleRightOutlined/></div></>
           ) : (
-            <div className="collapsedButtonHide white-text">List of Boards<LeftOutlined/></div>
+            <>
+            <div className="collapsedButtonHide white-text" onClick={collapseSideBar}>List of Boards<LeftOutlined/></div>
+            <div><AddPanel/></div>
+            </>
           )}
         </div>
 

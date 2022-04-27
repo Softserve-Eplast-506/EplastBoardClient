@@ -12,7 +12,7 @@ type State = {
     menuItems: MenuItem[],
     cards: CardM[],
     isInputPanelHidden: boolean,
-    boardName: string
+    addingBoardName: string
 };
 
 const initialState: State = {
@@ -20,7 +20,7 @@ const initialState: State = {
     menuItems: [],
     cards: [],
     isInputPanelHidden: true,
-    boardName: ""
+    addingBoardName: ""
 };
 
 const actions = {
@@ -34,7 +34,7 @@ const actions = {
                     items.push(getItem(board.title, board.id));
                 })
                 setState({
-                    menuItems: items
+                    menuItems: items.reverse()
                 });
 
             },
@@ -66,7 +66,7 @@ const actions = {
         (name: string): Action<State> =>
         ({setState, getState}) => {
             setState({
-                boardName: name
+                addingBoardName: name
             });
         },
 

@@ -4,6 +4,7 @@ import { KeyboardEvent } from 'react';
 import { addBoard } from '../../../api/boardsApi';
 import Board from '../../../models/Board';
 import { useTable } from '../../../store/store';
+import './AddPanel.css';
 
 const AddPanel = () => {
     const [state, actions] = useTable();
@@ -14,35 +15,29 @@ const AddPanel = () => {
    
     const addNewBoard = async () => {
         let board = new Board();
-        board.title = state.boardName;
-        debugger
+        board.title = state.addingBoardName;
         await addBoard(board);
-        
+        actions.getBoards();
+        actions.openInputPanel();
     }
+
     return (
         <>
-            {state.isInputPanelHidden ? <Button onClick={showInput}>
+            {state.isInputPanelHidden ? <div className="collapsedButtonHide white-text" onClick={showInput}>
                 Create new board
-                <PlusOutlined /></Button> 
+                <PlusOutlined /></div> 
                 : 
-                <form onSubmit={addNewBoard}>
-                    <Input placeholder="Enter board title" 
+                <form onSubmit={(event)=>{event.preventDefault(); addNewBoard();}}>
+                    <Input className='input-marginating' 
+                           placeholder="Enter board title" 
                            autoFocus 
                            onBlur={showInput} 
                            onChange={(event)=>{
-                                actions.setBoardName(event.target.value)
-                                console.log(state.boardName)}}
-                            // onSubmit={(event)=>{event.preventDefault()}}
-                            // onPressEnter={
-                            //     (event)=>{ 
-                            //         addNewBoard()
-                            //         event.preventDefault()
-                            //         }}  
+                                actions.setBoardName(event.target.value)}}
                         />
                 </form>
-                
-                }
-                </>
+            }
+        </>
     )
 }
 export default AddPanel
