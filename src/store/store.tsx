@@ -1,7 +1,7 @@
 import { MenuProps } from 'antd';
 import { createStore, createHook, Action } from 'react-sweet-state';
 import { getAllBoards } from '../api/boardsApi';
-import { getAllCards } from '../api/cardsApi';
+import { AddCard, getAllCards } from '../api/cardsApi';
 import Board from '../models/Board';
 import CardM from '../models/Card';
 
@@ -9,6 +9,7 @@ type MenuItem = Required<MenuProps>['items'][number];
 
 type State = {
     isSideBarHidden: boolean,
+    isEditCardModalHidden: boolean,
     menuItems: MenuItem[],
     cards: CardM[],
     isInputPanelHidden: boolean,
@@ -17,6 +18,7 @@ type State = {
 
 const initialState: State = {
     isSideBarHidden: false,
+    isEditCardModalHidden: false,
     menuItems: [],
     cards: [],
     isInputPanelHidden: true,
@@ -46,14 +48,7 @@ const actions = {
                     isSideBarHidden: !getState().isSideBarHidden
                 });
             },
-    getAllCards:
-            (): Action<State> =>
-                async ({ setState, getState }) => {
-                    setState({
-                        cards: await getCards()
-                    });
-                },
-    
+ 
     openInputPanel:
         (): Action<State> =>
             ({setState, getState}) => {
@@ -70,6 +65,28 @@ const actions = {
             });
         },
 
+    hideEditCardModal:
+    (): Action<State> =>
+        ({ setState, getState }) => {
+            setState({
+                isEditCardModalHidden: !getState().isEditCardModalHidden
+            });
+        },
+    getAllCards:
+    (): Action<State> =>
+        async ({ setState, getState }) => {
+            setState({
+                cards: await getCards()
+            });
+        },
+    createCard:
+    (Card: CardM): Action<State> =>
+        async ({ setState, getState }) => {
+            await createCard(Card);
+            setState({
+                cards: await getCards()
+            });
+        },
 };
 
 const Store = createStore({
@@ -94,4 +111,10 @@ const getCards = async () => {
     return response.data;
 };
 
+const createCard = async (Card: CardM) => {
+    console.log("crac");
+    const response = await AddCard(Card);
+    console.log(response.data);
+    return response.data;
+};
 export const useTable = createHook(Store);

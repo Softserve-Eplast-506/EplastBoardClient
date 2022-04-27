@@ -1,3 +1,5 @@
+import Column from "./Column";
+
 export default class CardM {
     id: number;
     title: string;
