@@ -18,6 +18,16 @@ type State = {
     isEditBoardModalShown: boolean
     boards: Board[];
     currentBoard: Board;
+  isSideBarHidden: boolean,
+  isEditCardModalHidden: boolean,
+  menuItems: MenuItem[],
+  cards: CardM[],
+  isInputPanelHidden: boolean,
+  newBoard: string,
+  editBoardName: string,
+  isEditBoardModalShown: boolean,
+  boards: Board[],
+  currentBoard: Board,
 };
 
 const initialState: State = {
@@ -31,6 +41,16 @@ const initialState: State = {
     isEditBoardModalShown: true,
     boards: [],
     currentBoard: new Board(),
+  isSideBarHidden: false,
+  isEditCardModalHidden: false,
+  menuItems: [],
+  cards: [],
+  isInputPanelHidden: true,
+  newBoard: "",
+  editBoardName: "",
+  isEditBoardModalShown: false,
+  boards: [],
+  currentBoard: new Board(),
 };
 
 const actions = {
@@ -80,6 +100,51 @@ const actions = {
         },
 
     setBoadrName:
+
+  getBoards:
+    (): Action<State> =>
+      async ({ setState, getState }) => {
+        const boards: Board[] = (await getAllBoards()).data;
+        let items: MenuItem[] = [];
+        boards.map((board: Board) => {
+          items.push(getItem(board.title, board.id));
+        })
+        // if (boards.length > 0) {
+        //   setState({
+        //     currentBoard: boards[0],
+        //   })
+        // }
+        setState({
+          boards: boards,
+          menuItems: items.reverse()
+        });
+      },
+
+  hideSideBar:
+    (): Action<State> =>
+      ({ setState, getState }) => {
+        setState({
+          isSideBarHidden: !getState().isSideBarHidden
+        });
+      },
+
+  openInputPanel:
+    (): Action<State> =>
+      ({ setState, getState }) => {
+        setState({
+          isInputPanelHidden: !getState().isInputPanelHidden
+        });
+      },
+
+  addBoardName:
+    (name: string): Action<State> =>
+      ({ setState, getState }) => {
+        setState({
+          newBoard: name
+        });
+      },
+
+  setBoadrName:
     (name: string): Action<State> =>
         ({setState, getState}) => {
             setState({
@@ -87,22 +152,40 @@ const actions = {
             });
         },
     showEditBoardModal:
+      ({ setState, getState }) => {
+        setState({
+          editBoardName: name
+        });
+      },
+  showEditBoardModal:
     (): Action<State> =>
         ({ setState, getState }) => {
             setState({
                 isEditBoardModalShown: !getState().isEditBoardModalShown
             });
         },
+      ({ setState, getState }) => {
+        setState({
+          isEditBoardModalShown: !getState().isEditBoardModalShown
+        });
+      },
 
     hideEditCardModal:
+  hideEditCardModal:
     (): Action<State> =>
         ({ setState, getState }) => {
             setState({
                 isEditCardModalHidden: !getState().isEditCardModalHidden
             });
         },
+      ({ setState, getState }) => {
+        setState({
+          isEditCardModalHidden: !getState().isEditCardModalHidden
+        });
+      },
 
     setCurrentBoard:
+  setCurrentBoard:
     (boardId: number): Action<State> =>
     async ({ setState, getState }) => {
       const board = getState().boards.find(
@@ -113,6 +196,15 @@ const actions = {
         currentBoard: board,
       });
     },
+      async ({ setState, getState }) => {
+        const board = getState().boards.find(
+          (board: Board) => board.id === boardId
+        );
+        console.log(board);
+        setState({
+          currentBoard: board,
+        });
+      },
 
   getAllCards:
     (): Action<State> =>
@@ -121,6 +213,11 @@ const actions = {
         cards: await getCards(),
       });
     },
+      async ({ setState, getState }) => {
+        setState({
+          cards: await getCards(),
+        });
+      },
   createCard:
     (Card: CardM): Action<State> =>
     async ({ setState, getState }) => {
@@ -129,6 +226,12 @@ const actions = {
         cards: await getCards(),
       });
     },
+      async ({ setState, getState }) => {
+        await createCard(Card);
+        setState({
+          cards: await getCards(),
+        });
+      },
 };
 
 const Store = createStore({
