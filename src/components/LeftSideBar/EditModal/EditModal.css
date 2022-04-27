@@ -1,0 +1,14 @@
+.ant-btn-primary {
+    background: #8482b1;
+    border-color: #8482b1;
+    border-radius: 5px;
+}
+
+::selection{
+    border-color: #6b66ce;
+    background: #6b66ce;
+}
+.ant-btn-default{
+    border-radius: 5px;
+    
+}

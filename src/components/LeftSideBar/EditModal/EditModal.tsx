@@ -10,24 +10,19 @@ const EditModal = () => {
   const [state, actions] = useTable();
 
   const showModal = () => {
-    actions.showEditBoardModal(true);
+    actions.showEditBoardModal();
   };
 
   const handleOk = async () => {
-    let renamedBoard=new Board();
+    let renamedBoard=state.currentBoard;
     renamedBoard.title=state.editBoardName;
+    actions.showEditBoardModal();
     await editBoardNameddBoard(renamedBoard);
-    actions.showEditBoardModal(false);
-    // setModalText('The modal will be closed after two seconds');
-    // setConfirmLoading(true);
-    // setTimeout(() => {
-    //   setVisible(false);
-    //   setConfirmLoading(false);
-    // }, 2000);
+    actions.getBoards();
   };
 
   const handleCancel = () => {
-    actions.showEditBoardModal(false);
+    actions.showEditBoardModal();
   };
 
   return (
@@ -36,14 +31,13 @@ const EditModal = () => {
         Edit
       </Button>
       <Modal
-        title="Title"
+        title="Rename your board"
         visible={state.isEditBoardModalShown}
         onOk={handleOk}
-        // confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
         <Input
-           value={state.currentBoard?.title} 
+           defaultValue={state.currentBoard?.title} 
            onChange={(event) => {
             actions.setBoadrName(event.target.value)
           }}

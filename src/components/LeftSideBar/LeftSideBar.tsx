@@ -10,41 +10,50 @@ import {
   EditOutlined,
   LeftOutlined,
 } from "@ant-design/icons";
+import { deleteBoardById } from "../../api/boardsApi";
 
 const { Sider } = Layout;
 
 const LeftSideBar = () => {
   const [state, actions] = useTable();
 
-  const collapseSideBar = async () => {
+  const handleCollapseSideBar = async () => {
     actions.hideSideBar();
   };
 
-  const collapseSideBarOnBreakpoint = async () => {
+  const handleCollapseSideBarOnBreakpoint = async () => {
     if (!state.isSideBarHidden) {
-      collapseSideBar();
+      handleCollapseSideBar();
     }};
+
+  const handleBoardDelete = async () =>{
+      await deleteBoardById(state.currentBoard.id);
+      actions.getBoards();
+  }
+  const handleShowEditBoardModal = () => {
+    actions.showEditBoardModal()
+  }
     
   return (
     <>
       <div className="sidebar">
         <div className="collapsedButton trigger" >
           {state.isSideBarHidden ? (
-            <><div onClick={collapseSideBar}>
+            <><div onClick={handleCollapseSideBar}>
             <DoubleRightOutlined />
           </div></>
           ) : (
             <>
-            <div className="collapsedButtonHide white-text" onClick={collapseSideBar}>List of Boards<LeftOutlined/></div>
+            <div className="collapsedButtonHide white-text" onClick={handleCollapseSideBar}>List of Boards<LeftOutlined/></div>
             <div><AddPanel/></div>
             </>
           )}
           {!state.isSideBarHidden ? (
             <div className="buttonsBlock">
-              <Button className="itemButton" onClick={()=>actions.showEditBoardModal(true)}>
+              <Button className="itemButton" onClick={handleShowEditBoardModal}>
                 <EditOutlined />
               </Button>
-              <Button className="itemButton">
+              <Button className="itemButton" onClick={handleBoardDelete}>
                 <DeleteOutlined />
               </Button>
             </div>
@@ -54,8 +63,8 @@ const LeftSideBar = () => {
         <Sider
           className="sidebar"
           collapsedWidth={50}
-          breakpoint="sm"
-          onBreakpoint={collapseSideBarOnBreakpoint}
+          // breakpoint="md"
+          // onBreakpoint={collapseSideBarOnBreakpoint}
           trigger={null}
           collapsible
           collapsed={state.isSideBarHidden}
@@ -67,8 +76,8 @@ const LeftSideBar = () => {
             mode="inline"
             items={state.menuItems}
             onSelect={(event) => actions.setCurrentBoard(Number(event.key))}
+            selectedKeys={[state.currentBoard.id.toString()]}
           />
-          
         </Sider>
       </div>
     </>

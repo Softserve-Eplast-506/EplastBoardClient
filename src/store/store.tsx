@@ -17,7 +17,7 @@ type State = {
     editBoardName: string,
     isEditBoardModalShown: boolean
     boards: Board[];
-    currentBoard?: Board;
+    currentBoard: Board;
 };
 
 const initialState: State = {
@@ -30,7 +30,7 @@ const initialState: State = {
     editBoardName: "",
     isEditBoardModalShown: false,
     boards: [],
-    currentBoard: undefined,
+    currentBoard: new Board(),
 };
 
 const actions = {
@@ -43,6 +43,11 @@ const actions = {
                 boards.map((board: Board) => {
                     items.push(getItem(board.title, board.id));
                 })
+                if(boards.length>0){
+                  setState({
+                    currentBoard: boards[0],
+                  })
+                }
                 setState({
                     boards: boards,
                     menuItems: items.reverse()
@@ -82,10 +87,10 @@ const actions = {
             });
         },
     showEditBoardModal:
-    (state:boolean): Action<State> =>
+    (): Action<State> =>
         ({ setState, getState }) => {
             setState({
-                isEditBoardModalShown: state
+                isEditBoardModalShown: !getState().isEditBoardModalShown
             });
         },
 
