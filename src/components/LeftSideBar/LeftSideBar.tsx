@@ -39,6 +39,16 @@ const LeftSideBar = () => {
             <div><AddPanel/></div>
             </>
           )}
+          {!state.isSideBarHidden ? (
+            <div className="buttonsBlock">
+              <Button className="itemButton" onClick={()=>actions.showEditBoardModal(true)}>
+                <EditOutlined />
+              </Button>
+              <Button className="itemButton">
+                <DeleteOutlined />
+              </Button>
+            </div>
+          ) : null}
         </div>
 
         <Sider
@@ -58,16 +68,7 @@ const LeftSideBar = () => {
             items={state.menuItems}
             onSelect={(event) => actions.setCurrentBoard(Number(event.key))}
           />
-          {!state.isSideBarHidden ? (
-            <div className="buttonsBlock">
-              <Button className="itemButton" onClick={()=>actions.showEditBoardModal(true)}>
-                <EditOutlined />
-              </Button>
-              <Button className="itemButton">
-                <DeleteOutlined />
-              </Button>
-            </div>
-          ) : null}
+          
         </Sider>
       </div>
     </>
