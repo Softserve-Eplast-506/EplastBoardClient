@@ -12,6 +12,10 @@ type State = {
     isEditCardModalHidden: boolean,
     menuItems: MenuItem[],
     cards: CardM[],
+    isInputPanelHidden: boolean,
+    newBoard: string,
+    editBoardName: string,
+    isEditBoardModalShown: boolean
 };
 
 const initialState: State = {
@@ -19,6 +23,10 @@ const initialState: State = {
     isEditCardModalHidden: false,
     menuItems: [],
     cards: [],
+    isInputPanelHidden: true,
+    newBoard: "",
+    editBoardName: "",
+    isEditBoardModalShown: false
 };
 
 const actions = {
@@ -32,7 +40,7 @@ const actions = {
                     items.push(getItem(board.title, board.id));
                 })
                 setState({
-                    menuItems: items
+                    menuItems: items.reverse()
                 });
 
             },
@@ -44,6 +52,38 @@ const actions = {
                     isSideBarHidden: !getState().isSideBarHidden
                 });
             },
+ 
+    openInputPanel:
+        (): Action<State> =>
+            ({setState, getState}) => {
+                setState({
+                    isInputPanelHidden: !getState().isInputPanelHidden
+                });
+            },
+            
+    addBoardName:
+        (name: string): Action<State> =>
+        ({setState, getState}) => {
+            setState({
+                newBoard: name
+            });
+        },
+
+    setBoadrName:
+    (name: string): Action<State> =>
+        ({setState, getState}) => {
+            setState({
+                editBoardName: name
+            });
+        },
+    showEditBoardModal:
+    (state:boolean): Action<State> =>
+        ({ setState, getState }) => {
+            setState({
+                isEditBoardModalShown: state
+            });
+        },
+
     hideEditCardModal:
     (): Action<State> =>
         ({ setState, getState }) => {
@@ -51,6 +91,7 @@ const actions = {
                 isEditCardModalHidden: !getState().isEditCardModalHidden
             });
         },
+
     getAllCards:
     (): Action<State> =>
         async ({ setState, getState }) => {
