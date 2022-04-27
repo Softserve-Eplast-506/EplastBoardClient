@@ -33,8 +33,8 @@ const ContentSpace = () => {
 
   return (
     <>
-      <Content
-        className="content"
+      <Content 
+        className={`content ${state.isSideBarHidden ? "content-full" : ""}`}
         style={{
           padding: 24,
           backgroundImage: `url("https://assets.hongkiat.com/uploads/holographic-gradient-background/5.jpg")`,

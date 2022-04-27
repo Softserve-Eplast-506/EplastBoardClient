@@ -19,9 +19,9 @@ function App() {
       <HeaderBar />
       <Layout className="layoutStyles">
         <LeftSideBar />
-        <CreateCardModal />
         <ContentSpace />
         {state.isEditBoardModalShown ?  <EditModal/>:null}
+        <CreateCardModal />
       </Layout>
       
     </Layout>

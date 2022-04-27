@@ -44,7 +44,7 @@ const EditModal = () => {
       >
         <Input
            value={state.currentBoard?.title} 
-           onChange={(event) => {
+          onChange={(event) => {
             actions.setBoadrName(event.target.value)
           }}
         />

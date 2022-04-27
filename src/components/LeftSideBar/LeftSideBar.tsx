@@ -2,8 +2,7 @@ import { useTable } from "../../store/store";
 import { Button, Layout, Menu } from "antd";
 import "./LeftSideBar.css";
 import "antd/dist/antd.min.css";
-import AddPanel from './AddPanel/AddPanel';
-import { ItemType } from 'rc-menu/lib/interface';
+import AddPanel from "./AddPanel/AddPanel";
 import {
   DeleteOutlined,
   DoubleRightOutlined,
@@ -23,25 +22,39 @@ const LeftSideBar = () => {
   const collapseSideBarOnBreakpoint = async () => {
     if (!state.isSideBarHidden) {
       collapseSideBar();
-    }};
-    
+    }
+  };
+
   return (
     <>
-      <div className="sidebar">
-        <div className="collapsedButton trigger" >
+      <div className={`sidebar ${!state.isSideBarHidden ? "" : "close"}`}>
+        <div className="collapsedButton">
           {state.isSideBarHidden ? (
-            <><div onClick={collapseSideBar}>
-            <DoubleRightOutlined />
-          </div></>
+            <>
+              <div className="openButton" onClick={collapseSideBar}>
+                <DoubleRightOutlined />
+              </div>
+            </>
           ) : (
             <>
-            <div className="collapsedButtonHide white-text" onClick={collapseSideBar}>List of Boards<LeftOutlined/></div>
-            <div><AddPanel/></div>
+              <div
+                className="collapsedButtonHide white-text"
+                onClick={collapseSideBar}
+              >
+                List of Boards
+                <LeftOutlined />
+              </div>
+              <div>
+                <AddPanel />
+              </div>
             </>
           )}
           {!state.isSideBarHidden ? (
             <div className="buttonsBlock">
-              <Button className="itemButton" onClick={()=>actions.showEditBoardModal(true)}>
+              <Button
+                className="itemButton"
+                onClick={() => actions.showEditBoardModal(true)}
+              >
                 <EditOutlined />
               </Button>
               <Button className="itemButton">
@@ -52,7 +65,7 @@ const LeftSideBar = () => {
         </div>
 
         <Sider
-          className="sidebar"
+          className="sidebar-position"
           collapsedWidth={50}
           breakpoint="sm"
           onBreakpoint={collapseSideBarOnBreakpoint}
@@ -68,7 +81,6 @@ const LeftSideBar = () => {
             items={state.menuItems}
             onSelect={(event) => actions.setCurrentBoard(Number(event.key))}
           />
-          
         </Sider>
       </div>
     </>
