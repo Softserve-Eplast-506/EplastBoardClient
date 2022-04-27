@@ -15,6 +15,10 @@ type State = {
     menuItems: MenuItem[],
     cards: CardM[],
     columns: Column[]
+    isInputPanelHidden: boolean,
+    isInputPanelHiddenColumn: boolean,
+    addingBoardName: string,
+    hiddenPanelColumn: number,
 };
 
 const initialState: State = {
@@ -22,7 +26,11 @@ const initialState: State = {
     isEditCardModalHidden: false,
     menuItems: [],
     cards: [],
-    columns: []
+    columns: [],
+    isInputPanelHidden: true,
+    isInputPanelHiddenColumn: true,
+    addingBoardName: "",
+    hiddenPanelColumn: 0,
 };
 
 const actions = {
@@ -36,7 +44,7 @@ const actions = {
                     items.push(getItem(board.title, board.id));
                 })
                 setState({
-                    menuItems: items
+                    menuItems: items.reverse()
                 });
 
             },
@@ -55,7 +63,33 @@ const actions = {
                     const getColumns: Column[] = await columnsApi.getColumnById(idBoard);
                     setState({columns: getColumns});
                 },
-             
+ 
+    openInputPanel:
+        (): Action<State> =>
+            ({setState, getState}) => {
+                setState({
+                    isInputPanelHidden: !getState().isInputPanelHidden
+                });
+            },
+            
+
+    openColumnName:
+        (idColumn: number): Action<State> =>
+            ({setState, getState}) => {
+                setState({
+                    isInputPanelHiddenColumn: !getState().isInputPanelHiddenColumn,
+                    hiddenPanelColumn: idColumn,
+                });
+            },
+            
+    setBoardName:
+        (name: string): Action<State> =>
+        ({setState, getState}) => {
+            setState({
+                addingBoardName: name
+            });
+        },
+
     hideEditCardModal:
     (): Action<State> =>
         ({ setState, getState }) => {
@@ -71,7 +105,7 @@ const actions = {
                 cards: await getCards()
             });
         },
-        
+
     createCard:
     (Card: CardM): Action<State> =>
         async ({ setState, getState }) => {
