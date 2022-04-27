@@ -22,6 +22,7 @@ const ContentSpace = () => {
           title={x.title}
           bordered={false}
           style={{ width: 300 }}
+          onClick={actions.hideEditCardModal}
         >
           <p>Card content</p>
           <p>Card content</p>

@@ -17,14 +17,14 @@ interface CollectionEditFormProps {
 }
 
 const CollectionEditForm: React.FC<CollectionEditFormProps> = ({
-  visible,
   onEdit,
   onCancel,
 }) => {
+  const [state, actions] = useTable();
   const [form] = Form.useForm();
   return (
     <Modal
-      visible={visible}
+      visible={state.isEditCardModalHidden}
       title="Edit a new task"
       okText="Edit"
       cancelText="Cancel"
@@ -70,7 +70,6 @@ const CollectionsPage = () => {
     const newCard = new CardM();
     newCard.description = values.description;
     newCard.title = values.title;
- //   actions.EditCard(newCard);
     setVisible(false);
   };
 
@@ -79,9 +78,8 @@ const CollectionsPage = () => {
       <CollectionEditForm
         visible={visible}
         onEdit={onEdit}
-        onCancel={() => {
-          setVisible(false);
-        }}
+        onCancel={
+          actions.hideEditCardModal}
       />
     </div>
   );
