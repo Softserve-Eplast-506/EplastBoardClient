@@ -35,6 +35,24 @@ const ContentSpace = () => {
 
   }, []);
 
+  const test = (): any => {
+    return state.cards.map((x: CardM) => {
+      return (
+        <Card
+          key={x.id}
+          title={x.title}
+          bordered={false}
+          style={{ width: 300 }}
+          onClick={actions.hideEditCardModal}
+        >
+          <p>Card content</p>
+          <p>Card content</p>
+          <p>Card content</p>
+        </Card>
+      );
+    });
+  };
+
   return (
     <Content style={{backgroundImage: `url("https://assets.hongkiat.com/uploads/holographic-gradient-background/5.jpg")`, backgroundSize: 'cover'}}>
       <div className="board">

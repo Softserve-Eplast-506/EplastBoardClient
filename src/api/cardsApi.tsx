@@ -18,6 +18,11 @@ export const getCardById = async (id: number) => {
         throw new Error(error);
     });
 };
+export const getCardsByColumn = async (id: number) => {
+    return await api.get(`GetCardsByColumn/${id}`).catch((error) => {
+        throw new Error(error);
+    });
+};
 
 export const AddCard = async (Card: CardM) => {
     console.log(Card);
