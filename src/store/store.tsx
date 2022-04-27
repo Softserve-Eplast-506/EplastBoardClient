@@ -12,6 +12,8 @@ type State = {
     isEditCardModalHidden: boolean,
     menuItems: MenuItem[],
     cards: CardM[],
+    isInputPanelHidden: boolean,
+    addingBoardName: string
 };
 
 const initialState: State = {
@@ -19,6 +21,8 @@ const initialState: State = {
     isEditCardModalHidden: false,
     menuItems: [],
     cards: [],
+    isInputPanelHidden: true,
+    addingBoardName: ""
 };
 
 const actions = {
@@ -32,7 +36,7 @@ const actions = {
                     items.push(getItem(board.title, board.id));
                 })
                 setState({
-                    menuItems: items
+                    menuItems: items.reverse()
                 });
 
             },
@@ -44,6 +48,23 @@ const actions = {
                     isSideBarHidden: !getState().isSideBarHidden
                 });
             },
+ 
+    openInputPanel:
+        (): Action<State> =>
+            ({setState, getState}) => {
+                setState({
+                    isInputPanelHidden: !getState().isInputPanelHidden
+                });
+            },
+            
+    setBoardName:
+        (name: string): Action<State> =>
+        ({setState, getState}) => {
+            setState({
+                addingBoardName: name
+            });
+        },
+
     hideEditCardModal:
     (): Action<State> =>
         ({ setState, getState }) => {
