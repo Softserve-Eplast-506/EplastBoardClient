@@ -20,7 +20,8 @@ export const getCardById = async (id: number) => {
 };
 
 export const AddCard = async (Card: CardM) => {
-    return await api.post(`AddCard/${Card}`).catch((error) => {
+    console.log(Card);
+    return await api.post(`Card/AddCard`, Card).catch((error) => {
       throw new Error(error);
     });
 };
