@@ -28,7 +28,7 @@ const initialState: State = {
     isInputPanelHidden: true,
     newBoard: "",
     editBoardName: "",
-    isEditBoardModalShown: false,
+    isEditBoardModalShown: true,
     boards: [],
     currentBoard: new Board(),
 };

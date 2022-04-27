@@ -2,8 +2,7 @@ import { useTable } from "../../store/store";
 import { Button, Layout, Menu } from "antd";
 import "./LeftSideBar.css";
 import "antd/dist/antd.min.css";
-import AddPanel from './AddPanel/AddPanel';
-import { ItemType } from 'rc-menu/lib/interface';
+import AddPanel from "./AddPanel/AddPanel";
 import {
   DeleteOutlined,
   DoubleRightOutlined,
@@ -36,8 +35,8 @@ const LeftSideBar = () => {
     
   return (
     <>
-      <div className="sidebar">
-        <div className="collapsedButton trigger" >
+      <div className={`sidebar ${!state.isSideBarHidden ? "" : "close"}`}>
+        <div className="collapsedButton">
           {state.isSideBarHidden ? (
             <><div onClick={handleCollapseSideBar}>
             <DoubleRightOutlined />
@@ -61,7 +60,7 @@ const LeftSideBar = () => {
         </div>
 
         <Sider
-          className="sidebar"
+          className="sidebar-position"
           collapsedWidth={50}
           // breakpoint="md"
           // onBreakpoint={collapseSideBarOnBreakpoint}
