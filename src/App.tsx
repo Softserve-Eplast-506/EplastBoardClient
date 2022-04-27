@@ -11,7 +11,7 @@ function App() {
   const [, actions] = useTable();
   useEffect(() =>{
     actions.getBoards();
-  },[])
+  },[actions])
 
   return (
       <Layout style={{ minHeight: "100vh" }}>
