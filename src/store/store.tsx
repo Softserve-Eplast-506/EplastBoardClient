@@ -1,9 +1,11 @@
 import { MenuProps } from 'antd';
 import { createStore, createHook, Action } from 'react-sweet-state';
 import { getAllBoards } from '../api/boardsApi';
+import columnsApi from '../api/columnsApi';
 import { AddCard, getAllCards } from '../api/cardsApi';
 import Board from '../models/Board';
 import CardM from '../models/Card';
+import Column from '../models/Column';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -12,8 +14,13 @@ type State = {
     isEditCardModalHidden: boolean,
     menuItems: MenuItem[],
     cards: CardM[],
+    columns: Column[]
     isInputPanelHidden: boolean,
-    addingBoardName: string
+    isInputPanelHiddenColumn: boolean,
+    addingBoardName: string,
+    editingColumnName: string,
+    hiddenPanelColumn: number,
+    currentColumn: Column;
 };
 
 const initialState: State = {
@@ -21,8 +28,13 @@ const initialState: State = {
     isEditCardModalHidden: false,
     menuItems: [],
     cards: [],
+    columns: [],
     isInputPanelHidden: true,
-    addingBoardName: ""
+    isInputPanelHiddenColumn: true,
+    addingBoardName: "",
+    editingColumnName: "",
+    hiddenPanelColumn: 0,
+    currentColumn: new Column(),
 };
 
 const actions = {
@@ -48,12 +60,29 @@ const actions = {
                     isSideBarHidden: !getState().isSideBarHidden
                 });
             },
+
+    getColumnByBoard:
+        (idBoard: number): Action<State> => 
+                async ({setState}) => {
+                    const getColumns: Column[] = await columnsApi.getColumnById(idBoard);
+                    setState({columns: getColumns});
+                },
  
     openInputPanel:
         (): Action<State> =>
             ({setState, getState}) => {
                 setState({
                     isInputPanelHidden: !getState().isInputPanelHidden
+                });
+            },
+            
+
+    openColumnName:
+        (idColumn: number): Action<State> =>
+            ({setState, getState}) => {
+                setState({
+                    isInputPanelHiddenColumn: !getState().isInputPanelHiddenColumn,
+                    hiddenPanelColumn: idColumn,
                 });
             },
             
@@ -64,6 +93,14 @@ const actions = {
                 addingBoardName: name
             });
         },
+    
+    editColumnName:
+        (name: string): Action<State> =>
+        ({setState, getState}) => {
+            setState({
+                editingColumnName: name
+            });
+        },
 
     hideEditCardModal:
     (): Action<State> =>
@@ -72,6 +109,7 @@ const actions = {
                 isEditCardModalHidden: !getState().isEditCardModalHidden
             });
         },
+
     getAllCards:
     (): Action<State> =>
         async ({ setState, getState }) => {
@@ -79,6 +117,7 @@ const actions = {
                 cards: await getCards()
             });
         },
+
     createCard:
     (Card: CardM): Action<State> =>
         async ({ setState, getState }) => {
