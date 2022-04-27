@@ -2,8 +2,10 @@ import { MenuProps } from 'antd';
 import { createStore, createHook, Action } from 'react-sweet-state';
 import { getAllBoards } from '../api/boardsApi';
 import { getAllCards } from '../api/cardsApi';
+import columnsApi from '../api/columnsApi';
 import Board from '../models/Board';
 import CardM from '../models/Card';
+import Column from '../models/Column';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -11,12 +13,14 @@ type State = {
     isSideBarHidden: boolean,
     menuItems: MenuItem[],
     cards: CardM[],
+    columns: Column[]
 };
 
 const initialState: State = {
     isSideBarHidden: false,
     menuItems: [],
     cards: [],
+    columns: []
 };
 
 const actions = {
@@ -49,6 +53,14 @@ const actions = {
                         cards: await getCards()
                     });
                 },
+
+    getColumnByBoard:
+        (idBoard: number): Action<State> => 
+                async ({setState}) => {
+                    const getColumns: Column[] = await columnsApi.getColumnById(idBoard);
+                    setState({columns: getColumns});
+                }
+             
 };
 
 const Store = createStore({
