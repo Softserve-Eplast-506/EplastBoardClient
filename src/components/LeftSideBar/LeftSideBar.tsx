@@ -60,7 +60,7 @@ const LeftSideBar = () => {
           />
           {!state.isSideBarHidden ? (
             <div className="buttonsBlock">
-              <Button className="itemButton">
+              <Button className="itemButton" onClick={()=>actions.showEditBoardModal(true)}>
                 <EditOutlined />
               </Button>
               <Button className="itemButton">

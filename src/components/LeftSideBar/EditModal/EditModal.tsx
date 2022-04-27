@@ -15,6 +15,7 @@ const EditModal = () => {
 
   const handleOk = async () => {
     let renamedBoard=new Board();
+    renamedBoard.title=state.editBoardName;
     await editBoardNameddBoard(renamedBoard);
     actions.showEditBoardModal(false);
     // setModalText('The modal will be closed after two seconds');
@@ -42,7 +43,7 @@ const EditModal = () => {
         onCancel={handleCancel}
       >
         <Input
-          //  value={} 
+           value={state.currentBoard?.title} 
           onChange={(event) => {
             actions.setBoadrName(event.target.value)
           }}
