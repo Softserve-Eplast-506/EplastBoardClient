@@ -23,14 +23,14 @@
 }
 
 .item {
-    width: 100%;
-    background-color: #fff;
-    border: 2px solid #fff;
-    box-shadow: 0 5px 5px lightgray;
-    padding: 10px;
-    border-radius: 6px;
-    margin: 5px 0;
-    cursor: grab;
+    width: 100% !important;
+    background-color: #fff !important;
+    border: 2px solid #fff !important;
+    box-shadow: 0 5px 5px lightgray !important;
+    padding: 10px !important;
+    border-radius: 6px !important;
+    margin: 5px 0 !important;
+    cursor: default !important;
 }
 
 .board {

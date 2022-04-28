@@ -5,10 +5,11 @@ import { useTable } from "../../store/store";
 import CardM from "../../models/Card";
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import columnsApi from "../../api/columnsApi"
-import { DragDropContext, DropResult } from 'react-beautiful-dnd'
+
 import Item from "antd/lib/list/Item";
 import { CloseOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import Board from "../../models/Board";
+import CreateCardModal from "./CreateCardModal";
 
 const { Content } = Layout;
 
@@ -43,10 +44,11 @@ const ContentSpace = () => {
     console.log(state.columns);
   }, []);
 
-  const test = (): any => {
+  const renderAllCards = (): any => {
     return state.cards.map((x: CardM) => {
       return (
         <Card
+          className="item"
           key={x.id}
           title={x.title}
           bordered={false}
@@ -81,11 +83,16 @@ const ContentSpace = () => {
         state.columns.map(col =>
           <div className="column">
             <div id={col.id.toString()} className="column-title" contentEditable="true" onChange={handleEdit} defaultValue={columnName} onBlur={handleOk}>{col.title}</div>
-            {/* {col..map(Item => 
-              <div className="item">{Item.title}</div>
-            )} */}
+            {
+
+              renderAllCards()
+
+            }
+             <CreateCardModal />
           </div>
+          
       )}
+      
     </div>
     </Content>
     
