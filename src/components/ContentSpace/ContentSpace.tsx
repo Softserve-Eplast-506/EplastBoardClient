@@ -26,15 +26,21 @@ class Column {
 };
 
 const ContentSpace = () => {
-  const [Boards, setBoards] = useState([{id: 2, title: "To Do", items: [{id: 1, title: "Do something"}, {id: 2, title: "Do something"}]}, {id: 3, title: "Doing", items: [{id: 3, title: "Do something"}, {id: 4, title: "Do something"}, {id: 5, title: "Do something"}]}])
   const [state, actions] = useTable();
+  
+  useEffect(() => {
+    actions.getBoards();
+  }, []);
+
+  useEffect(() => {
+    actions.getColumnByBoard(state.currentBoard.id);
+  }, [state.currentBoard.id]);
 
   useEffect(() => {
     actions.getAllCards();
-
-    const newColumn = new Column();
-    columnsApi.addColumn(newColumn);
-
+    
+    console.log(state.currentBoard);
+    console.log(state.columns);
   }, []);
 
   const test = (): any => {
@@ -55,14 +61,12 @@ const ContentSpace = () => {
     });
   };
   
-  let columnName = state.currentColumn.title;
+  let columnName = state.currentColumn?.title;
 
   const handleOk = async (event: any) => {
-    console.log(event.target.id);
     actions.setCurrentColumn(event.target.id);
     let newColumn: Column = state.currentColumn;
     newColumn.title = columnName;
-    console.log(newColumn);
     await columnsApi.editColumnName(newColumn);
   };
 
@@ -74,12 +78,12 @@ const ContentSpace = () => {
     <Content className={`content ${state.isSideBarHidden ? "content-full" : ""}`} style={{backgroundImage: `url("https://assets.hongkiat.com/uploads/holographic-gradient-background/5.jpg")`, backgroundSize: 'cover'}}>
       <div className="board">
       {
-        Boards.map(Board =>
+        state.columns.map(col =>
           <div className="column">
-            <div id={Board.id.toString()} className="column-title" contentEditable="true" onChange={handleEdit} defaultValue={columnName} onBlur={handleOk}>{Board.title}</div>
-            {Board.items.map(Item => 
+            <div id={col.id.toString()} className="column-title" contentEditable="true" onChange={handleEdit} defaultValue={columnName} onBlur={handleOk}>{col.title}</div>
+            {/* {col..map(Item => 
               <div className="item">{Item.title}</div>
-            )}
+            )} */}
           </div>
       )}
     </div>

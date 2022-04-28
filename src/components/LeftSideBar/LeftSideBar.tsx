@@ -17,8 +17,9 @@ const { Sider } = Layout;
 const LeftSideBar = () => {
   const [state, actions] = useTable();
   
+
+
   useEffect(() => {
-    actions.getBoards(); 
     actions.setInitialCurrentBoard();
   }, [state.render]);
 

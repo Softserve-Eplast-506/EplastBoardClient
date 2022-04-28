@@ -12,7 +12,7 @@ function App() {
   const [state, actions] = useTable();
   
   useEffect(() => {
-    actions.getBoards();
+    //actions.getBoards();
     actions.setInitialCurrentBoard();// треба зробити так щоб ця функція дочекалась закінчення асинхронного виконання попередньої
   }, []);
 
