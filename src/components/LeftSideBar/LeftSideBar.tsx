@@ -1,5 +1,4 @@
 import { useTable } from "../../store/store";
-import { useEffect } from "react";
 import { Button, Layout, Menu } from "antd";
 import "./LeftSideBar.css";
 import "antd/dist/antd.min.css";
@@ -11,42 +10,56 @@ import {
   LeftOutlined,
 } from "@ant-design/icons";
 import { deleteBoardById } from "../../api/boardsApi";
+import { useEffect } from "react";
 
 const { Sider } = Layout;
 
 const LeftSideBar = () => {
   const [state, actions] = useTable();
-  
-
-
-  useEffect(() => {
-    actions.setInitialCurrentBoard();
-  }, [state.render]);
 
   const handleCollapseSideBar = async () => {
     actions.hideSideBar();
   };
 
-  const handleBoardDelete = async () =>{
-      await deleteBoardById(state.currentBoard.id);
-      actions.setRender();
-  }
+  const handleBoardDelete = async () => {
+    await deleteBoardById(state.currentBoard.id);
+    fetchData();
+  };
   const handleShowEditBoardModal = () => {
-    actions.showEditBoardModal()
-  }
-    
+    actions.showEditBoardModal();
+  };
+
+  const fetchData = async () => {
+    await actions.getBoards();
+    await actions.setInitialCurrentBoard();
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className={`sidebar ${!state.isSideBarHidden ? "" : "close"}`}>
         <div className="collapsedButton">
           {state.isSideBarHidden ? (
-            <><div onClick={handleCollapseSideBar}>
-            <DoubleRightOutlined />
-          </div></>
+            <>
+              <div onClick={handleCollapseSideBar}>
+                <DoubleRightOutlined />
+              </div>
+            </>
           ) : (
             <>
-            <div className="collapsedButtonHide white-text" onClick={handleCollapseSideBar}>List of Boards<LeftOutlined/></div>
-            <div><AddPanel/></div>
+              <div
+                className="collapsedButtonHide white-text"
+                onClick={handleCollapseSideBar}
+              >
+                List of Boards
+                <LeftOutlined />
+              </div>
+              <div>
+                <AddPanel />
+              </div>
             </>
           )}
           {!state.isSideBarHidden ? (
@@ -64,8 +77,7 @@ const LeftSideBar = () => {
         <Sider
           className="sidebar-position"
           collapsedWidth={50}
-          // breakpoint="md"
-          // onBreakpoint={collapseSideBarOnBreakpoint}
+          breakpoint="md"
           trigger={null}
           collapsible
           collapsed={state.isSideBarHidden}
