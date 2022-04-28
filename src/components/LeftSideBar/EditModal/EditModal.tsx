@@ -26,11 +26,9 @@ const EditModal = () => {
   };
 
   return (
-    <>
-      <Button type="primary" onClick={showModal}>
-        Edit
-      </Button>
+    
       <Modal
+      className='modal-container'
         title="Rename your board"
         visible={state.isEditBoardModalShown}
         onOk={handleOk}
@@ -43,7 +41,6 @@ const EditModal = () => {
           }}
         />
       </Modal>
-    </>
   );
 };
 
