@@ -2,7 +2,7 @@ import Column from '../models/Column'
 import api from './api'
 
 const getAllColumnsByBoard = async (boardId: number) => {
-    return await api.get(`Columns/${boardId}`).catch((error) => {
+    return await api.get(`Columns/Columns/${boardId}`).catch((error) => {
         throw new Error(error);
     });
 };
@@ -31,4 +31,4 @@ const deleteColumnById = async (id: number) => {
     });
 };
 
-export default {addColumn, getColumnById, editColumnName}
+export default {addColumn, getColumnById, editColumnName, getAllColumnsByBoard}

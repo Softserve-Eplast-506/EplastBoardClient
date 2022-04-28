@@ -14,7 +14,7 @@ type State = {
     isEditCardModalHidden: boolean,
     menuItems: MenuItem[],
     cards: CardM[],
-    columns: Column[]
+    columns: Column[],
     isInputPanelHidden: boolean,
     isInputPanelHiddenColumn: boolean,
     addingBoardName: string,
@@ -51,7 +51,6 @@ const initialState: State = {
 
 const actions = {
 
-
   getBoards:
     (): Action<State> =>
       async ({ setState, getState }) => {
@@ -81,7 +80,6 @@ const actions = {
         }
       },
 
-
   setRender:
     (): Action<State> =>
       ({ setState, getState }) => {
@@ -99,9 +97,9 @@ const actions = {
             },
 
     getColumnByBoard:
-        (idBoard: number): Action<State> => 
-                async ({setState}) => {
-                    const getColumns: Column[] = await columnsApi.getColumnById(idBoard);
+        (boardId: number): Action<State> => 
+                async ({ setState}) => {
+                    const getColumns: Column[] = (await columnsApi.getAllColumnsByBoard(boardId)).data;
                     setState({columns: getColumns});
                 },
  
@@ -144,7 +142,6 @@ const actions = {
           const column = getState().columns.find(
             (column: Column) => column.id === columnId
           );
-          console.log(column);
           setState({
             currentColumn: column,
           });
@@ -187,7 +184,6 @@ const actions = {
         const board = getState().boards.find(
           (board: Board) => board.id === boardId
         );
-        console.log(board);
         setState({
           currentBoard: board,
         });
@@ -234,9 +230,7 @@ const getCards = async () => {
 };
 
 const createCard = async (Card: CardM) => {
-    console.log("crac");
     const response = await AddCard(Card);
-    console.log(response.data);
     return response.data;
 };
 export const useTable = createHook(Store);
