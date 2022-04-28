@@ -30,3 +30,8 @@ export const AddCard = async (Card: CardM) => {
       throw new Error(error);
     });
 };
+export const editCard = async (cardM: CardM) => {
+    return await api.put(`Card/EditCardName`, cardM).catch((error) => {
+        throw new Error(error);
+    });
+};

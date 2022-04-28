@@ -6,15 +6,16 @@ import CardM from "../../models/Card";
 import { useEffect } from "react";
 import columnsApi from "../../api/columnsApi"
 import Column from "../../models/Column";
+import Item from "antd/lib/list/Item";
+import { CloseOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import Board from "../../models/Board";
+import CreateCardModal from "./CreateCardModal";
 
 const { Content } = Layout;
 
 const ContentSpace = () => {
   const [state, actions] = useTable();
   
-  useEffect(() => {
-    actions.getBoards();
-  }, []);
 
   useEffect(() => {
     actions.getColumnByBoard(state.currentBoard.id);
@@ -23,14 +24,15 @@ const ContentSpace = () => {
   useEffect(() => {
     actions.getAllCards();
     
-    console.log(state.currentBoard);
-    console.log(state.columns);
+    // console.log(state.currentBoard);
+    // console.log(state.columns);
   }, []);
 
-  const test = (): any => {
+  const renderAllCards = (): any => {
     return state.cards.map((x: CardM) => {
       return (
         <Card
+          className="item"
           key={x.id}
           title={x.title}
           bordered={false}
@@ -65,11 +67,16 @@ const ContentSpace = () => {
         state.columns.map(col =>
           <div className="column">
             <div id={col.id.toString()} className="column-title" contentEditable="true" onChange={handleEdit} defaultValue={columnName} onBlur={handleOk}>{col.title}</div>
-            {/* {col..map(Item => 
-              <div className="item">{Item.title}</div>
-            )} */}
+            {
+
+              renderAllCards()
+
+            }
+             <CreateCardModal />
           </div>
+          
       )}
+      
     </div>
     </Content>
     
