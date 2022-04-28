@@ -71,7 +71,7 @@ const ContentSpace = () => {
   }
 
   return (
-    <Content style={{backgroundImage: `url("https://assets.hongkiat.com/uploads/holographic-gradient-background/5.jpg")`, backgroundSize: 'cover'}}>
+    <Content className={`content ${state.isSideBarHidden ? "content-full" : ""}`} style={{backgroundImage: `url("https://assets.hongkiat.com/uploads/holographic-gradient-background/5.jpg")`, backgroundSize: 'cover'}}>
       <div className="board">
       {
         Boards.map(Board =>
@@ -108,6 +108,19 @@ const ContentSpace = () => {
   //     </Row>
   //   </Form>
 
+  // );
+  //   <>
+  //     <Content 
+  //       className={`content ${state.isSideBarHidden ? "content-full" : ""}`}
+  //       style={{
+  //         padding: 24,
+  //         backgroundImage: `url("https://assets.hongkiat.com/uploads/holographic-gradient-background/5.jpg")`,
+  //         backgroundSize: "cover",
+  //       }}
+  //     >
+  //       <div className="site-card-border-less-wrapper">{test()}</div>
+  //     </Content>
+  //   </>
   // );
 };
 export default ContentSpace;
