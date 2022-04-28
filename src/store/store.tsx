@@ -76,7 +76,6 @@ const actions = {
                 });
             },
             
-
     openColumnName:
         (idColumn: number): Action<State> =>
             ({setState, getState}) => {
@@ -94,12 +93,24 @@ const actions = {
             });
         },
     
-    editColumnName:
+    changeColumnName:
         (name: string): Action<State> =>
         ({setState, getState}) => {
             setState({
                 editingColumnName: name
             });
+        },
+    
+    setCurrentColumn:
+        (columnId: number): Action<State> =>
+        async ({ setState, getState }) => {
+          const column = getState().columns.find(
+            (column: Column) => column.id === columnId
+          );
+          console.log(column);
+          setState({
+            currentColumn: column,
+          });
         },
 
     hideEditCardModal:

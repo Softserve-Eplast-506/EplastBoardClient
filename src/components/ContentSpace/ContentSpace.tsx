@@ -1,12 +1,14 @@
-import { Breadcrumb, Card, Form, Layout, Row } from "antd";
+import { Breadcrumb, Card, Form, Input, Layout, Row } from "antd";
 import './ContentSpace.css';
 import "antd/dist/antd.min.css";
 import { useTable } from "../../store/store";
 import CardM from "../../models/Card";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import columnsApi from "../../api/columnsApi"
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import Item from "antd/lib/list/Item";
+import { CloseOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import Board from "../../models/Board";
 
 const { Content } = Layout;
 
@@ -24,7 +26,7 @@ class Column {
 };
 
 const ContentSpace = () => {
-  const [Boards, setBoards] = useState([{id: 1, title: "To Do", items: [{id: 1, title: "Do something"}, {id: 2, title: "Do something"}]}, {id: 2, title: "Doing", items: [{id: 3, title: "Do something"}, {id: 4, title: "Do something"}, {id: 5, title: "Do something"}]}])
+  const [Boards, setBoards] = useState([{id: 2, title: "To Do", items: [{id: 1, title: "Do something"}, {id: 2, title: "Do something"}]}, {id: 3, title: "Doing", items: [{id: 3, title: "Do something"}, {id: 4, title: "Do something"}, {id: 5, title: "Do something"}]}])
   const [state, actions] = useTable();
 
   useEffect(() => {
@@ -52,6 +54,21 @@ const ContentSpace = () => {
       );
     });
   };
+  
+  let columnName = state.currentColumn.title;
+
+  const handleOk = async (event: any) => {
+    console.log(event.target.id);
+    actions.setCurrentColumn(event.target.id);
+    let newColumn: Column = state.currentColumn;
+    newColumn.title = columnName;
+    console.log(newColumn);
+    await columnsApi.editColumnName(newColumn);
+  };
+
+  const handleEdit = async (event: React.FormEvent<HTMLInputElement>) => {
+    columnName = event.currentTarget.value;
+  }
 
   return (
     <Content style={{backgroundImage: `url("https://assets.hongkiat.com/uploads/holographic-gradient-background/5.jpg")`, backgroundSize: 'cover'}}>
@@ -59,7 +76,7 @@ const ContentSpace = () => {
       {
         Boards.map(Board =>
           <div className="column">
-            <div className="column-title">{Board.title}</div>
+            <div id={Board.id.toString()} className="column-title" contentEditable="true" onChange={handleEdit} defaultValue={columnName} onBlur={handleOk}>{Board.title}</div>
             {Board.items.map(Item => 
               <div className="item">{Item.title}</div>
             )}
@@ -91,43 +108,6 @@ const ContentSpace = () => {
   //     </Row>
   //   </Form>
 
-  // );
-
-
-  // const test = (): any => {
-  //   return (
-  //     state.cards.map((x: CardM) => {
-       
-  //       return (
-  //       <Card key={x.id} title={x.title} bordered={false} style={{ width: 300 }}>
-  //       <p>Card content</p>
-  //       <p>Card content</p>
-  //       <p>Card content</p>
-  //     </Card>
-  //       )
-
-  //     })
-  //   )
-  // }
-
-  // return (
-  //   <>
-  //   <Content className="content"
-  //       style={{
-  //         padding: 24,
-  //         backgroundImage: `url("https://assets.hongkiat.com/uploads/holographic-gradient-background/5.jpg")`,
-  //         backgroundSize: 'cover'
-  //       }}
-  //   >
-    
-  //   <div className="site-card-border-less-wrapper">
-   
-  //  { test()}
-
-  // </div>
-          
-  //   </Content>
-  //   </>
   // );
 };
 export default ContentSpace;
