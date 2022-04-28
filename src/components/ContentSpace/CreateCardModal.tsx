@@ -70,6 +70,7 @@ const CollectionsPage = () => {
     const newCard = new CardM();
     newCard.description = values.description;
     newCard.title = values.title;
+    newCard.columnId = 1;
     actions.createCard(newCard);
     setVisible(false);
   };
