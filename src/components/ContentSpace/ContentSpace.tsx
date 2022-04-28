@@ -5,26 +5,13 @@ import { useTable } from "../../store/store";
 import CardM from "../../models/Card";
 import { useEffect } from "react";
 import columnsApi from "../../api/columnsApi"
+import Column from "../../models/Column";
 import Item from "antd/lib/list/Item";
 import { CloseOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import Board from "../../models/Board";
 import CreateCardModal from "./CreateCardModal";
 
-
 const { Content } = Layout;
-
-class Column {
-  id: number;
-  title: string;
-  boardId: number;
-
-  constructor() {
-    this.id = 5;
-    this.title = "col5";
-    this.boardId = 1;
-  }
-
-};
 
 const ContentSpace = () => {
   const [state, actions] = useTable();
