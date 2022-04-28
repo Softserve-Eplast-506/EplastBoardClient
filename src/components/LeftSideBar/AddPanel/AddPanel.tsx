@@ -15,7 +15,7 @@ const AddPanel = () => {
    
     const addNewBoard = async () => {
         let board = new Board();
-        board.title = state.addingBoardName;
+        board.title = state.newBoard;
         await addBoard(board);
         actions.getBoards();
         actions.openInputPanel();
@@ -33,11 +33,11 @@ const AddPanel = () => {
                            autoFocus 
                            onBlur={showInput} 
                            onChange={(event)=>{
-                                actions.setBoardName(event.target.value)}}
+                                actions.addBoardName(event.target.value)}}
                         />
                 </form>
             }
         </>
     )
 }
-export default AddPanel
+export default AddPanel;

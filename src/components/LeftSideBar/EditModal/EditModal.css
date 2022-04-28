@@ -1,0 +1,12 @@
+.ant-btn-primary {
+    background: #8482b1;
+    border-color: #8482b1;
+    border-radius: 5px;
+}
+
+.ant-btn:hover{
+    background: red;
+}
+.ant-btn-default{
+    border-radius: 5px;
+}
