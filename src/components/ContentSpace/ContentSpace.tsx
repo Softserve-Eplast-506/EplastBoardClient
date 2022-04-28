@@ -1,29 +1,13 @@
-import { Breadcrumb, Card, Form, Input, Layout, Row } from "antd";
+import { Card, Layout } from "antd";
 import './ContentSpace.css';
 import "antd/dist/antd.min.css";
 import { useTable } from "../../store/store";
 import CardM from "../../models/Card";
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import columnsApi from "../../api/columnsApi"
-import { DragDropContext, DropResult } from 'react-beautiful-dnd'
-import Item from "antd/lib/list/Item";
-import { CloseOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import Board from "../../models/Board";
+import Column from "../../models/Column";
 
 const { Content } = Layout;
-
-class Column {
-  id: number;
-  title: string;
-  boardId: number;
-
-  constructor() {
-    this.id = 5;
-    this.title = "col5";
-    this.boardId = 1;
-  }
-
-};
 
 const ContentSpace = () => {
   const [state, actions] = useTable();
