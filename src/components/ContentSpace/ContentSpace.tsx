@@ -26,16 +26,11 @@ const ContentSpace = () => {
   useEffect(() => {
     actions.getBoards();
     actions.getAllCards();
-    //actions.getCardsByColumnId(1);
   }, []);
 
   useEffect(() => {
     actions.getColumnByBoard(state.currentBoard.id);
   }, [state.currentBoard.id]);
-
-  useEffect(() => {
-    actions.getAllCards();
-  }, []);
 
   return (
     <Content

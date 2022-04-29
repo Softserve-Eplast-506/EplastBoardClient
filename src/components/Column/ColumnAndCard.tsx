@@ -23,12 +23,13 @@ const BoardColumn = () => {
   const handleOk = async (event: any) => {
     actions.setCurrentColumn(event.target.id);
     let newColumn: Column = state.currentColumn;
+    console.log(state.currentColumn);
     newColumn.title = columnName;
     await columnsApi.editColumnName(newColumn);
   };
 
   const handleEdit = async (event: React.FormEvent<HTMLInputElement>) => {
-    columnName = event.currentTarget.value;
+    columnName = event.currentTarget.textContent? event.currentTarget.textContent : "" ;
   };
 
   async function confirm() {
@@ -83,7 +84,7 @@ const BoardColumn = () => {
                 id={col.id.toString()}
                 contentEditable="true"
                 className="column-title"
-                onChange={handleEdit}
+                onInput={handleEdit}
                 defaultValue={columnName}
                 onBlur={handleOk}
               >
