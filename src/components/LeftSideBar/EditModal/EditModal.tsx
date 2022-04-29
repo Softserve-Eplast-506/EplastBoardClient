@@ -25,8 +25,8 @@ const EditModal = () => {
   };
 
   return (
-    <>
       <Modal
+      className='modal-container'
         title="Rename your board"
         visible={state.isEditBoardModalShown}
         onOk={handleOk}
@@ -39,7 +39,6 @@ const EditModal = () => {
           }}
         />
       </Modal>
-    </>
   );
 };
 
