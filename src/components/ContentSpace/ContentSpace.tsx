@@ -16,6 +16,12 @@ const { Content } = Layout;
 const ContentSpace = () => {
   const [state, actions] = useTable();
   
+  useEffect(() => {
+    actions.getBoards();
+    actions.getAllCards();
+    //actions.getCardsByColumnId(1);
+  }, []);
+
 
   useEffect(() => {
     actions.getColumnByBoard(state.currentBoard.id);
@@ -46,6 +52,67 @@ const ContentSpace = () => {
       );
     });
   };
+
+  const renderCardsByColumn = (): any => {
+    return state.cardsByColumnId.map((x: CardM) => {
+      return (
+        <li>      
+          <Card
+          className="item"
+          key={x.id}
+          title={x.title}
+          bordered={false}
+          style={{ width: 300 }}
+          onClick={actions.hideEditCardModal}
+        >
+          <p>Card content</p>
+          <p>Card content</p>
+          <p>Card content</p>
+        </Card>
+        </li>
+
+      );
+    });
+  };
+
+  const renderCard = (card : CardM): JSX.Element => 
+  (
+    <li>      
+    <Card
+    className="item"
+    key={card.id}
+    title={card.title}
+    bordered={false}
+    style={{ width: 300 }}
+    onClick={actions.hideEditCardModal}
+  >
+    <p>Card content</p>
+    <p>Card content</p>
+    <p>Card content</p>
+  </Card>
+  </li>
+
+  ) 
+
+
+  const renderColumns = (): JSX.Element => (
+    <>
+    {
+    state.columns.map((col: Column) =>(
+  
+      <div className="column">
+          <div id={col.id.toString()} className="column-title" contentEditable="true" onChange={handleEdit} defaultValue={columnName} onBlur={handleOk}>{col.title} </div>
+          { 
+          state.cards.map((card: CardM)=>card.columnId === col.id &&  renderCard(card))
+          
+          }
+           <CreateCardModal />
+        </div>
+            
+     ))
+     } 
+</>  
+);
   
   let columnName = state.currentColumn?.title;
 
@@ -63,23 +130,12 @@ const ContentSpace = () => {
   return (
     <Content className={`content ${state.isSideBarHidden ? "content-full" : ""}`} style={{backgroundImage: `url("https://assets.hongkiat.com/uploads/holographic-gradient-background/5.jpg")`, backgroundSize: 'cover'}}>
       <div className="board">
-      {
-        state.columns.map(col =>
-          <div className="column">
-            <div id={col.id.toString()} className="column-title" contentEditable="true" onChange={handleEdit} defaultValue={columnName} onBlur={handleOk}>{col.title}</div>
-            {
-
-              renderAllCards()
-
-            }
-             <CreateCardModal />
-          </div>
-          
-      )}
+       {
+          renderColumns()
+       }
       
     </div>
     </Content>
-    
   )
 
   // const numbers = [1, 2, 3, 4];

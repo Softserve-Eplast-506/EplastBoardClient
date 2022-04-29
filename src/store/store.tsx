@@ -2,49 +2,54 @@ import { MenuProps } from "antd";
 import { createStore, createHook, Action } from "react-sweet-state";
 import { getAllBoards } from "../api/boardsApi";
 import columnsApi from "../api/columnsApi";
-import { AddCard, getAllCards } from "../api/cardsApi";
 import Board from "../models/Board";
 import CardM from "../models/Card";
 import Column from "../models/Column";
+import { AddCard, editCard, getAllCards, getCardsByColumn } from '../api/cardsApi';
 
 type MenuItem = Required<MenuProps>["items"][number];
 
 type State = {
-  isSideBarHidden: boolean;
-  isEditCardModalHidden: boolean;
-  menuItems: MenuItem[];
-  cards: CardM[];
-  columns: Column[];
-  isInputPanelHidden: boolean;
-  isInputPanelHiddenColumn: boolean;
-  addingBoardName: string;
-  editingColumnName: string;
-  hiddenPanelColumn: number;
-  currentColumn: Column;
-  newBoard: string;
-  editBoardName: string;
-  isEditBoardModalShown: boolean;
-  boards: Board[];
-  currentBoard: Board;
+
+    isSideBarHidden: boolean,
+    isEditCardModalHidden: boolean,
+    menuItems: MenuItem[],
+    cards: CardM[],
+    cardsByColumnId: CardM[],
+    columns: Column[],
+    isInputPanelHidden: boolean,
+    isInputPanelHiddenColumn: boolean,
+    addingBoardName: string,
+    editingColumnName: string,
+    hiddenPanelColumn: number,
+    currentColumn: Column,
+  newBoard: string,
+  editBoardName: string,
+  isEditBoardModalShown: boolean,
+  boards: Board[],
+  currentBoard: Board,
+  render: boolean
 };
 
 const initialState: State = {
-  isSideBarHidden: false,
-  isEditCardModalHidden: false,
-  menuItems: [],
-  cards: [],
-  columns: [],
-  isInputPanelHidden: true,
-  isInputPanelHiddenColumn: true,
-  addingBoardName: "",
-  editingColumnName: "",
-  hiddenPanelColumn: 0,
-  currentColumn: new Column(),
+    isSideBarHidden: false,
+    isEditCardModalHidden: false,
+    menuItems: [],
+    cards: [],
+    cardsByColumnId: [],
+    columns: [],
+    isInputPanelHidden: true,
+    isInputPanelHiddenColumn: true,
+    addingBoardName: "",
+    editingColumnName: "",
+    hiddenPanelColumn: 0,
+    currentColumn: new Column(),
   newBoard: "",
   editBoardName: "",
   isEditBoardModalShown: false,
   boards: [],
   currentBoard: new Board(),
+   render: false
 };
 
 const actions = {
@@ -179,12 +184,19 @@ const actions = {
 
   getAllCards:
     (): Action<State> =>
+      async ({ setState, getState }) => {
+        setState({
+          cards: await getCards(),
+        });
+      },
+    getCardsByColumnId:
+    (columnId: number): Action<State> =>
     async ({ setState, getState }) => {
-      setState({
-        cards: await getCards(),
-      });
+
+        setState({
+        cardsByColumnId: await getCardsByColumnId(columnId),
+        });
     },
-      
   createCard:
     (Card: CardM): Action<State> =>
     async ({ setState, getState }) => {
@@ -224,6 +236,10 @@ function getItem(
 const getCards = async () => {
   const response = await getAllCards();
   return response.data;
+};
+const getCardsByColumnId = async (columnId: number) => {
+    const response = await getCardsByColumn(columnId);
+    return response.data;
 };
 
 const createCard = async (Card: CardM) => {
