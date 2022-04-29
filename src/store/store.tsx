@@ -71,7 +71,6 @@ const actions = {
     (): Action<State> =>
     async ({ setState, getState }) => {
       if (getState().boards.length > 0) {
-        console.log(getState().boards[0]);
         setState({
           currentBoard: getState().boards[0],
         });
@@ -137,7 +136,6 @@ const actions = {
       setState({
         currentColumn: column,
       });
-      console.log(getState().currentColumn);
     },
 
   addBoardName:

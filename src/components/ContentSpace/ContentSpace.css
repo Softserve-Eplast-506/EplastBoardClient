@@ -1,5 +1,6 @@
 .column {
   min-width: 350px;
+  min-height: fit-content;
   border: 1px solid #ebecf0;
   padding: 10px 10px 0 10px;
   border-radius: 5px;
@@ -16,7 +17,7 @@
   align-items: left;
   display: inline-block;
   position: relative;
-  width: 100%;
+  width: 99%;
   padding: 0 0 10px 0;
   text-indent: 10px;
 }
@@ -35,6 +36,7 @@
   padding: 10px;
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
 }
 
 .content {
@@ -45,19 +47,17 @@
   margin-left: 50px;
 }
 
-.ant-btn-icon-only {
+.deleteColumnButton {
   color: #666666 !important;
   background-color: #ebecf0 !important;
   border: 0 !important;
   box-shadow: none !important;
-}
-
-.ant-btn-group {
   display: inline-block;
   position: relative !important;
   padding-right: 0;
   align-items: right !important;
 }
+
 
 .message-box {
   margin-left: 1vh !important;
