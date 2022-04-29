@@ -1,17 +1,16 @@
-import { MenuProps } from 'antd';
-import { createStore, createHook, Action } from 'react-sweet-state';
-import { getAllBoards } from '../api/boardsApi';
+import { MenuProps } from "antd";
+import { createStore, createHook, Action } from "react-sweet-state";
+import { getAllBoards } from "../api/boardsApi";
+import columnsApi from "../api/columnsApi";
+import Board from "../models/Board";
+import CardM from "../models/Card";
+import Column from "../models/Column";
 import { AddCard, editCard, getAllCards, getCardsByColumn } from '../api/cardsApi';
-import columnsApi from '../api/columnsApi';
 
-
-import Board from '../models/Board';
-import CardM from '../models/Card';
-import Column from '../models/Column';
-
-type MenuItem = Required<MenuProps>['items'][number];
+type MenuItem = Required<MenuProps>["items"][number];
 
 type State = {
+
     isSideBarHidden: boolean,
     isEditCardModalHidden: boolean,
     menuItems: MenuItem[],
@@ -50,148 +49,138 @@ const initialState: State = {
   isEditBoardModalShown: false,
   boards: [],
   currentBoard: new Board(),
-  render: false
+   render: false
 };
 
 const actions = {
-
   getBoards:
     (): Action<State> =>
-      async ({ setState, getState }) => {
-        const boards: Board[] = (await getAllBoards()).data;
-        let items: MenuItem[] = [];
-        boards.map((board: Board) => {
-          items.push(getItem(board.title, board.id));
-        })
-        if (boards.length > 0) {
-          setState({
-            currentBoard: boards[0],
-          })
-        }
-        setState({
-          boards: boards,
-          menuItems: items.reverse()
-        });
-      },
+    async ({ setState, getState }) => {
+      const boards: Board[] = (await getAllBoards()).data;
+      let items: MenuItem[] = [];
+      boards.map((board: Board) => {
+        items.push(getItem(board.title, board.id));
+      });
+      setState({
+        boards: boards,
+        menuItems: items.reverse(),
+      });
+    },
 
   setInitialCurrentBoard:
     (): Action<State> =>
-      async ({ setState, getState }) => {
-        if (getState().boards.length > 0) {
-          setState({
-            currentBoard: await getState().boards[0],
-          })
-        }
-      },
-
-  setRender:
-    (): Action<State> =>
-      ({ setState, getState }) => {
+    async ({ setState, getState }) => {
+      if (getState().boards.length > 0) {
+        console.log(getState().boards[0]);
         setState({
-          render: !getState().render
+          currentBoard: getState().boards[0],
         });
-      },
+      }
+    },
 
-    hideSideBar:
-        (): Action<State> =>
-            ({ setState, getState }) => {
-                setState({
-                    isSideBarHidden: !getState().isSideBarHidden
-                });
-            },
+  hideSideBar:
+    (): Action<State> =>
+    ({ setState, getState }) => {
+      setState({
+        isSideBarHidden: !getState().isSideBarHidden,
+      });
+    },
 
-    getColumnByBoard:
-        (boardId: number): Action<State> => 
-                async ({ setState}) => {
-                    const getColumns: Column[] = (await columnsApi.getAllColumnsByBoard(boardId)).data;
-                    setState({columns: getColumns});
-                },
- 
-    openInputPanel:
-        (): Action<State> =>
-            ({setState, getState}) => {
-                setState({
-                    isInputPanelHidden: !getState().isInputPanelHidden
-                });
-            },
-            
-    openColumnName:
-        (idColumn: number): Action<State> =>
-            ({setState, getState}) => {
-                setState({
-                    isInputPanelHiddenColumn: !getState().isInputPanelHiddenColumn,
-                    hiddenPanelColumn: idColumn,
-                });
-            },
-            
-    setBoardName:
-        (name: string): Action<State> =>
-        ({setState, getState}) => {
-            setState({
-                addingBoardName: name
-            });
-        },
-    
-    changeColumnName:
-        (name: string): Action<State> =>
-        ({setState, getState}) => {
-            setState({
-                editingColumnName: name
-            });
-        },
-    
-    setCurrentColumn:
-        (columnId: number): Action<State> =>
-        async ({ setState, getState }) => {
-          const column = getState().columns.find(
-            (column: Column) => column.id === columnId
-          );
-          setState({
-            currentColumn: column,
-          });
-        },
+  getColumnByBoard:
+    (boardId: number): Action<State> =>
+    async ({ setState }) => {
+      const getColumns: Column[] = (
+        await columnsApi.getAllColumnsByBoard(boardId)
+      ).data;
+      setState({ columns: getColumns });
+    },
+
+  openInputPanel:
+    (): Action<State> =>
+    ({ setState, getState }) => {
+      setState({
+        isInputPanelHidden: !getState().isInputPanelHidden,
+      });
+    },
+
+  openColumnName:
+    (idColumn: number): Action<State> =>
+    ({ setState, getState }) => {
+      setState({
+        isInputPanelHiddenColumn: !getState().isInputPanelHiddenColumn,
+        hiddenPanelColumn: idColumn,
+      });
+    },
+
+  setBoardName:
+    (name: string): Action<State> =>
+    ({ setState, getState }) => {
+      setState({
+        addingBoardName: name,
+      });
+    },
+
+  changeColumnName:
+    (name: string): Action<State> =>
+    ({ setState, getState }) => {
+      setState({
+        editingColumnName: name,
+      });
+    },
+
+  setCurrentColumn:
+    (columnId: number): Action<State> =>
+    async ({ setState, getState }) => {
+      const column = getState().columns.find(
+        (column: Column) => column.id === columnId
+      );
+      setState({
+        currentColumn: column,
+      });
+    },
 
   addBoardName:
     (name: string): Action<State> =>
-      ({ setState, getState }) => {
-        setState({
-          newBoard: name
-        });
-      },
+    ({ setState, getState }) => {
+      setState({
+        newBoard: name,
+      });
+    },
 
   setBoadrName:
     (name: string): Action<State> =>
-      ({ setState, getState }) => {
-        setState({
-          editBoardName: name
-        });
-      },
+    ({ setState, getState }) => {
+      setState({
+        editBoardName: name,
+      });
+    },
+      
   showEditBoardModal:
     (): Action<State> =>
-      ({ setState, getState }) => {
-        setState({
-          isEditBoardModalShown: !getState().isEditBoardModalShown
-        });
-      },
+    ({ setState, getState }) => {
+      setState({
+        isEditBoardModalShown: !getState().isEditBoardModalShown,
+      });
+    },
 
   hideEditCardModal:
     (): Action<State> =>
-      ({ setState, getState }) => {
-        setState({
-          isEditCardModalHidden: !getState().isEditCardModalHidden
-        });
-      },
+    ({ setState, getState }) => {
+      setState({
+        isEditCardModalHidden: !getState().isEditCardModalHidden,
+      });
+    },
 
   setCurrentBoard:
     (boardId: number): Action<State> =>
-      async ({ setState, getState }) => {
-        const board = getState().boards.find(
-          (board: Board) => board.id === boardId
-        );
-        setState({
-          currentBoard: board,
-        });
-      },
+    async ({ setState, getState }) => {
+      const board = getState().boards.find(
+        (board: Board) => board.id === boardId
+      );
+      setState({
+        currentBoard: board,
+      });
+    },
 
   getAllCards:
     (): Action<State> =>
@@ -208,15 +197,15 @@ const actions = {
         cardsByColumnId: await getCardsByColumnId(columnId),
         });
     },
-
   createCard:
     (Card: CardM): Action<State> =>
-        async ({ setState, getState }) => {
-            await createCard(Card);
-            setState({
-                cards: await getCards()
-            });
-        },
+    async ({ setState, getState }) => {
+      await createCard(Card);
+      setState({
+        cards: await getCards(),
+      });
+    },
+  
     editCard:
     (Card: CardM): Action<State> =>
         async ({ setState, getState }) => {
@@ -228,25 +217,25 @@ const actions = {
 };
 
 const Store = createStore({
-    initialState,
-    actions,
+  initialState,
+  actions,
 });
 
 function getItem(
-    label: React.ReactNode,
-    key: React.Key,
-    icon?: React.ReactNode,
-  ): MenuItem {
-    return {
-      key,
-      icon,
-      label,
-    } as MenuItem;
-  }
-        
+  label: React.ReactNode,
+  key: React.Key,
+  icon?: React.ReactNode
+): MenuItem {
+  return {
+    key,
+    icon,
+    label,
+  } as MenuItem;
+}
+
 const getCards = async () => {
-    const response = await getAllCards();
-    return response.data;
+  const response = await getAllCards();
+  return response.data;
 };
 const getCardsByColumnId = async (columnId: number) => {
     const response = await getCardsByColumn(columnId);
@@ -254,14 +243,13 @@ const getCardsByColumnId = async (columnId: number) => {
 };
 
 const createCard = async (Card: CardM) => {
-    const response = await AddCard(Card);
-    return response.data;
+  const response = await AddCard(Card);
+  return response.data;
 };
 
 const editCardAction = async (Card: CardM) => {
     const response = await editCard(Card);
     return response.data;
 };
-
 
 export const useTable = createHook(Store);

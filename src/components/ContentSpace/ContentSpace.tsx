@@ -1,30 +1,17 @@
-import { Breadcrumb, Card, Form, Input, Layout, Row } from "antd";
+import { Card, Layout } from "antd";
 import './ContentSpace.css';
 import "antd/dist/antd.min.css";
 import { useTable } from "../../store/store";
 import CardM from "../../models/Card";
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import columnsApi from "../../api/columnsApi"
-
+import Column from "../../models/Column";
 import Item from "antd/lib/list/Item";
 import { CloseOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import Board from "../../models/Board";
 import CreateCardModal from "./CreateCardModal";
 
 const { Content } = Layout;
-
-class Column {
-  id: number;
-  title: string;
-  boardId: number;
-
-  constructor() {
-    this.id = 5;
-    this.title = "col5";
-    this.boardId = 1;
-  }
-
-};
 
 const ContentSpace = () => {
   const [state, actions] = useTable();
@@ -35,6 +22,7 @@ const ContentSpace = () => {
     //actions.getCardsByColumnId(1);
   }, []);
 
+
   useEffect(() => {
     actions.getColumnByBoard(state.currentBoard.id);
   }, [state.currentBoard.id]);
@@ -42,8 +30,8 @@ const ContentSpace = () => {
   useEffect(() => {
     actions.getAllCards();
     
-    console.log(state.currentBoard);
-    console.log(state.columns);
+    // console.log(state.currentBoard);
+    // console.log(state.columns);
   }, []);
 
   const renderAllCards = (): any => {
