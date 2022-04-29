@@ -1,7 +1,7 @@
 import { MenuProps } from 'antd';
 import { createStore, createHook, Action } from 'react-sweet-state';
 import { getAllBoards } from '../api/boardsApi';
-import { AddCard, editCard, getAllCards } from '../api/cardsApi';
+import { AddCard, editCard, getAllCards, getCardsByColumn } from '../api/cardsApi';
 import columnsApi from '../api/columnsApi';
 
 
@@ -16,6 +16,7 @@ type State = {
     isEditCardModalHidden: boolean,
     menuItems: MenuItem[],
     cards: CardM[],
+    cardsByColumnId: CardM[],
     columns: Column[],
     isInputPanelHidden: boolean,
     isInputPanelHiddenColumn: boolean,
@@ -36,6 +37,7 @@ const initialState: State = {
     isEditCardModalHidden: false,
     menuItems: [],
     cards: [],
+    cardsByColumnId: [],
     columns: [],
     isInputPanelHidden: true,
     isInputPanelHiddenColumn: true,
@@ -198,6 +200,15 @@ const actions = {
           cards: await getCards(),
         });
       },
+    getCardsByColumnId:
+    (columnId: number): Action<State> =>
+    async ({ setState, getState }) => {
+
+        setState({
+        cardsByColumnId: await getCardsByColumnId(columnId),
+        });
+    },
+
   createCard:
     (Card: CardM): Action<State> =>
         async ({ setState, getState }) => {
@@ -235,6 +246,10 @@ function getItem(
         
 const getCards = async () => {
     const response = await getAllCards();
+    return response.data;
+};
+const getCardsByColumnId = async (columnId: number) => {
+    const response = await getCardsByColumn(columnId);
     return response.data;
 };
 
