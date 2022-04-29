@@ -3,7 +3,6 @@ import React from 'react';
 import { editBoardNameddBoard } from '../../../api/boardsApi';
 import Board from '../../../models/Board';
 import { useTable } from '../../../store/store';
-import './EditModal.css';
 
 
 const EditModal = () => {
@@ -26,7 +25,6 @@ const EditModal = () => {
   };
 
   return (
-    
       <Modal
       className='modal-container'
         title="Rename your board"

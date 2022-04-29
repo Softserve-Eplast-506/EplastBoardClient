@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Button, Modal, Form, Input, Radio } from 'antd';
-import {PlusOutlined} from '@ant-design/icons'
-import CardM from '../../models/Card';
-import { useTable } from '../../store/store';
+import React, { useState } from "react";
+import { Button, Modal, Form, Input } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import CardM from "../../models/Card";
+import { useTable } from "../../store/store";
+import "./CreateCardModal.css";
 
 interface Values {
   title: string;
@@ -24,6 +25,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   const [form] = Form.useForm();
   return (
     <Modal
+      className="buttonsModal"
       visible={visible}
       title="Create a new task"
       okText="Create"
@@ -32,12 +34,12 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
       onOk={() => {
         form
           .validateFields()
-          .then(values => {
+          .then((values) => {
             form.resetFields();
             onCreate(values);
           })
-          .catch(info => {
-            console.log('Validate Failed:', info);
+          .catch((info) => {
+            console.log("Validate Failed:", info);
           });
       }}
     >
@@ -45,12 +47,14 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
         form={form}
         layout="vertical"
         name="form_in_modal"
-        initialValues={{ modifier: 'public' }}
+        initialValues={{ modifier: "public" }}
       >
         <Form.Item
           name="title"
           label="Title"
-          rules={[{ required: true, message: 'Please input the name of task!' }]}
+          rules={[
+            { required: true, message: "Please input the name of task!" },
+          ]}
         >
           <Input />
         </Form.Item>
@@ -78,12 +82,13 @@ const CollectionsPage = () => {
   return (
     <div>
       <Button
+        className="addCard"
         type="primary"
         onClick={() => {
           setVisible(true);
         }}
       >
-      <PlusOutlined/>
+        <PlusOutlined />
       </Button>
       <CollectionCreateForm
         visible={visible}

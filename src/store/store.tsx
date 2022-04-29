@@ -71,7 +71,6 @@ const actions = {
     (): Action<State> =>
     async ({ setState, getState }) => {
       if (getState().boards.length > 0) {
-        console.log(getState().boards[0]);
         setState({
           currentBoard: getState().boards[0],
         });
@@ -132,8 +131,8 @@ const actions = {
     (columnId: number): Action<State> =>
     async ({ setState, getState }) => {
       const column = getState().columns.find(
-        (column: Column) => column.id === columnId
-      );
+        (column: Column) => column.id == columnId
+      );    
       setState({
         currentColumn: column,
       });
@@ -154,7 +153,7 @@ const actions = {
         editBoardName: name,
       });
     },
-      
+
   showEditBoardModal:
     (): Action<State> =>
     ({ setState, getState }) => {
@@ -197,6 +196,7 @@ const actions = {
         cardsByColumnId: await getCardsByColumnId(columnId),
         });
     },
+    
   createCard:
     (Card: CardM): Action<State> =>
     async ({ setState, getState }) => {
@@ -205,15 +205,15 @@ const actions = {
         cards: await getCards(),
       });
     },
-  
-    editCard:
+
+  editCard:
     (Card: CardM): Action<State> =>
-        async ({ setState, getState }) => {
-            await editCardAction(Card);
-            setState({
-                cards: await getCards()
-            });
-        },
+    async ({ setState, getState }) => {
+      await editCardAction(Card);
+      setState({
+        cards: await getCards(),
+      });
+    },
 };
 
 const Store = createStore({
@@ -248,8 +248,8 @@ const createCard = async (Card: CardM) => {
 };
 
 const editCardAction = async (Card: CardM) => {
-    const response = await editCard(Card);
-    return response.data;
+  const response = await editCard(Card);
+  return response.data;
 };
 
 export const useTable = createHook(Store);

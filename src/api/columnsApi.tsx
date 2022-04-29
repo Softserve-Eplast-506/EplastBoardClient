@@ -26,9 +26,9 @@ const addColumn = async (Column: Column) => {
 };
 
 const deleteColumnById = async (id: number) => {
-    return await api.remove(`Columns/${id}`).catch((error) => {
+    return await api.remove(`Columns/DeleteColumn/${id}`).catch((error) => {
         throw new Error(error);
     });
 };
 
-export default {addColumn, getColumnById, editColumnName, getAllColumnsByBoard}
+export default {addColumn, getColumnById, editColumnName, getAllColumnsByBoard, deleteColumnById}
