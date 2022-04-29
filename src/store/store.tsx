@@ -2,7 +2,7 @@ import { MenuProps } from "antd";
 import { createStore, createHook, Action } from "react-sweet-state";
 import { getAllBoards } from "../api/boardsApi";
 import columnsApi from "../api/columnsApi";
-import { AddCard, getAllCards } from "../api/cardsApi";
+import { AddCard, editCard, getAllCards } from "../api/cardsApi";
 import Board from "../models/Board";
 import CardM from "../models/Card";
 import Column from "../models/Column";
@@ -149,7 +149,7 @@ const actions = {
         editBoardName: name,
       });
     },
-      
+
   showEditBoardModal:
     (): Action<State> =>
     ({ setState, getState }) => {
@@ -184,7 +184,7 @@ const actions = {
         cards: await getCards(),
       });
     },
-      
+
   createCard:
     (Card: CardM): Action<State> =>
     async ({ setState, getState }) => {
@@ -193,15 +193,15 @@ const actions = {
         cards: await getCards(),
       });
     },
-  
-    editCard:
+
+  editCard:
     (Card: CardM): Action<State> =>
-        async ({ setState, getState }) => {
-            await editCardAction(Card);
-            setState({
-                cards: await getCards()
-            });
-        },
+    async ({ setState, getState }) => {
+      await editCardAction(Card);
+      setState({
+        cards: await getCards(),
+      });
+    },
 };
 
 const Store = createStore({
@@ -232,8 +232,8 @@ const createCard = async (Card: CardM) => {
 };
 
 const editCardAction = async (Card: CardM) => {
-    const response = await editCard(Card);
-    return response.data;
+  const response = await editCard(Card);
+  return response.data;
 };
 
 export const useTable = createHook(Store);

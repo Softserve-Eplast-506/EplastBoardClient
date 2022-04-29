@@ -3,7 +3,6 @@ import React from 'react';
 import { editBoardNameddBoard } from '../../../api/boardsApi';
 import Board from '../../../models/Board';
 import { useTable } from '../../../store/store';
-import './EditModal.css';
 
 
 const EditModal = () => {
@@ -27,9 +26,6 @@ const EditModal = () => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
-        Edit
-      </Button>
       <Modal
         title="Rename your board"
         visible={state.isEditBoardModalShown}
