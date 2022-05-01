@@ -1,22 +1,10 @@
-import {
-  Card,
-  Col,
-  Dropdown,
-  Layout,
-  Menu,
-  message,
-  Popconfirm,
-  Row,
-} from "antd";
+import { Layout } from "antd";
 import "./ContentSpace.css";
 import "antd/dist/antd.min.css";
 import { useTable } from "../../store/store";
-import CardM from "../../models/Card";
 import { useEffect } from "react";
-import columnsApi from "../../api/columnsApi";
-import Column from "../../models/Column";
-import CreateCardModal from "./CreateCardModal";
 import BoardColumn from "../Column/ColumnAndCard";
+import BoardTitle from "./BoardTitle";
 
 const { Content } = Layout;
 
@@ -40,12 +28,8 @@ const ContentSpace = () => {
         backgroundSize: "cover",
       }}
     >
-      <Row className="boardTitle"> 
-        <Col flex="auto">
-          {state.currentBoard.title}
-        </Col>
-      </Row>
-       <BoardColumn/>
+      <BoardTitle />
+      <BoardColumn />
     </Content>
   );
 };
