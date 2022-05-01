@@ -5,6 +5,10 @@
   overflow: "scroll";
 }
 
+body {
+  position: fixed;
+}
+
 .layoutStyles{
   margin-top: 64px;
 }
