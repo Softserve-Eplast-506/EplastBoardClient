@@ -108,7 +108,7 @@ const BoardColumn = () => {
           {state.cards.map(
             (card: CardM) => card.columnId === col.id && renderCard(card)
           )}
-          <CreateCardModal />
+          <CreateCardModal colId={col.id}/>
         </div>
       ))}
     </>
