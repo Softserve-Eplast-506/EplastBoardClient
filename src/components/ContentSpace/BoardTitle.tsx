@@ -26,6 +26,7 @@ const BoardTitle = () => {
         <div
           id={state.currentBoard.id.toString()}
           contentEditable="true"
+          suppressContentEditableWarning
           className="boardTitle"
           onInput={handleEdit}
           onBlur={handleOk}

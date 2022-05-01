@@ -83,6 +83,7 @@ const BoardColumn = () => {
               <div
                 id={col.id.toString()}
                 contentEditable="true"
+                suppressContentEditableWarning
                 className="column-title"
                 onInput={handleEdit}
                 defaultValue={columnName}
