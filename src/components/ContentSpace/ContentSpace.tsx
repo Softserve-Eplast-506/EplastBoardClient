@@ -40,6 +40,11 @@ const ContentSpace = () => {
         backgroundSize: "cover",
       }}
     >
+      <Row className="boardTitle"> 
+        <Col flex="auto">
+          {state.currentBoard.title}
+        </Col>
+      </Row>
        <BoardColumn/>
     </Content>
   );
