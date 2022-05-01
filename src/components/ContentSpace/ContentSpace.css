@@ -40,6 +40,8 @@
 }
 
 .content {
+  overflow: scroll;
+  z-index: 0;
   margin-left: 200px;
 }
 
