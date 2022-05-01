@@ -66,7 +66,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   );
 };
 
-const CollectionsPage = () => {
+const CollectionsPage = (props: any) => {
   const [visible, setVisible] = useState(false);
   const [state, actions] = useTable();
 
@@ -74,7 +74,7 @@ const CollectionsPage = () => {
     const newCard = new CardM();
     newCard.description = values.description;
     newCard.title = values.title;
-    newCard.columnId = 1;
+    newCard.columnId = props.colId;
     actions.createCard(newCard);
     setVisible(false);
   };
@@ -101,4 +101,4 @@ const CollectionsPage = () => {
   );
 };
 
-export default () => <CollectionsPage />;
+export default CollectionsPage ;
