@@ -89,6 +89,7 @@ const CollectionsPage = (props: any) => {
         }}
       >
         <PlusOutlined />
+        Add new task
       </Button>
       <CollectionCreateForm
         visible={visible}

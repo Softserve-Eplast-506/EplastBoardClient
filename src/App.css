@@ -2,11 +2,11 @@
 
 .App {
   text-align: center;
-  overflow: "scroll";
+  overflow-y: "scroll";
 }
 
 body {
-  position: fixed;
+  position: relative;
 }
 
 .layoutStyles{
