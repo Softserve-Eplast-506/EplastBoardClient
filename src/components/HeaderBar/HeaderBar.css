@@ -1,13 +1,13 @@
-.ant-avatar-circle {
-  margin-bottom: 7px !important;
-  margin-right: 7px !important;
-  background: rgb(194, 157, 250) !important;
-  justify-items: center !important;
+.avatar {
+  margin-bottom: 7px;
+  margin-right: 7px;
+  background: rgb(194, 157, 250);
+  justify-items: center;
 }
 
 .header {
-  color: rgb(194, 157, 250) !important;
-  background: #5756a4 !important;
+  color: rgb(194, 157, 250);
+  background: #5756a4;
   padding: 0 0px;
   text-align: center;
   font-weight: bold;

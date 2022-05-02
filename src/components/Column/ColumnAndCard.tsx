@@ -102,7 +102,6 @@ const BoardColumn = () => {
 
   const handleAddNewColumn = () => {
     actions.hideAddColumnModal();
-    
   };
 
   const renderColumns = (): JSX.Element => (
