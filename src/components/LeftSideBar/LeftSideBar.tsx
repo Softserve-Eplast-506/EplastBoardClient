@@ -29,6 +29,10 @@ const LeftSideBar = () => {
     actions.showEditBoardModal();
   };
 
+  const handleSelectBoard = async (event: any) => {
+    await actions.setCurrentBoard(Number(event.key));
+  };
+
   const fetchData = async () => {
     await actions.getBoards();
     await actions.setInitialCurrentBoard();
@@ -88,7 +92,7 @@ const LeftSideBar = () => {
             className="menu"
             mode="inline"
             items={state.menuItems}
-            onSelect={(event) => actions.setCurrentBoard(Number(event.key))}
+            onSelect={handleSelectBoard}
             selectedKeys={[state.currentBoard.id.toString()]}
           />
         </Sider>

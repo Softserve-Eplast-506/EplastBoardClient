@@ -12,12 +12,8 @@ const ContentSpace = () => {
   const [state, actions] = useTable();
 
   useEffect(() => {
-    actions.getBoards();
-    actions.getAllCards();
-  }, []);
-
-  useEffect(() => {
     actions.getColumnByBoard(state.currentBoard.id);
+    actions.getCardsByBoard(state.currentBoard.id);
   }, [state.currentBoard.id]);
 
   return (
