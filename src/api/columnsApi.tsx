@@ -1,34 +1,44 @@
-import Column from '../models/Column'
-import api from './api'
+import Column from "../models/Column";
+import api from "./api";
 
 const getAllColumnsByBoard = async (boardId: number) => {
-    return await api.get(`Columns/Columns/${boardId}`).catch((error) => {
-        throw new Error(error);
-    });
+  return await api.get(`Columns/Columns/${boardId}`).catch((error) => {
+    throw new Error(error);
+  });
 };
 
 const getColumnById = async (id: number) => {
-    return (await api.get(`Columns/GetColumn/${id}`).catch((error) => {
-        throw new Error(error);
-    })).data
+  return (
+    await api.get(`Columns/GetColumn/${id}`).catch((error) => {
+      throw new Error(error);
+    })
+  ).data;
 };
 
-const editColumnName = async (Column: Column) => {
-    return await api.put(`Columns/EditColumnName`, Column).catch((error) => {
-      throw new Error(error);
-    });
+export const editColumnName = async (column: Column) => {
+  return await api.put(`Columns/EditColumnName`, column).catch((error) => {
+    throw new Error(error);
+  });
 };
 
 const addColumn = async (Column: Column) => {
-    return await api.post(`Columns/AddColumn/${Column.id}`, Column).catch((error) => {
+  return await api
+    .post(`Columns/AddColumn/${Column.id}`, Column)
+    .catch((error) => {
       throw new Error(error);
     });
 };
 
 const deleteColumnById = async (id: number) => {
-    return await api.remove(`Columns/DeleteColumn/${id}`).catch((error) => {
-        throw new Error(error);
-    });
+  return await api.remove(`Columns/DeleteColumn/${id}`).catch((error) => {
+    throw new Error(error);
+  });
 };
 
-export default {addColumn, getColumnById, editColumnName, getAllColumnsByBoard, deleteColumnById}
+export default {
+  addColumn,
+  getColumnById,
+  editColumnName,
+  getAllColumnsByBoard,
+  deleteColumnById,
+};

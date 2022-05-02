@@ -9,6 +9,7 @@ import {
   Popconfirm,
   Row,
 } from "antd";
+import React from "react";
 import columnsApi from "../../api/columnsApi";
 import CardM from "../../models/Card";
 import Column from "../../models/Column";
@@ -21,15 +22,19 @@ const BoardColumn = () => {
   let columnName = state.currentColumn?.title;
 
   const handleOk = async (event: any) => {
-    actions.setCurrentColumn(event.target.id);
     let newColumn: Column = state.currentColumn;
-    console.log(state.currentColumn);
     newColumn.title = columnName;
     await columnsApi.editColumnName(newColumn);
   };
 
+  const handleClick = async (event: React.MouseEvent<HTMLElement>) => {
+    actions.setCurrentColumn(Number(event.currentTarget.id));
+  };
+
   const handleEdit = async (event: React.FormEvent<HTMLInputElement>) => {
-    columnName = event.currentTarget.textContent? event.currentTarget.textContent : "" ;
+    columnName = event.currentTarget.textContent
+      ? event.currentTarget.textContent
+      : "";
   };
 
   async function confirm() {
@@ -86,6 +91,7 @@ const BoardColumn = () => {
                 suppressContentEditableWarning
                 className="column-title"
                 onInput={handleEdit}
+                onClick={handleClick}
                 defaultValue={columnName}
                 onBlur={handleOk}
               >
@@ -108,7 +114,7 @@ const BoardColumn = () => {
           {state.cards.map(
             (card: CardM) => card.columnId === col.id && renderCard(card)
           )}
-          <CreateCardModal colId={col.id}/>
+          <CreateCardModal colId={col.id} />
         </div>
       ))}
     </>
