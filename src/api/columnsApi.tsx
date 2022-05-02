@@ -22,11 +22,9 @@ export const editColumnName = async (column: Column) => {
 };
 
 const addColumn = async (Column: Column) => {
-  return await api
-    .post(`Columns/AddColumn/${Column.id}`, Column)
-    .catch((error) => {
-      throw new Error(error);
-    });
+  return await api.post(`Columns/AddColumn`, Column).catch((error) => {
+    throw new Error(error);
+  });
 };
 
 const deleteColumnById = async (id: number) => {
