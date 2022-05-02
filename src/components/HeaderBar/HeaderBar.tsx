@@ -14,7 +14,7 @@ const HeaderBar = () => {
           EPlastBoard
         </Col>
         <Col flex="50px">
-          <Avatar size={50} src={<Image src="https://miro.medium.com/max/1400/1*PNsOWCwBAybukLYfFnuUgw.png" style={{ width: 28, margin: 7 }} />}>
+          <Avatar className="avatar" size={50} src={<Image src="https://miro.medium.com/max/1400/1*PNsOWCwBAybukLYfFnuUgw.png" style={{ width: 28, margin: 7 }} />}>
           </Avatar>
         </Col>
       </Row>
