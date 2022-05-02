@@ -4,42 +4,41 @@ import {PlusOutlined} from '@ant-design/icons'
 import CardM from '../../models/Card';
 import { useTable } from '../../store/store';
 
-interface Values {
-  title: string;
-  description: string;
-  modifier: string;
-}
 
-interface CollectionEditFormProps {
-  visible: boolean;
-  onEdit: (values: Values) => void;
-  onCancel: () => void;
-}
-
-const CollectionEditForm: React.FC<CollectionEditFormProps> = ({
-  onEdit,
-  onCancel,
-}) => {
+const EditCardModal = () => {
   const [state, actions] = useTable();
   const [form] = Form.useForm();
+
+  const handleOk = async () => {
+    const newCard = new CardM();
+    newCard.description = state.currentCard.description;
+    newCard.title = state.currentCard.title;
+    newCard.columnId = state.currentCard.colId;
+    actions.editCard(newCard);
+    actions.hideEditCardModal();
+    await editBoardNameddBoard(renamedBoard);
+    actions.getBoards(); 
+  };
+  const onCreate = (values: any) => {
+    const newCard = new CardM();
+    newCard.description = values.description;
+    newCard.title = values.title;
+    newCard.columnId = props.colId;
+    actions.createCard(newCard);
+  };
+
+  const handleCancel = () => {
+    actions.showEditBoardModal();
+  };
+  
   return (
     <Modal
       visible={state.isEditCardModalHidden}
       title="Edit a new task"
       okText="Edit"
       cancelText="Cancel"
-      onCancel={onCancel}
-      onOk={() => {
-        form
-          .validateFields()
-          .then(values => {
-            form.resetFields();
-            onEdit(values);
-          })
-          .catch(info => {
-            console.log('Validate Failed:', info);
-          });
-      }}
+      onCancel={handleCancel}
+      onOk={handleOk}
     >
       <Form
         form={form}
@@ -62,29 +61,5 @@ const CollectionEditForm: React.FC<CollectionEditFormProps> = ({
   );
 };
 
-const CollectionsPage = () => {
-  const [visible, setVisible] = useState(false);
-  const [state, actions] = useTable();
 
-  const onEdit = (values: any) => {
-    const newCard = new CardM();
-    newCard.description = values.description;
-    newCard.title = values.title;
-    newCard.columnId = 1;
-    actions.editCard(newCard);
-    setVisible(false);
-  };
-
-  return (
-    <div>
-      <CollectionEditForm
-        visible={visible}
-        onEdit={onEdit}
-        onCancel={
-          actions.hideEditCardModal}
-      />
-    </div>
-  );
-};
-
-export default () => <CollectionsPage />;
+export default EditCardModal ;

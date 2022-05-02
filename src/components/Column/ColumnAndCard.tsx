@@ -14,6 +14,7 @@ import CardM from "../../models/Card";
 import Column from "../../models/Column";
 import { useTable } from "../../store/store";
 import CreateCardModal from "../ContentSpace/CreateCardModal";
+import EditCardModal from "../ContentSpace/EditCardModal";
 
 const BoardColumn = () => {
   const [state, actions] = useTable();
@@ -30,6 +31,10 @@ const BoardColumn = () => {
 
   const handleEdit = async (event: React.FormEvent<HTMLInputElement>) => {
     columnName = event.currentTarget.textContent? event.currentTarget.textContent : "" ;
+  };
+  const handleOnClickCard  = async () => {
+    
+   
   };
 
   async function confirm() {
@@ -61,6 +66,8 @@ const BoardColumn = () => {
     </Menu>
   );
 
+
+
   const renderCard = (card: CardM): JSX.Element => (
     <Card
       className="item"
@@ -68,7 +75,7 @@ const BoardColumn = () => {
       title={card.title}
       bordered={false}
       style={{ width: 300 }}
-      onClick={actions.hideEditCardModal}
+      onClick={() =>  actions.hideEditCardModal }
     >
       <p>{card.description}</p>
     </Card>
