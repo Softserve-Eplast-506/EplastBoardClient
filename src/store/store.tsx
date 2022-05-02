@@ -33,7 +33,7 @@ type State = {
   isEditBoardModalShown: boolean;
   boards: Board[];
   currentBoard: Board;
-  render: boolean;
+  isAddColumnModalHidden: boolean;
 };
 
 const initialState: State = {
@@ -54,7 +54,7 @@ const initialState: State = {
   isEditBoardModalShown: false,
   boards: [],
   currentBoard: new Board(),
-  render: false,
+  isAddColumnModalHidden: false,
 };
 
 const actions = {
@@ -69,6 +69,15 @@ const actions = {
       setState({
         boards: boards,
         menuItems: items.reverse(),
+      });
+    },
+
+  getColumns:
+    (boardId: number): Action<State> =>
+    async ({ setState, getState }) => {
+      const columns: Column[] = (await columnsApi.getAllColumnsByBoard(boardId)).data;
+      setState({
+        columns: columns,
       });
     },
 
@@ -179,6 +188,14 @@ const actions = {
     ({ setState, getState }) => {
       setState({
         isEditCardModalHidden: !getState().isEditCardModalHidden,
+      });
+    },
+
+  hideAddColumnModal:
+    (): Action<State> =>
+    ({ setState, getState }) => {
+      setState({
+        isAddColumnModalHidden: !getState().isAddColumnModalHidden,
       });
     },
 
