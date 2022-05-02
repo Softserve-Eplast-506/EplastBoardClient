@@ -13,7 +13,6 @@ import { AddCard, editCard, getAllCards, deleteCard,getCardsByBoard,
 type MenuItem = Required<MenuProps>["items"][number];
 
 type State = {
-
     isSideBarHidden: boolean,
     isEditCardModalHidden: boolean,
     menuItems: MenuItem[],
@@ -33,28 +32,30 @@ type State = {
   boards: Board[],
   currentBoard: Board,
   render: boolean
+  isAddColumnModalHidden: boolean;
 };
 
 const initialState: State = {
-    isSideBarHidden: false,
-    isEditCardModalHidden: false,
-    menuItems: [],
-    cards: [],
-    cardsByColumnId: [],
-    currentCard: new CardM,
-    columns: [],
-    isInputPanelHidden: true,
-    isInputPanelHiddenColumn: true,
-    addingBoardName: "",
-    editingColumnName: "",
-    hiddenPanelColumn: 0,
-    currentColumn: new Column(),
+  isSideBarHidden: false,
+  isEditCardModalHidden: false,
+  menuItems: [],
+  cards: [],
+  cardsByColumnId: [],
+  currentCard: new CardM,
+  columns: [],
+  isInputPanelHidden: true,
+  isInputPanelHiddenColumn: true,
+  addingBoardName: "",
+  editingColumnName: "",
+  hiddenPanelColumn: 0,
+  currentColumn: new Column(),
   newBoard: "",
   editBoardName: "",
   isEditBoardModalShown: false,
   boards: [],
   currentBoard: new Board(),
-  render: false,
+  isAddColumnModalHidden: false,
+  render: false
 };
 
 const actions = {
@@ -69,6 +70,15 @@ const actions = {
       setState({
         boards: boards,
         menuItems: items.reverse(),
+      });
+    },
+
+  getColumns:
+    (boardId: number): Action<State> =>
+    async ({ setState, getState }) => {
+      const columns: Column[] = (await columnsApi.getAllColumnsByBoard(boardId)).data;
+      setState({
+        columns: columns,
       });
     },
 
@@ -189,6 +199,14 @@ const actions = {
     ({ setState, getState }) => {
       setState({
         isEditCardModalHidden: !getState().isEditCardModalHidden,
+      });
+    },
+
+  hideAddColumnModal:
+    (): Action<State> =>
+    ({ setState, getState }) => {
+      setState({
+        isAddColumnModalHidden: !getState().isAddColumnModalHidden,
       });
     },
 

@@ -1,5 +1,6 @@
 import { Layout } from "antd";
 import "./App.css";
+import AddNewColumnModal from "./components/Column/AddColumnModal";
 import ContentSpace from "./components/ContentSpace/ContentSpace";
 import CreateCardModal from "./components/ContentSpace/CreateCardModal";
 import EditCardModal from "./components/ContentSpace/EditCardModal";
@@ -19,6 +20,7 @@ function App() {
         <ContentSpace />
         {state.isEditBoardModalShown ?  <EditModal/>:null}
         {state.isEditCardModalHidden ?  <EditCardModal/>:null}
+        {state.isAddColumnModalHidden ?  <AddNewColumnModal/>:null}
       </Layout>
     </Layout>
   );
