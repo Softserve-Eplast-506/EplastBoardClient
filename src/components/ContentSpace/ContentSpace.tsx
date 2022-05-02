@@ -20,7 +20,14 @@ const ContentSpace = () => {
     <Content
       className={`content ${state.isSideBarHidden ? "content-full" : ""}`}
       style={{
-        backgroundImage: `url("https://assets.hongkiat.com/uploads/holographic-gradient-background/5.jpg")`,
+        backgroundImage: `linear-gradient(
+          30deg,
+          hsl(239deg 82% 74%) 0%,
+          hsl(277deg 65% 61%) 49%,
+          hsl(315deg 72% 64%) 61%,
+          hsl(337deg 88% 74%) 76%,
+          hsl(327deg 98% 83%) 100%
+        )`,
         backgroundSize: "cover",
       }}
     >
