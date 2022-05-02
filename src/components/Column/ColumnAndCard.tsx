@@ -1,4 +1,4 @@
-import { EllipsisOutlined } from "@ant-design/icons";
+import { EllipsisOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Card,
@@ -16,6 +16,7 @@ import CardM from "../../models/Card";
 import Column from "../../models/Column";
 import { useTable } from "../../store/store";
 import CreateCardModal from "../ContentSpace/CreateCardModal";
+import './AddColumnModal.css';
 
 const BoardColumn = () => {
   const [state, actions] = useTable();
@@ -101,6 +102,7 @@ const BoardColumn = () => {
 
   const handleAddNewColumn = () => {
     actions.hideAddColumnModal();
+    
   };
 
   const renderColumns = (): JSX.Element => (
@@ -150,7 +152,7 @@ const BoardColumn = () => {
           <CreateCardModal colId={col.id} />
         </div>
       ))}
-      <Button onClick={handleAddNewColumn}>Add new column</Button>
+      <Button className="addColumn" onClick={handleAddNewColumn}><PlusOutlined className="addColumnPlus"/>Add new column</Button>
     </>
   );
 

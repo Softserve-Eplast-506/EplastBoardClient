@@ -1,4 +1,11 @@
-.ant-layout-header {
+.ant-avatar-circle {
+  margin-bottom: 7px !important;
+  margin-right: 7px !important;
+  background: rgb(194, 157, 250) !important;
+  justify-items: center !important;
+}
+
+.header {
   color: rgb(194, 157, 250) !important;
   background: #5756a4 !important;
   padding: 0 0px;
@@ -9,11 +16,4 @@
   position: fixed;
   width: 100%;
   z-index: 1000;
-}
-
-.ant-avatar-circle {
-  margin-bottom: 7px !important;
-  margin-right: 7px !important;
-  background: rgb(194, 157, 250) !important;
-  justify-items: center !important;
 }

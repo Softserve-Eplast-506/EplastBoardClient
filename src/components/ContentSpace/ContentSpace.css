@@ -37,16 +37,20 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  /* display: inline-flex; */
+  /* padding-right: 15px; */
+  /* float: left; */
 }
 
 .content {
-  overflow: scroll;
+  overflow-x: scroll;
   z-index: 0;
   margin-left: 200px;
 }
 
 .content-full {
   margin-left: 50px;
+  padding-right: 15px;
 }
 
 .deleteColumnButton {
