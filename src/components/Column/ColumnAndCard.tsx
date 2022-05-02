@@ -68,7 +68,7 @@ const BoardColumn = () => {
       title={card.title}
       bordered={false}
       style={{ width: 300 }}
-      onClick={actions.hideEditCardModal}
+      onClick={() =>{actions.setCurrentCard(card.id); actions.hideEditCardModal() }}
     >
       <p>{card.description}</p>
     </Card>

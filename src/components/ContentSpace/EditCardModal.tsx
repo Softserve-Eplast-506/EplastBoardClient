@@ -14,11 +14,13 @@ interface CollectionEditFormProps {
   visible: boolean;
   onEdit: (values: Values) => void;
   onCancel: () => void;
+  onDelete: () => void
 }
 
 const CollectionEditForm: React.FC<CollectionEditFormProps> = ({
   onEdit,
   onCancel,
+  onDelete,
 }) => {
   const [state, actions] = useTable();
   const [form] = Form.useForm();
@@ -40,6 +42,30 @@ const CollectionEditForm: React.FC<CollectionEditFormProps> = ({
             console.log('Validate Failed:', info);
           });
       }}
+      footer={[
+        <Button type="primary" danger style={{"float":"left"}} onClick={() => {
+          onDelete()   
+        }}>
+        Delete
+      </Button>,
+        <Button key="cancel" onClick={onCancel}>
+          Cancel
+        </Button>,
+        <Button key="submit" type="primary"  onClick={() => {
+          form
+            .validateFields()
+            .then(values => {
+              form.resetFields();
+              onEdit(values);
+            })
+            .catch(info => {
+              console.log('Validate Failed:', info);
+            });
+        }}>
+          Edit
+        </Button>,
+       
+      ]}
     >
       <Form
         form={form}
@@ -74,6 +100,10 @@ const CollectionsPage = () => {
     actions.editCard(newCard);
     setVisible(false);
   };
+  const onDelete = () => {
+    actions.deleteCard(state.currentCard.id);
+    actions.hideEditCardModal();
+  }
 
   return (
     <div>
@@ -82,6 +112,7 @@ const CollectionsPage = () => {
         onEdit={onEdit}
         onCancel={
           actions.hideEditCardModal}
+        onDelete = {onDelete}
       />
     </div>
   );

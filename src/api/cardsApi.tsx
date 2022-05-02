@@ -34,3 +34,8 @@ export const editCard = async (cardM: CardM) => {
         throw new Error(error);
     });
 };
+export const deleteCard = async (cardId: number) => {
+    return await api.remove(`Card/DeleteCard/${cardId}`).catch((error) => {
+        throw new Error(error);
+    });
+};

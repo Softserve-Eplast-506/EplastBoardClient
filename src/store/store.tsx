@@ -5,7 +5,7 @@ import columnsApi from "../api/columnsApi";
 import Board from "../models/Board";
 import CardM from "../models/Card";
 import Column from "../models/Column";
-import { AddCard, editCard, getAllCards, getCardsByColumn } from '../api/cardsApi';
+import { AddCard, editCard, getAllCards, getCardsByColumn, deleteCard } from '../api/cardsApi';
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -16,6 +16,7 @@ type State = {
     menuItems: MenuItem[],
     cards: CardM[],
     cardsByColumnId: CardM[],
+    currentCard: CardM,
     columns: Column[],
     isInputPanelHidden: boolean,
     isInputPanelHiddenColumn: boolean,
@@ -37,6 +38,7 @@ const initialState: State = {
     menuItems: [],
     cards: [],
     cardsByColumnId: [],
+    currentCard: new CardM,
     columns: [],
     isInputPanelHidden: true,
     isInputPanelHiddenColumn: true,
@@ -137,6 +139,16 @@ const actions = {
         currentColumn: column,
       });
     },
+    setCurrentCard:
+    (cardId: number): Action<State> =>
+    async ({ setState, getState }) => {
+      const card = getState().cards.find(
+        (card: CardM) => card.id == cardId
+      );    
+      setState({
+        currentCard: card,
+      });
+    },
 
   addBoardName:
     (name: string): Action<State> =>
@@ -214,6 +226,14 @@ const actions = {
         cards: await getCards(),
       });
     },
+  deleteCard:
+  (cardId: number): Action<State> =>
+  async ({ setState, getState }) => {
+    await deleteCardAction(cardId);
+    setState({
+      cards: await getCards(),
+    });
+  },
 };
 
 const Store = createStore({
@@ -249,6 +269,10 @@ const createCard = async (Card: CardM) => {
 
 const editCardAction = async (Card: CardM) => {
   const response = await editCard(Card);
+  return response.data;
+};
+const deleteCardAction = async (cardId: number) => {
+  const response = await deleteCard(cardId);
   return response.data;
 };
 
