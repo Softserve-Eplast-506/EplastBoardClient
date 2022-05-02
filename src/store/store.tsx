@@ -41,7 +41,7 @@ const initialState: State = {
   menuItems: [],
   cards: [],
   cardsByColumnId: [],
-  currentCard: new CardM,
+  currentCard: new CardM(),
   columns: [],
   isInputPanelHidden: true,
   isInputPanelHiddenColumn: true,
@@ -257,9 +257,7 @@ const actions = {
   (cardId: number): Action<State> =>
   async ({ setState, getState }) => {
     await deleteCardAction(cardId);
-    setState({
-      cards: await getCards(),
-    });
+   
   },
 };
 

@@ -4,51 +4,46 @@ import {PlusOutlined} from '@ant-design/icons'
 import CardM from '../../models/Card';
 import { useTable } from '../../store/store';
 
-interface Values {
-  title: string;
-  description: string;
-  modifier: string;
-}
-
-interface CollectionEditFormProps {
-  visible: boolean;
-  onEdit: (values: Values) => void;
-  onCancel: () => void;
-  onDelete: () => void
-}
-
-const CollectionEditForm: React.FC<CollectionEditFormProps> = ({
-  onEdit,
-  onCancel,
-  onDelete,
-}) => {
+const EditCardModal = () => {
   const [state, actions] = useTable();
   const [form] = Form.useForm();
+   let newCardTitle = "";
+   let newCardDescription = "";
+
+  const handleOk = async () => {
+    let newCard = state.currentCard;
+    console.log(newCard);
+    newCard.description = newCardDescription;
+    newCard.title = newCardTitle;
+    actions.editCard(newCard);
+    actions.hideEditCardModal();
+    actions.getCardsByBoard(state.currentBoard.id);
+  };
+
+  const handleCancel = () => {
+    actions.hideEditCardModal();
+  };
+
+  const handleDelete = () => {
+    actions.deleteCard(state.currentCard.id);
+    actions.getCardsByBoard(state.currentBoard.id);
+  }
+
   return (
     <Modal
       visible={state.isEditCardModalHidden}
       title="Edit a new task"
       okText="Edit"
       cancelText="Cancel"
-      onCancel={onCancel}
-      onOk={() => {
-        form
-          .validateFields()
-          .then(values => {
-            form.resetFields();
-            onEdit(values);
-          })
-          .catch(info => {
-            console.log('Validate Failed:', info);
-          });
-      }}
+      onCancel={handleCancel}
+     
       footer={[
         <Button type="primary" danger style={{"float":"left"}} onClick={() => {
-          onDelete()   
+          handleDelete()   
         }}>
         Delete
       </Button>,
-        <Button key="cancel" onClick={onCancel}>
+        <Button key="cancel" onClick={handleCancel}>
           Cancel
         </Button>,
         <Button key="submit" type="primary"  onClick={() => {
@@ -56,7 +51,7 @@ const CollectionEditForm: React.FC<CollectionEditFormProps> = ({
             .validateFields()
             .then(values => {
               form.resetFields();
-              onEdit(values);
+              handleOk();
             })
             .catch(info => {
               console.log('Validate Failed:', info);
@@ -76,46 +71,23 @@ const CollectionEditForm: React.FC<CollectionEditFormProps> = ({
         <Form.Item
           name="title"
           label="Title"
+          
           rules={[{ required: true, message: 'Please input the name of task!' }]}
         >
-          <Input />
+          <Input  onChange={(event) => {
+          newCardTitle =  event.target.value;
+        }} />
         </Form.Item>
         <Form.Item name="description" label="Description">
-          <Input type="textarea" />
+          <Input type="textarea"  onChange={(event) => {
+          newCardDescription =  event.target.value;
+        }} />
         </Form.Item>
       </Form>
     </Modal>
   );
 };
 
-const CollectionsPage = () => {
-  const [visible, setVisible] = useState(false);
-  const [state, actions] = useTable();
 
-  const onEdit = (values: any) => {
-    const newCard = new CardM();
-    newCard.description = values.description;
-    newCard.title = values.title;
-    newCard.columnId = 1;
-    actions.editCard(newCard);
-    setVisible(false);
-  };
-  const onDelete = () => {
-    actions.deleteCard(state.currentCard.id);
-    actions.hideEditCardModal();
-  }
 
-  return (
-    <div>
-      <CollectionEditForm
-        visible={visible}
-        onEdit={onEdit}
-        onCancel={
-          actions.hideEditCardModal}
-        onDelete = {onDelete}
-      />
-    </div>
-  );
-};
-
-export default () => <CollectionsPage />;
+export default  EditCardModal;
