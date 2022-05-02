@@ -5,7 +5,10 @@ import columnsApi from "../api/columnsApi";
 import Board from "../models/Board";
 import CardM from "../models/Card";
 import Column from "../models/Column";
-import { AddCard, editCard, getAllCards, getCardsByColumn, deleteCard } from '../api/cardsApi';
+
+import { AddCard, editCard, getAllCards, deleteCard,getCardsByBoard,
+  getCardsByColumn, } from '../api/cardsApi';
+
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -51,7 +54,7 @@ const initialState: State = {
   isEditBoardModalShown: false,
   boards: [],
   currentBoard: new Board(),
-   render: false
+  render: false,
 };
 
 const actions = {
@@ -96,6 +99,13 @@ const actions = {
       setState({ columns: getColumns });
     },
 
+  getCardsByBoard:
+    (boardId: number): Action<State> =>
+    async ({ setState }) => {
+      const getCards: CardM[] = (await getCardsByBoard(boardId)).data;
+      setState({ cards: getCards });
+    },
+
   openInputPanel:
     (): Action<State> =>
     ({ setState, getState }) => {
@@ -134,7 +144,7 @@ const actions = {
     async ({ setState, getState }) => {
       const column = getState().columns.find(
         (column: Column) => column.id == columnId
-      );    
+      );
       setState({
         currentColumn: column,
       });
@@ -195,20 +205,19 @@ const actions = {
 
   getAllCards:
     (): Action<State> =>
-      async ({ setState, getState }) => {
-        setState({
-          cards: await getCards(),
-        });
-      },
-    getCardsByColumnId:
+    async ({ setState, getState }) => {
+      setState({
+        cards: await getCards(),
+      });
+    },
+  getCardsByColumnId:
     (columnId: number): Action<State> =>
     async ({ setState, getState }) => {
-
-        setState({
+      setState({
         cardsByColumnId: await getCardsByColumnId(columnId),
-        });
+      });
     },
-    
+
   createCard:
     (Card: CardM): Action<State> =>
     async ({ setState, getState }) => {
@@ -258,8 +267,8 @@ const getCards = async () => {
   return response.data;
 };
 const getCardsByColumnId = async (columnId: number) => {
-    const response = await getCardsByColumn(columnId);
-    return response.data;
+  const response = await getCardsByColumn(columnId);
+  return response.data;
 };
 
 const createCard = async (Card: CardM) => {
