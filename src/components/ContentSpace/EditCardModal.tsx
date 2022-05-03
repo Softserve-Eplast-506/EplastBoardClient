@@ -24,9 +24,10 @@ const EditCardModal = () => {
     actions.hideEditCardModal();
   };
 
-  const handleDelete = () => {
-    actions.deleteCard(state.currentCard.id);
-    actions.getCardsByBoard(state.currentBoard.id);
+  const handleDelete = async () => {
+    await actions.deleteCard(state.currentCard.id);
+          actions.hideEditCardModal();
+          actions.getCardsByBoard(state.currentBoard.id);
   }
 
   return (
@@ -71,17 +72,25 @@ const EditCardModal = () => {
         <Form.Item
           name="title"
           label="Title"
-          
-          rules={[{ required: true, message: 'Please input the name of task!' }]}
+          initialValue={state.currentCard.title}
+          rules={[{ required: true, message: 'Please input the name of task!' },
+                    { max: 220 , message: 'Max-Length is 220!' }]}
         >
           <Input  onChange={(event) => {
           newCardTitle =  event.target.value;
         }} />
         </Form.Item>
-        <Form.Item name="description" label="Description">
+       
+        <Form.Item name="description" 
+        label="Description" 
+        initialValue={state.currentCard.description}
+        rules={[{ max: 1000, message: 'Max-Length is 1000!' }]}
+        >
+         
           <Input type="textarea"  onChange={(event) => {
           newCardDescription =  event.target.value;
         }} />
+
         </Form.Item>
       </Form>
     </Modal>
