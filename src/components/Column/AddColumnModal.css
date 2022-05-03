@@ -1,5 +1,5 @@
 .addColumn {
-    min-width: 350px;
+    width: 350px;
     min-height: fit-content;
     border: 1px solid #ebecf0;
     padding: 10px;

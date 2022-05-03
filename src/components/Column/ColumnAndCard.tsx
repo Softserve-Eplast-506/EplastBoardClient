@@ -66,7 +66,7 @@ const BoardColumn = () => {
     e.preventDefault();
   };
 
-  const menu: any = (
+  const deleteMenu: any = (
     <Menu>
       <Menu.Item>
         <div>
@@ -93,7 +93,7 @@ const BoardColumn = () => {
       key={card.id}
       title={card.title}
       bordered={false}
-      style={{ width: 300 }}
+      style={{ width: 320 }}
       onClick={() =>{actions.setCurrentCard(card.id); actions.hideEditCardModal() }}
     >
       <p>{card.description}</p>
@@ -103,6 +103,14 @@ const BoardColumn = () => {
   const handleAddNewColumn = () => {
     actions.hideAddColumnModal();
   };
+
+  const maxLength = 50;
+  const onKeyDwn = (e: any) => {
+        const currentTextLength = e.target.outerText.length;
+        if (currentTextLength === maxLength && e.keyCode != 8) {
+            e.preventDefault();
+        }
+  }
 
   const renderColumns = (): JSX.Element => (
     <>
@@ -128,6 +136,7 @@ const BoardColumn = () => {
                 onClick={handleClick}
                 defaultValue={columnName}
                 onBlur={handleOk}
+                onKeyDown={onKeyDwn}
               >
                 {col.title}
               </div>
@@ -135,7 +144,7 @@ const BoardColumn = () => {
             <Col flex={0.1}>
               <Dropdown
                 className="deleteColumnButton"
-                overlay={menu}
+                overlay={deleteMenu}
                 placement="bottom"
                 trigger={["click"]}
               >
