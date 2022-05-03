@@ -96,6 +96,28 @@ const actions = {
       });
     },
 
+  setCards:
+    (cards: CardM[], col: Column): Action<State> =>
+    async ({ setState, getState }) => {
+      let cols = getState().columns;
+      cols[col.index].cards = cards;
+      setState({
+        columns: cols,
+      });
+    },
+
+  // setCards:
+  //   (cards: CardM[]): Action<State> =>
+  //   async ({ setState, getState }) => {
+  //     let newColumn: any = getState().columns.find(
+  //       (x) => x.id == cards[0].columnId
+  //     );
+  //     newColumn.cards = cards;
+  //     let columns = getState().columns.splice(newColumn.id, 1, newColumn);
+  //     setState({
+  //       columns: columns,
+  //     });
+  //   },
   setInitialCurrentBoard:
     (): Action<State> =>
     async ({ setState, getState }) => {

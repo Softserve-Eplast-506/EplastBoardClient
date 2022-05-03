@@ -69,26 +69,11 @@ const BoardColumn = () => {
     </Menu>
   );
 
-  const renderCard = (card: CardM): JSX.Element => (
-    <Card
-      draggable={true}
-      className="item"
-      key={card.id}
-      title={card.title}
-      bordered={false}
-      style={{ width: 300 }}
-      onClick={() => {
-        actions.setCurrentCard(card.id);
-        actions.hideEditCardModal();
-      }}
-    >
-      <p>{card.description}</p>
-    </Card>
-  );
-
   const handleAddNewColumn = () => {
     actions.hideAddColumnModal();
   };
+
+
 
   let dragIndexStart = 0;
   let startColumn = new Column();
@@ -100,15 +85,13 @@ const BoardColumn = () => {
     event.preventDefault();
     dragIndexEnd = column.index;
     endColumn = column;
-    console.log(dragIndexEnd + " - dragIndexEnd"); //Коли наводити на якусь колонку вертається та колонка
   };
+
   const dragLeaveHandler = async (event: any) => {};
 
   const dragStartHandler = (e: any, column: Column) => {
     dragIndexStart = column.index;
     startColumn = column;
-    console.log(dragIndexStart + " - dragIndexStart"); //Вертає ту колонку яку тягнути
-    console.log(colums);
   };
 
   const dragEndHandler = (e: any, column: Column) => {
@@ -135,10 +118,75 @@ const BoardColumn = () => {
     actions.setColumns(colums);
     SetRender(!render);
   };
+
+
+
+
+
+
+
+
+
   useEffect(() => {
     console.log("render");
     colums = state.columns;
+    cards = state.cards;
   }, [render]);
+
+
+  let dragIndexStartCard = 0;
+  let startCard = new CardM();
+  let dragIndexEndCard = 0;
+  let endCard = new CardM();
+  let cards = state.cards;
+
+  function dragOverCardHandler(event: React.DragEvent<HTMLDivElement>, card: CardM){
+    event.preventDefault()
+    dragIndexEndCard = card.index;
+    endCard = card;
+    //console.log("over")
+  }
+  function dragLeaveCardHandler (e: React.DragEvent<HTMLDivElement>, card: CardM) {
+    //console.log("leave0", state.currentCard)
+    //actions.changeColumnsWithCardByBoard(column, card)
+    
+    //actions.state.currentColumn.cards.splice(currentCardIndex, 1)
+  }
+  function dragStartCardHandler (e: React.DragEvent<HTMLDivElement>, card: CardM){        
+    dragIndexStartCard = card.index;
+    startCard = card;
+    console.log(dragIndexStartCard + "cardStartIndex"); 
+  }
+
+  function dragEndCardHandler(e: any){   
+    //console.log("end")
+  }
+  function dropCardHandle (e: React.DragEvent<HTMLDivElement>, card: CardM, col: Column) {
+    e.preventDefault()
+    console.log(cards);
+    if (dragIndexStartCard < dragIndexEndCard) {
+      for (let i = dragIndexStartCard + 1; i <= dragIndexEndCard; i++) {
+        cards[i].index--;
+      }
+      cards.splice(dragIndexStartCard, 1);
+      startCard.index = dragIndexEndCard;
+      cards.splice(dragIndexEndCard, 0, startCard);
+    } else {
+      for (let i = dragIndexEndCard; i < dragIndexStartCard; i++) {
+        cards[i].index++;
+      }
+      cards.splice(dragIndexStartCard, 1);
+      startCard.index = dragIndexEndCard;
+      cards.splice(dragIndexEndCard, 0, startCard);
+    }
+    actions.setCards(cards, col);
+    SetRender(!render);
+  }
+
+
+
+
+
 
   const renderColumns = (): JSX.Element => (
     <>
@@ -180,9 +228,27 @@ const BoardColumn = () => {
               </Dropdown>
             </Col>
           </Row>
-          {state.cards.map(
-            (card: CardM) => card.columnId === col.id && renderCard(card)
-          )}
+          {col.cards.map((card: CardM) => (
+            <Card
+              draggable={true}
+              onDragOver={(e: any) => dragOverCardHandler(e, card)}
+              onDragLeave={(e: any) => dragLeaveCardHandler(e, card)}
+              onDragStart={(e: any) => dragStartCardHandler(e, card)}
+              onDragEnd={(e: any) => dragEndCardHandler(e)}
+              onDrop={(e: any) => dropCardHandle(e, card, col)}
+              className="item"
+              key={card.id}
+              title={card.title}
+              bordered={false}
+              style={{ width: 300 }}
+              onClick={() => {
+                actions.setCurrentCard(card.id);
+                actions.hideEditCardModal();
+              }}
+            >
+              <p>{card.description}</p>
+            </Card>
+          ))}
           <CreateCardModal colId={col.id} />
         </div>
       ))}
@@ -196,3 +262,5 @@ const BoardColumn = () => {
   return <div className="board">{renderColumns()}</div>;
 };
 export default BoardColumn;
+
+
