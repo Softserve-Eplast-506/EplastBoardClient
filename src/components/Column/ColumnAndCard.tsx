@@ -9,17 +9,19 @@ import {
   Popconfirm,
   Row,
 } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import columnsApi from "../../api/columnsApi";
 import Board from "../../models/Board";
 import CardM from "../../models/Card";
 import Column from "../../models/Column";
 import { useTable } from "../../store/store";
 import CreateCardModal from "../ContentSpace/CreateCardModal";
-import './AddColumnModal.css';
+import "./AddColumnModal.css";
 
 const BoardColumn = () => {
   const [state, actions] = useTable();
+
+  const [render, SetRender] = useState(false);
 
   let columnName = state.currentColumn?.title;
 
@@ -47,25 +49,6 @@ const BoardColumn = () => {
     });
     await actions.getColumnByBoard(state.currentBoard.id);
   }
-
-  const dragOverHandler = (event: any, item: Column) => {
-    event.preventDefault();
-  };
-  const dragLeaveHandler = async (event: any) => {};
-  const dragStartHandler = (e: any, column: Column) => {
-    actions.setCurrentColumn(column.id);
-  };
-  const dragEndHandler = (e: any, column: Column) => {
-    e.preventDefault();
-    const currentIndex = state.columns.indexOf(state.currentColumn);
-    state.columns.splice(currentIndex, 1);
-    const dropIndex = state.columns.indexOf(column);
-    state.columns.slice(dropIndex + 1, state.currentColumn.id);
-  };
-  const dropHandle = (e: any, board: Board, item: Column) => {
-    e.preventDefault();
-  };
-
   const menu: any = (
     <Menu>
       <Menu.Item>
@@ -94,7 +77,10 @@ const BoardColumn = () => {
       title={card.title}
       bordered={false}
       style={{ width: 300 }}
-      onClick={() =>{actions.setCurrentCard(card.id); actions.hideEditCardModal() }}
+      onClick={() => {
+        actions.setCurrentCard(card.id);
+        actions.hideEditCardModal();
+      }}
     >
       <p>{card.description}</p>
     </Card>
@@ -104,18 +90,67 @@ const BoardColumn = () => {
     actions.hideAddColumnModal();
   };
 
+  let dragIndexStart = 0;
+  let startColumn = new Column();
+  let dragIndexEnd = 0;
+  let endColumn = new Column();
+  let colums = state.columns;
+
+  const dragOverHandler = (event: any, column: Column) => {
+    event.preventDefault();
+    dragIndexEnd = column.index;
+    endColumn = column;
+    console.log(dragIndexEnd + " - dragIndexEnd"); //Коли наводити на якусь колонку вертається та колонка
+  };
+  const dragLeaveHandler = async (event: any) => {};
+
+  const dragStartHandler = (e: any, column: Column) => {
+    dragIndexStart = column.index;
+    startColumn = column;
+    console.log(dragIndexStart + " - dragIndexStart"); //Вертає ту колонку яку тягнути
+    console.log(colums);
+  };
+
+  const dragEndHandler = (e: any, column: Column) => {
+    e.preventDefault();
+    //console.log(column); //Вертає ту колонку яку тягнути
+  };
+  const dropHandle = (e: any, column: Column) => {
+    e.preventDefault();
+    if (dragIndexStart < dragIndexEnd) {
+      for (let i = dragIndexStart + 1; i <= dragIndexEnd; i++) {
+        colums[i].index--;
+      }
+      colums.splice(dragIndexStart, 1);
+      startColumn.index = dragIndexEnd;
+      colums.splice(dragIndexEnd, 0, startColumn);
+    } else {
+      for (let i = dragIndexEnd; i < dragIndexStart; i++) {
+        colums[i].index++;
+      }
+      colums.splice(dragIndexStart, 1);
+      startColumn.index = dragIndexEnd;
+      colums.splice(dragIndexEnd, 0, startColumn);
+    }
+    actions.setColumns(colums);
+    SetRender(!render);
+  };
+  useEffect(() => {
+    console.log("render");
+    colums = state.columns;
+  }, [render]);
+
   const renderColumns = (): JSX.Element => (
     <>
       {state.columns.map((col: Column) => (
         <div
           className="column"
-          onDragOver={(e: any) => dragOverHandler(e, state.currentColumn)}
+          draggable={true}
+          onDragOver={(e: any) => dragOverHandler(e, col)}
           onDragLeave={(e: any) => dragLeaveHandler(e)}
-          onDragStart={(e: any) => dragStartHandler(e, state.currentColumn)}
-          //onDragEnd={(e: any) => dragEndHandler(e)}
-          onDrop={(e: any) =>
-            dropHandle(e, state.currentBoard, state.currentColumn)
-          }
+          onDragStart={(e: any) => dragStartHandler(e, col)}
+          onDragEnd={(e: any) => dragEndHandler(e, col)}
+          onDrop={(e: any) => dropHandle(e, col)}
         >
           <Row>
             <Col flex={4.9}>
@@ -151,7 +186,10 @@ const BoardColumn = () => {
           <CreateCardModal colId={col.id} />
         </div>
       ))}
-      <Button className="addColumn" onClick={handleAddNewColumn}><PlusOutlined className="addColumnPlus"/>Add new column</Button>
+      <Button className="addColumn" onClick={handleAddNewColumn}>
+        <PlusOutlined className="addColumnPlus" />
+        Add new column
+      </Button>
     </>
   );
 
