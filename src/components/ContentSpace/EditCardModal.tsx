@@ -3,6 +3,7 @@ import { Button, Modal, Form, Input, Radio } from 'antd';
 import {PlusOutlined} from '@ant-design/icons'
 import CardM from '../../models/Card';
 import { useTable } from '../../store/store';
+import { descriptionValidation } from '../../models/Validation/Validation';
 
 const EditCardModal = () => {
   const [state, actions] = useTable();
@@ -72,8 +73,7 @@ const EditCardModal = () => {
           name="title"
           label="Title"
           initialValue={state.currentCard.title}
-          rules={[{ required: true, message: 'Please input the name of task!' },
-                    { max: 220 , message: 'Max-Length is 220!' }]}
+          rules={descriptionValidation.TitleCard}
         >
           <Input  onChange={(event) => {
           newCardTitle =  event.target.value;
@@ -83,7 +83,7 @@ const EditCardModal = () => {
         <Form.Item name="description" 
         label="Description" 
         initialValue={state.currentCard.description}
-        rules={[{ max: 1000, message: 'Max-Length is 1000!' }]}
+        rules={descriptionValidation.Description}
         >
          
           <Input type="textarea"  onChange={(event) => {
@@ -95,7 +95,5 @@ const EditCardModal = () => {
     </Modal>
   );
 };
-
-
 
 export default  EditCardModal;
