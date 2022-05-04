@@ -3,16 +3,16 @@ import { Button, Modal, Form, Input, Radio } from 'antd';
 import {PlusOutlined} from '@ant-design/icons'
 import CardM from '../../models/Card';
 import { useTable } from '../../store/store';
+import { descriptionValidation } from '../../models/Validation/Validation';
 
 const EditCardModal = () => {
   const [state, actions] = useTable();
   const [form] = Form.useForm();
-   let newCardTitle = "";
-   let newCardDescription = "";
+   let newCardTitle = state.currentCard.title;
+   let newCardDescription = state.currentCard.description;
 
   const handleOk = async () => {
     let newCard = state.currentCard;
-    console.log(newCard);
     newCard.description = newCardDescription;
     newCard.title = newCardTitle;
     actions.editCard(newCard);
@@ -24,9 +24,10 @@ const EditCardModal = () => {
     actions.hideEditCardModal();
   };
 
-  const handleDelete = () => {
-    actions.deleteCard(state.currentCard.id);
-    actions.getCardsByBoard(state.currentBoard.id);
+  const handleDelete = async () => {
+    await actions.deleteCard(state.currentCard.id);
+          actions.hideEditCardModal();
+          actions.getCardsByBoard(state.currentBoard.id);
   }
 
   return (
@@ -71,23 +72,28 @@ const EditCardModal = () => {
         <Form.Item
           name="title"
           label="Title"
-          
-          rules={[{ required: true, message: 'Please input the name of task!' }]}
+          initialValue={state.currentCard.title}
+          rules={descriptionValidation.TitleCard}
         >
           <Input  onChange={(event) => {
           newCardTitle =  event.target.value;
         }} />
         </Form.Item>
-        <Form.Item name="description" label="Description">
+       
+        <Form.Item name="description" 
+        label="Description" 
+        initialValue={state.currentCard.description}
+        rules={descriptionValidation.Description}
+        >
+         
           <Input type="textarea"  onChange={(event) => {
           newCardDescription =  event.target.value;
         }} />
+
         </Form.Item>
       </Form>
     </Modal>
   );
 };
-
-
 
 export default  EditCardModal;

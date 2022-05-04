@@ -1,5 +1,5 @@
 .column {
-  min-width: 350px;
+  width: 350px;
   min-height: fit-content;
   border: 1px solid #ebecf0;
   padding: 10px 10px 0 10px;
@@ -15,11 +15,10 @@
   font-size: 1.5rem;
   font-weight: 700;
   align-items: left;
-  display: inline-block;
-  position: relative;
+  display: inline-flex;
   width: 99%;
-  padding: 0 0 10px 0;
-  text-indent: 10px;
+  padding: 0 0 10px 10px;
+  word-break: break-word;
 }
 
 .item {
@@ -30,6 +29,21 @@
   border-radius: 6px !important;
   margin: 5px 0 !important;
   cursor: default !important;
+}
+
+.ant-card-head {
+  min-height: 48px;
+  margin-bottom: -1px;
+  padding: 0 10px !important;
+  border-bottom: none !important;
+}
+
+.ant-card-head-title {
+  padding: 10px 0;
+}
+
+.ant-card-body {
+  padding: 2px 10px !important;
 }
 
 .board {
@@ -56,10 +70,10 @@
   background-color: #ebecf0 !important;
   border: 0 !important;
   box-shadow: none !important;
-  display: inline-block;
-  position: relative !important;
+  display: inline-flex !important;
   padding-right: 0;
   align-items: right !important;
+  margin-top: 2px;
 }
 
 .message-box {

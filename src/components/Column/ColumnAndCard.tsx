@@ -48,8 +48,9 @@ const BoardColumn = () => {
       className: "message-box",
     });
     await actions.getColumnByBoard(state.currentBoard.id);
-  }
-  const menu: any = (
+  };
+
+  const deleteMenu: any = (
     <Menu>
       <Menu.Item>
         <div>
@@ -72,6 +73,7 @@ const BoardColumn = () => {
   const handleAddNewColumn = () => {
     actions.hideAddColumnModal();
   };
+
 
   let dragIndexStart = 0;
   let startColumn = new Column();
@@ -224,6 +226,15 @@ const BoardColumn = () => {
     SetRender(!render);
   }
 
+  const maxLength = 50;
+  const onKeyDwn = (e: any) => {
+        const currentTextLength = e.target.outerText.length;
+        if (currentTextLength === maxLength && e.keyCode != 8) {
+            e.preventDefault();
+        }
+
+      }
+
   const renderColumns = (): JSX.Element => (
     <>
       {state.columns.map((col: Column) => (
@@ -236,7 +247,7 @@ const BoardColumn = () => {
           onDragEnd={(e: any) => dragEndHandler(e, col)}
           onDrop={(e: any) => dropHandle(e, col)}
         >
-          <Row>
+          <Row style={{flexWrap: "nowrap"}}>
             <Col flex={4.9}>
               <div
                 id={col.id.toString()}
@@ -247,6 +258,7 @@ const BoardColumn = () => {
                 onClick={handleClick}
                 defaultValue={columnName}
                 onBlur={handleOk}
+                onKeyDown={onKeyDwn}
               >
                 {col.title}
               </div>
@@ -254,7 +266,7 @@ const BoardColumn = () => {
             <Col flex={0.1}>
               <Dropdown
                 className="deleteColumnButton"
-                overlay={menu}
+                overlay={deleteMenu}
                 placement="bottom"
                 trigger={["click"]}
               >
