@@ -33,10 +33,18 @@ const deleteColumnById = async (id: number) => {
   });
 };
 
+const updateColumns = async (Columns: Column[]) => {
+  return await api.put(`Columns/UpdateColumns`, Columns).catch((error) => {
+    throw new Error(error);
+  });
+};
+
+
 export default {
   addColumn,
   getColumnById,
   editColumnName,
   getAllColumnsByBoard,
   deleteColumnById,
+  updateColumns,
 };

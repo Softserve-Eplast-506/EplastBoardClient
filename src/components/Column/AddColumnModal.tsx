@@ -13,6 +13,7 @@ const AddNewColumnModal = () => {
     let column = new Column();
     column.title = newColumnName;
     column.boardId = state.currentBoard.id;
+    column.index = state.columns[state.columns.length-1].index + 1;
     await columnsApi.addColumn(column);
     actions.hideAddColumnModal();
     actions.getColumns(state.currentBoard.id);
