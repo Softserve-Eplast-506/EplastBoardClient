@@ -125,7 +125,7 @@ const BoardColumn = () => {
             dropHandle(e, state.currentBoard, state.currentColumn)
           }
         >
-          <Row>
+          <Row style={{flexWrap: "nowrap"}}>
             <Col flex={4.9}>
               <div
                 id={col.id.toString()}

@@ -16,10 +16,8 @@
   font-weight: 700;
   align-items: left;
   display: inline-flex;
-  /* position: relative; */
-  width: 85%;
-  padding: 0 0 10px 0;
-  text-indent: 10px;
+  width: 99%;
+  padding: 0 0 10px 10px;
 }
 
 .item {
@@ -30,7 +28,6 @@
   border-radius: 6px !important;
   margin: 5px 0 !important;
   cursor: default !important;
-  
 }
 
 .ant-card-head {
@@ -73,12 +70,9 @@
   border: 0 !important;
   box-shadow: none !important;
   display: inline-flex !important;
-  /* position: fixed !important; */
   padding-right: 0;
   align-items: right !important;
   margin-top: 2px;
-  /* margin-left: 278px; */
-  width: auto;
 }
 
 .message-box {
