@@ -7,12 +7,11 @@ import { useTable } from '../../store/store';
 const EditCardModal = () => {
   const [state, actions] = useTable();
   const [form] = Form.useForm();
-   let newCardTitle = "";
-   let newCardDescription = "";
+   let newCardTitle = state.currentCard.title;
+   let newCardDescription = state.currentCard.description;
 
   const handleOk = async () => {
     let newCard = state.currentCard;
-    console.log(newCard);
     newCard.description = newCardDescription;
     newCard.title = newCardTitle;
     actions.editCard(newCard);
