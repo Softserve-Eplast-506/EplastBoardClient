@@ -13,6 +13,7 @@ import {
   deleteCard,
   getCardsByBoard,
   getCardsByColumn,
+  updateCards,
 } from "../api/cardsApi";
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -91,6 +92,7 @@ const actions = {
   setColumns:
     (columns: Column[]): Action<State> =>
     async ({ setState, getState }) => {
+      await columnsApi.updateColumns(columns);
       setState({
         columns: columns,
       });
@@ -101,23 +103,12 @@ const actions = {
     async ({ setState, getState }) => {
       let cols = getState().columns;
       cols[col.index].cards = cards;
+      await updateCards(cards);
       setState({
         columns: cols,
       });
     },
 
-  // setCards:
-  //   (cards: CardM[]): Action<State> =>
-  //   async ({ setState, getState }) => {
-  //     let newColumn: any = getState().columns.find(
-  //       (x) => x.id == cards[0].columnId
-  //     );
-  //     newColumn.cards = cards;
-  //     let columns = getState().columns.splice(newColumn.id, 1, newColumn);
-  //     setState({
-  //       columns: columns,
-  //     });
-  //   },
   setInitialCurrentBoard:
     (): Action<State> =>
     async ({ setState, getState }) => {
@@ -142,7 +133,6 @@ const actions = {
       let getColumns: Column[] = (
         await columnsApi.getAllColumnsByBoard(boardId)
       ).data;
-      getColumns.sort((a, b) => a.index - b.index);
       setState({ columns: getColumns });
     },
 

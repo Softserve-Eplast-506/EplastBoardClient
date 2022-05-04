@@ -45,3 +45,9 @@ export const deleteCard = async (cardId: number) => {
         throw new Error(error);
     });
 };
+
+export const updateCards = async (cards: CardM[]) => {
+  return await api.put(`Card/UpdateCards`, cards).catch((error) => {
+    throw new Error(error);
+  });
+};

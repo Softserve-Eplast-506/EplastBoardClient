@@ -73,120 +73,156 @@ const BoardColumn = () => {
     actions.hideAddColumnModal();
   };
 
-
-
   let dragIndexStart = 0;
   let startColumn = new Column();
   let dragIndexEnd = 0;
-  let endColumn = new Column();
   let colums = state.columns;
 
-  const dragOverHandler = (event: any, column: Column) => {
+  const dragOverHandler = (
+    event: React.DragEvent<HTMLDivElement>,
+    column: Column
+  ) => {
     event.preventDefault();
     dragIndexEnd = column.index;
-    endColumn = column;
   };
 
-  const dragLeaveHandler = async (event: any) => {};
+  const dragLeaveHandler = async (event: React.DragEvent<HTMLDivElement>) => {};
 
-  const dragStartHandler = (e: any, column: Column) => {
+  const dragStartHandler = (
+    e: React.DragEvent<HTMLDivElement>,
+    column: Column
+  ) => {
     dragIndexStart = column.index;
     startColumn = column;
   };
 
-  const dragEndHandler = (e: any, column: Column) => {
+  const dragEndHandler = (
+    e: React.DragEvent<HTMLDivElement>,
+    column: Column
+  ) => {
     e.preventDefault();
-    //console.log(column); //Вертає ту колонку яку тягнути
   };
-  const dropHandle = (e: any, column: Column) => {
+  const dropHandle = (e: React.DragEvent<HTMLDivElement>, column: Column) => {
     e.preventDefault();
-    if (dragIndexStart < dragIndexEnd) {
-      for (let i = dragIndexStart + 1; i <= dragIndexEnd; i++) {
-        colums[i].index--;
+    if (e.currentTarget.className.includes("column") && startCard === null) {
+      if (dragIndexStart < column.index) {
+        for (let i = dragIndexStart + 1; i <= dragIndexEnd; i++) {
+          colums[i].index--;
+        }
+        colums.splice(dragIndexStart, 1);
+        startColumn.index = dragIndexEnd;
+        colums.splice(dragIndexEnd, 0, startColumn);
+      } else {
+        for (let i = dragIndexEnd; i < dragIndexStart; i++) {
+          colums[i].index++;
+        }
+        colums.splice(dragIndexStart, 1);
+        startColumn.index = dragIndexEnd;
+        colums.splice(dragIndexEnd, 0, startColumn);
       }
-      colums.splice(dragIndexStart, 1);
-      startColumn.index = dragIndexEnd;
-      colums.splice(dragIndexEnd, 0, startColumn);
-    } else {
-      for (let i = dragIndexEnd; i < dragIndexStart; i++) {
-        colums[i].index++;
-      }
-      colums.splice(dragIndexStart, 1);
-      startColumn.index = dragIndexEnd;
-      colums.splice(dragIndexEnd, 0, startColumn);
+      actions.setColumns(colums);
     }
-    actions.setColumns(colums);
+    else if (startCard && column.cards.length == 0) { // first card
+      cardsDrop = column.cards;
+      cardsDrag.splice(dragIndexStartCard, 1);
+      for (let i = dragIndexStartCard; i < cardsDrag.length; i++) {
+        cardsDrag[i].index--;
+      }
+      startCard.index = 0;
+      startCard.columnId = column.id;
+      cardsDrop.splice(0, 0, startCard);
+      
+      actions.setCards(cardsDrag, startCardColumn);
+      actions.setCards(cardsDrop, column);
+    }
     SetRender(!render);
   };
-
-
-
-
-
-
-
-
 
   useEffect(() => {
-    console.log("render");
     colums = state.columns;
-    cards = state.cards;
   }, [render]);
 
-
   let dragIndexStartCard = 0;
-  let startCard = new CardM();
+  let startCard: any = null;
   let dragIndexEndCard = 0;
-  let endCard = new CardM();
-  let cards = state.cards;
+  let cardsDrag: CardM[]= [];
+  let cardsDrop: CardM[]= [];
+  let startCardColumn = new Column();
 
-  function dragOverCardHandler(event: React.DragEvent<HTMLDivElement>, card: CardM){
-    event.preventDefault()
+  function dragOverCardHandler(
+    event: React.DragEvent<HTMLDivElement>,
+    card: CardM,
+    column: Column
+  ) {
+    event.preventDefault();
     dragIndexEndCard = card.index;
-    endCard = card;
-    //console.log("over")
   }
-  function dragLeaveCardHandler (e: React.DragEvent<HTMLDivElement>, card: CardM) {
-    //console.log("leave0", state.currentCard)
-    //actions.changeColumnsWithCardByBoard(column, card)
-    
-    //actions.state.currentColumn.cards.splice(currentCardIndex, 1)
-  }
-  function dragStartCardHandler (e: React.DragEvent<HTMLDivElement>, card: CardM){        
+
+  function dragLeaveCardHandler(
+    e: React.DragEvent<HTMLDivElement>,
+    card: CardM
+  ) {}
+
+  function dragStartCardHandler(
+    e: React.DragEvent<HTMLDivElement>,
+    card: CardM,
+    col: Column
+  ) {
     dragIndexStartCard = card.index;
     startCard = card;
-    console.log(dragIndexStartCard + "cardStartIndex"); 
+    cardsDrag = col.cards;
+    startCardColumn = col;
   }
 
-  function dragEndCardHandler(e: any){   
-    //console.log("end")
+  function dragEndCardHandler(e: any) {
+    e.preventDefault();
+    startCard = null;
   }
-  function dropCardHandle (e: React.DragEvent<HTMLDivElement>, card: CardM, col: Column) {
-    e.preventDefault()
-    console.log(cards);
-    if (dragIndexStartCard < dragIndexEndCard) {
-      for (let i = dragIndexStartCard + 1; i <= dragIndexEndCard; i++) {
-        cards[i].index--;
+  function dropCardHandle(
+    e: React.DragEvent<HTMLDivElement>,
+    card: CardM,
+    col: Column
+  ) {
+    e.preventDefault();
+
+    //переміщння між колонками
+    if (startCard.columnId !== card.columnId) {
+      cardsDrop = col.cards;
+      cardsDrag.splice(dragIndexStartCard, 1);
+      for (let i = dragIndexStartCard; i < cardsDrag.length; i++) {
+        cardsDrag[i].index--;
       }
-      cards.splice(dragIndexStartCard, 1);
-      startCard.index = dragIndexEndCard;
-      cards.splice(dragIndexEndCard, 0, startCard);
+      startCard.index = card.index + 1;
+      startCard.columnId = card.columnId;
+
+      cardsDrop.splice(card.index + 1, 0, startCard);
+      for (let i = startCard.index + 1; i < cardsDrop.length; i++) {
+        cardsDrop[i].index++;
+      }
+
+      actions.setCards(cardsDrag, startCardColumn);
+      actions.setCards(cardsDrop, col);
     } else {
-      for (let i = dragIndexEndCard; i < dragIndexStartCard; i++) {
-        cards[i].index++;
+      //переміщення в одній колонці
+      if (dragIndexStartCard < dragIndexEndCard) {
+        for (let i = dragIndexStartCard + 1; i <= dragIndexEndCard; i++) {
+          cardsDrag[i].index--;
+        }
+        cardsDrag.splice(dragIndexStartCard, 1);
+        startCard.index = dragIndexEndCard;
+        cardsDrag.splice(dragIndexEndCard, 0, startCard);
+      } else {
+        for (let i = dragIndexEndCard; i < dragIndexStartCard; i++) {
+          cardsDrag[i].index++;
+        }
+        cardsDrag.splice(dragIndexStartCard, 1);
+        startCard.index = dragIndexEndCard;
+        cardsDrag.splice(dragIndexEndCard, 0, startCard);
       }
-      cards.splice(dragIndexStartCard, 1);
-      startCard.index = dragIndexEndCard;
-      cards.splice(dragIndexEndCard, 0, startCard);
+      actions.setCards(cardsDrag, col);
     }
-    actions.setCards(cards, col);
     SetRender(!render);
   }
-
-
-
-
-
 
   const renderColumns = (): JSX.Element => (
     <>
@@ -231,9 +267,9 @@ const BoardColumn = () => {
           {col.cards.map((card: CardM) => (
             <Card
               draggable={true}
-              onDragOver={(e: any) => dragOverCardHandler(e, card)}
+              onDragOver={(e: any) => dragOverCardHandler(e, card, col)}
               onDragLeave={(e: any) => dragLeaveCardHandler(e, card)}
-              onDragStart={(e: any) => dragStartCardHandler(e, card)}
+              onDragStart={(e: any) => dragStartCardHandler(e, card, col)}
               onDragEnd={(e: any) => dragEndCardHandler(e)}
               onDrop={(e: any) => dropCardHandle(e, card, col)}
               className="item"
@@ -262,5 +298,3 @@ const BoardColumn = () => {
   return <div className="board">{renderColumns()}</div>;
 };
 export default BoardColumn;
-
-
