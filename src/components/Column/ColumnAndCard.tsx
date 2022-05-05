@@ -11,7 +11,7 @@ import {
   Popconfirm,
   Row,
 } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import columnsApi from "../../api/columnsApi";
 import CardM from "../../models/Card";
 import Column from "../../models/Column";
@@ -28,7 +28,7 @@ const BoardColumn = () => {
   let columnName = state.currentColumn?.title;
 
   const handleOk = async () => {
-    if(columnName.length === 0){
+    if (columnName.length === 0) {
       return;
     }
     let newColumn: Column = state.currentColumn;
@@ -41,9 +41,7 @@ const BoardColumn = () => {
   };
 
   const handleEdit = async (event: any) => {
-    columnName = event.target.value
-      ? event.target.value
-      : "";
+    columnName = event.target.value ? event.target.value : "";
   };
 
   async function confirm() {
@@ -233,7 +231,10 @@ const BoardColumn = () => {
         >
           <Row style={{ flexWrap: "nowrap" }}>
             <Col flex={4.9}>
-              <Form>
+              <Form
+                key={"form" + col.id.toString()}
+                name={"form" + col.id.toString()}
+              >
                 <Form.Item
                   name="Column name"
                   rules={[{ required: true }]}
