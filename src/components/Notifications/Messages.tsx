@@ -1,11 +1,11 @@
 import React from "react";
 
 export const emptyInput = (title?: string) => {
-    return title ? `Field ${title} is required` : `Field is required`;
+  return title ? `Field ${title} is required` : `Field is required`;
 };
 
 export const maxLength = (len: number) => {
-    return `Max length - ${len} symbols`;
+  return `Max length - ${len} symbols`;
 };
 
 const wrongFormat = "Please enter the correct format";

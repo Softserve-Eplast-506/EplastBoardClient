@@ -4,6 +4,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import CardM from "../../models/Card";
 import { useTable } from "../../store/store";
 import "./CreateCardModal.css";
+import { descriptionValidation } from "../../models/Validation/Validation";
 
 interface Values {
   title: string;
@@ -52,15 +53,18 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
         <Form.Item
           name="title"
           label="Title"
-          rules={[
-            { required: true, message: "Please input the name of task!" },
-          ]}
+          rules={descriptionValidation.TitleCard}
         >
           <Input />
         </Form.Item>
-        <Form.Item name="description" label="Description" initialValue={""} >
-          <Input.TextArea rows={4}/>
-        </Form.Item >
+        <Form.Item
+          name="description"
+          label="Description"
+          initialValue={""}
+          rules={descriptionValidation.Description}
+        >
+           <Input.TextArea rows={4}/>
+        </Form.Item>
       </Form>
     </Modal>
   );
@@ -102,4 +106,4 @@ const CollectionsPage = (props: any) => {
   );
 };
 
-export default CollectionsPage ;
+export default CollectionsPage;

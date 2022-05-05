@@ -5,21 +5,21 @@
   position: fixed;
   width: 200px;
   height: 100%;
-  transition: all .2s;
-    transition-property: all;
-    transition-duration: 0.2s;
-    transition-timing-function: ease;
-    transition-delay: 0s;
+  transition: all 0.2s;
+  transition-property: all;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+  transition-delay: 0s;
 }
 
 .collapsed {
   width: 50px;
 }
 .sidebar-position-hide {
-  width: 50px  !important;
+  width: 50px !important;
 }
 
-.sidebar-position{
+.sidebar-position {
   position: fixed;
   width: 200px;
 }
