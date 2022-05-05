@@ -1,11 +1,57 @@
+import { Tooltip } from "antd";
 import {
   emptyInput,
   maxLength,
   incorrectDescription,
   incorrectTitle,
 } from "../../components/Notifications/Messages";
+import './Validation.css'
 
 export const descriptionValidation = {
+  BoardTitleContentSpace: [
+    {
+      pattern: /^\S*((?=(\S+))\2\s?)+$/,
+      message: incorrectTitle,
+    },
+    {
+      max: 50,
+      message: <Tooltip  overlayClassName="pop-up1"
+      placement="top"
+      visible={true}
+      title="Must be less than 50 symbols!"
+    />,
+    },
+    {
+      required: true,
+      message: <Tooltip overlayClassName="pop-up1"
+      placement="top"
+      visible={true}
+      title="The input is required"
+    />,
+    },
+  ],
+  BoardTitle: [
+    {
+      pattern: /^\S*((?=(\S+))\2\s?)+$/,
+      message: incorrectTitle,
+    },
+    {
+      max: 50,
+      message: <Tooltip overlayClassName="pop-up"
+      placement="right"
+      visible={true}
+      title="Must be less than 50 symbols!"
+    />,
+    },
+    {
+      required: true,
+      message: <Tooltip overlayClassName="pop-up"
+      placement="right"
+      visible={true}
+      title="The input is required"
+    />,
+    },
+  ],
   TitleColumn: [
     {
       pattern: /^\S*((?=(\S+))\2\s?)+$/,

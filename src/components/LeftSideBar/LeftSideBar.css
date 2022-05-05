@@ -75,3 +75,7 @@
 .close {
   width: 50px;
 }
+
+.ant-menu-item ::after{
+  background-color: red;
+}
