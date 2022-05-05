@@ -4,6 +4,8 @@ import {
   Card,
   Col,
   Dropdown,
+  Form,
+  Input,
   Menu,
   message,
   Popconfirm,
@@ -13,6 +15,7 @@ import React, { useState } from "react";
 import columnsApi from "../../api/columnsApi";
 import CardM from "../../models/Card";
 import Column from "../../models/Column";
+import { descriptionValidation } from "../../models/Validation/Validation";
 import { useTable } from "../../store/store";
 import CreateCardModal from "../ContentSpace/CreateCardModal";
 import "./AddColumnModal.css";
@@ -25,6 +28,9 @@ const BoardColumn = () => {
   let columnName = state.currentColumn?.title;
 
   const handleOk = async () => {
+    if(columnName.length === 0){
+      return;
+    }
     let newColumn: Column = state.currentColumn;
     newColumn.title = columnName;
     await columnsApi.editColumnName(newColumn);
@@ -34,9 +40,9 @@ const BoardColumn = () => {
     actions.setCurrentColumn(Number(event.currentTarget.id));
   };
 
-  const handleEdit = async (event: React.FormEvent<HTMLInputElement>) => {
-    columnName = event.currentTarget.textContent
-      ? event.currentTarget.textContent
+  const handleEdit = async (event: any) => {
+    columnName = event.target.value
+      ? event.target.value
       : "";
   };
 
@@ -213,14 +219,6 @@ const BoardColumn = () => {
     SetRender(!render);
   }
 
-  const maxLength = 50;
-  const onKeyDwn = (e: any) => {
-    const currentTextLength = e.target.outerText.length;
-    if (currentTextLength === maxLength && e.keyCode != 8) {
-      e.preventDefault();
-    }
-  };
-
   const renderColumns = (): JSX.Element => (
     <>
       {state.columns.map((col: Column) => (
@@ -235,19 +233,31 @@ const BoardColumn = () => {
         >
           <Row style={{ flexWrap: "nowrap" }}>
             <Col flex={4.9}>
-              <div
-                id={col.id.toString()}
-                contentEditable="true"
-                suppressContentEditableWarning
-                className="column-title"
-                onInput={handleEdit}
-                onClick={handleClick}
-                defaultValue={columnName}
-                onBlur={handleOk}
-                onKeyDown={onKeyDwn}
-              >
-                {col.title}
-              </div>
+              <Form>
+                <Form.Item
+                  name="Column name"
+                  rules={[{ required: true }]}
+                  className="column-title"
+                  initialValue={col.title}
+                >
+                  <Input.TextArea
+                    id={col.id.toString()}
+                    className="column-title"
+                    maxLength={50}
+                    style={{
+                      backgroundColor: "transparent",
+                      border: 0,
+                      color: "#273a59",
+                      width: "99%",
+                      fontSize: "1.5rem",
+                    }}
+                    autoSize={{ minRows: 1, maxRows: 5 }}
+                    onChange={handleEdit}
+                    onClick={handleClick}
+                    onBlur={handleOk}
+                  />
+                </Form.Item>
+              </Form>
             </Col>
             <Col flex={0.1}>
               <Dropdown
