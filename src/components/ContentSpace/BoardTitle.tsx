@@ -8,28 +8,29 @@ import "./BoardTitle.css";
 const BoardTitle = () => {
   const [state, actions] = useTable();
   const [form] = Form.useForm();
-  
-  useEffect( () => {
+
+  useEffect(() => {
     form.setFieldsValue({
-      boardtitle: state.currentBoard.title
-    })
-  }, [state.currentBoard,state.boards]);
+      boardtitle: state.currentBoard?.title,
+    });
+  }, [state.currentBoard, state.boards]);
 
   let renamedBoard = state.currentBoard;
+
   const handleOk = async (event: any) => {
     form
       .validateFields()
       .then(async (values) => {
-        renamedBoard.title = state.addingBoardName;
+        renamedBoard.title = state.editBoardName;
         await editBoardNameBoard(renamedBoard);
         actions.getBoards();
         event.preventDefault();
       })
-      .catch((info) => {
+      .catch(async (info) => {
+        await actions.setCurrentBoard(state.currentBoard.id);
         form.setFieldsValue({
-          boardtitle: state.currentBoard.title
-        })
-        console.log("Validate Failed:", info);
+          boardtitle: state.currentBoard.title,
+        });
       });
   };
 
@@ -54,6 +55,7 @@ const BoardTitle = () => {
             >
               <Input
                 id="input-marginating"
+                onClick={() => actions.setBoardName(state.currentBoard.title)}
                 className="input-marginating"
                 onBlur={handleOk}
                 onChange={handleEdit}
