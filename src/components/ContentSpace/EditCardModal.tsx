@@ -1,16 +1,11 @@
-import React, { useState } from "react";
 import {
   Button,
   Modal,
   Form,
   Input,
-  Radio,
-  Menu,
   Popconfirm,
   message,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import CardM from "../../models/Card";
 import { useTable } from "../../store/store";
 import { descriptionValidation } from "../../models/Validation/Validation";
 
@@ -41,7 +36,6 @@ const EditCardModal = () => {
       cardsDrag[i].index--;
     }
     await actions.setCards(cardsDrag, state.currentColumn);
-    actions.hideEditCardModal();
     message.success({
       content: "Card has been deleted",
       className: "message-box",
@@ -117,8 +111,8 @@ const EditCardModal = () => {
           initialValue={state.currentCard.description}
           rules={descriptionValidation.Description}
         >
-          <Input
-            type="textarea"
+          <Input.TextArea
+            rows={4}
             onChange={(event) => {
               newCardDescription = event.target.value;
             }}
