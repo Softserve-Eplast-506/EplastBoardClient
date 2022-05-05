@@ -63,7 +63,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
           initialValue={""}
           rules={descriptionValidation.Description}
         >
-          <Input type="textarea"/>
+          <Input type="textarea" />
         </Form.Item>
       </Form>
     </Modal>
@@ -106,4 +106,4 @@ const CollectionsPage = (props: any) => {
   );
 };
 
-export default CollectionsPage ;
+export default CollectionsPage;

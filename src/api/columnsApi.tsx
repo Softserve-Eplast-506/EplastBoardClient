@@ -39,7 +39,6 @@ const updateColumns = async (Columns: Column[]) => {
   });
 };
 
-
 export default {
   addColumn,
   getColumnById,
