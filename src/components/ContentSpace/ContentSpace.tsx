@@ -31,7 +31,9 @@ const ContentSpace = () => {
         backgroundSize: "cover",
       }}
     >
-      <BoardTitle />
+      <div className="boardTitle">
+        <BoardTitle />
+      </div>
       <BoardColumn />
     </Content>
   );

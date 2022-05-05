@@ -47,7 +47,8 @@ const EditCardModal = () => {
         <Button key="cancel" onClick={handleCancel}>
           Cancel
         </Button>,
-        <Button key="submit" type="primary"  onClick={() => {
+        <Button key="submit" type="primary"  
+        onClick={() => {
           form
             .validateFields()
             .then(values => {
@@ -60,7 +61,6 @@ const EditCardModal = () => {
         }}>
           Edit
         </Button>,
-       
       ]}
     >
       <Form

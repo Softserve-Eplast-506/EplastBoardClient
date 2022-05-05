@@ -1,37 +1,68 @@
-import { Col, Row } from "antd";
+import { Col, Form, Input, Row } from "antd";
+import { useEffect } from "react";
 import { editBoardNameBoard } from "../../api/boardsApi";
+import { descriptionValidation } from "../../models/Validation/Validation";
 import { useTable } from "../../store/store";
-import "./ContentSpace.css";
+import "./BoardTitle.css";
 
 const BoardTitle = () => {
   const [state, actions] = useTable();
-  let boardName = state.currentBoard.title;
+  const [form] = Form.useForm();
+  
+  useEffect(() => {
+    form.setFieldsValue({
+      boardtitle: state.currentBoard.title
+    })
+  }, [state.currentBoard]);
 
-  const handleOk = async () => {
-    let renamedBoard = state.currentBoard;
-    renamedBoard.title = boardName;
-    await editBoardNameBoard(renamedBoard);
-    actions.getBoards();
+  let renamedBoard = state.currentBoard;
+  const handleOk = async (event: any) => {
+    
+    form
+      .validateFields()
+      .then(async (values) => {
+        renamedBoard.title = state.editBoardName;
+        await editBoardNameBoard(renamedBoard);
+        actions.getBoards();
+        event.preventDefault();
+      })
+      .catch((info) => {
+        form.setFieldsValue({
+          boardtitle: state.currentBoard.title
+        })
+        console.log("Validate Failed:", info);
+      });
   };
 
-  const handleEdit = async (event: React.FormEvent<HTMLInputElement>) => {
-    boardName = event.currentTarget.textContent
-      ? event.currentTarget.textContent
-      : "";
+  const handleEdit = async (event: any) => {
+    actions.setBoadrName(event.target.value);
   };
-
   return (
     <Row>
       <Col flex="auto">
-        <div
-          id={state.currentBoard.id.toString()}
-          contentEditable="true"
-          suppressContentEditableWarning
-          className="boardTitle"
-          onInput={handleEdit}
-          onBlur={handleOk}
-        >
-          {boardName}
+        <div className="boardtitle-container">
+          <Form
+            onSubmitCapture={handleOk}
+            form={form}
+            layout="inline"
+            name="form_in_contentspace"
+            id="form_in_contentspace"
+          >
+            <Form.Item
+              id="boardtitle"
+              name="boardtitle"
+              rules={descriptionValidation.BoardTitleContentSpace}
+            >
+              <Input
+                id="input-marginating"
+                className="input-marginating"
+                onBlur={handleOk}
+                onChange={handleEdit}
+                
+
+              />
+            </Form.Item>
+          </Form>
         </div>
       </Col>
     </Row>
