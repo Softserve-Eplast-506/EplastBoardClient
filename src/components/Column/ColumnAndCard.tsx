@@ -9,7 +9,7 @@ import {
   Popconfirm,
   Row,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import columnsApi from "../../api/columnsApi";
 import CardM from "../../models/Card";
 import Column from "../../models/Column";
@@ -41,12 +41,19 @@ const BoardColumn = () => {
   };
 
   async function confirm() {
+    for (let i = state.currentColumn.index + 1; i < colums.length; i++) {
+      colums[i].index--;
+    }
+    colums.splice(state.currentColumn.index, 1);
+
     await columnsApi.deleteColumnById(state.currentColumn.id);
+
     message.success({
       content: "Column has been deleted",
       className: "message-box",
     });
-    await actions.getColumnByBoard(state.currentBoard.id);
+    await actions.setColumns(colums);
+    SetRender(!render);
   }
 
   const deleteMenu: any = (
@@ -131,10 +138,6 @@ const BoardColumn = () => {
     }
     SetRender(!render);
   };
-
-  useEffect(() => {
-    colums = state.columns;
-  }, [render]);
 
   let dragIndexStartCard = 0;
   let startCard: any = null;
@@ -291,7 +294,6 @@ const BoardColumn = () => {
     </>
   );
   return <div className="board">{renderColumns()}</div>;
-
 };
 
 export default BoardColumn;
