@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal, Form, Input, Radio } from 'antd';
+import { Button, Modal, Form, Input, Radio, Menu, Popconfirm, message } from 'antd';
 import {PlusOutlined} from '@ant-design/icons'
 import CardM from '../../models/Card';
 import { useTable } from '../../store/store';
@@ -25,10 +25,14 @@ const EditCardModal = () => {
 
   const handleDelete = async () => {
     await actions.deleteCard(state.currentCard.id);
+    message.success({
+      content: "Card has been deleted",
+      className: "message-box",
+    });
           actions.hideEditCardModal();
           actions.getCardsByBoard(state.currentBoard.id);
   }
-
+ 
   return (
     <Modal
       visible={state.isEditCardModalHidden}
@@ -38,11 +42,11 @@ const EditCardModal = () => {
       onCancel={handleCancel}
      
       footer={[
-        <Button type="primary" danger style={{"float":"left"}} onClick={() => {
-          handleDelete()   
-        }}>
+        <Popconfirm title="Are you sure ?" okText="Yes" cancelText="No" onConfirm={handleDelete} onCancel={handleCancel}>
+        <Button  type="primary" danger style={{"float":"left"}} >
         Delete
-      </Button>,
+      </Button>
+      </Popconfirm>,
         <Button key="cancel" onClick={handleCancel}>
           Cancel
         </Button>,
@@ -86,7 +90,7 @@ const EditCardModal = () => {
         rules={[{ max: 1000, message: 'Max-Length is 1000!' }]}
         >
          
-          <Input type="textarea"  onChange={(event) => {
+         <Input.TextArea rows={4}  onChange={(event) => {
           newCardDescription =  event.target.value;
         }} />
 

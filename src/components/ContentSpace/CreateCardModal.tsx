@@ -59,8 +59,8 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
           <Input />
         </Form.Item>
         <Form.Item name="description" label="Description" initialValue={""} >
-          <Input type="textarea"/>
-        </Form.Item>
+          <Input.TextArea rows={4}/>
+        </Form.Item >
       </Form>
     </Modal>
   );
