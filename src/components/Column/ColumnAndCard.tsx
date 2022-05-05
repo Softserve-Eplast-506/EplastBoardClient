@@ -273,14 +273,15 @@ const BoardColumn = () => {
               bordered={false}
               style={{ width: 300 }}
               onClick={() => {
-                actions.setCurrentCard(card.id);
+                actions.setCurrentCard(card.id, col);
+                actions.setCurrentColumn(col.id);
                 actions.hideEditCardModal();
               }}
             >
               <p>{card.description}</p>
             </Card>
           ))}
-          <CreateCardModal colId={col.id} />
+          <CreateCardModal colId={col.id} column={col} />
         </div>
       ))}
       <Button className="addColumn" onClick={handleAddNewColumn}>
@@ -289,7 +290,8 @@ const BoardColumn = () => {
       </Button>
     </>
   );
-
   return <div className="board">{renderColumns()}</div>;
+
 };
+
 export default BoardColumn;

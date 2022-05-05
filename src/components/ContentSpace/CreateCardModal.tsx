@@ -75,11 +75,14 @@ const CollectionsPage = (props: any) => {
   const [state, actions] = useTable();
 
   const onCreate = (values: any) => {
+    debugger
     const newCard = new CardM();
     newCard.description = values.description;
     newCard.title = values.title;
     newCard.columnId = props.colId;
-    actions.createCard(newCard);
+    newCard.index = props.column.cards.length;
+    props.column.cards.push(newCard);
+    actions.createCard(newCard, props.column);
     setVisible(false);
   };
 

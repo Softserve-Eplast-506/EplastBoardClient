@@ -22,9 +22,14 @@ const EditCardModal = () => {
   };
 
   const handleDelete = async () => {
-    await actions.deleteCard(state.currentCard.id);
+    let cardsDrag = state.currentColumn.cards;
+    cardsDrag.splice(state.currentCard.index, 1);
+    actions.deleteCard(state.currentCard.id);
+    for (let i = state.currentCard.index; i < cardsDrag.length; i++) {
+      cardsDrag[i].index--;
+    }
+    await actions.setCards(cardsDrag, state.currentColumn);
     actions.hideEditCardModal();
-    actions.getCardsByBoard(state.currentBoard.id);
   };
 
   return (
