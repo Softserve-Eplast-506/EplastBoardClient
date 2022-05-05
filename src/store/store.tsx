@@ -152,9 +152,9 @@ const actions = {
       });
     },
   setCurrentCard:
-    (cardId: number): Action<State> =>
+    (cardId: number, column: Column): Action<State> =>
     async ({ setState, getState }) => {
-      const card = getState().cards.find((card: CardM) => card.id == cardId);
+      const card = column.cards.find((card: CardM) => card.id == cardId);
       setState({
         currentCard: card,
       });
@@ -204,12 +204,11 @@ const actions = {
     },
 
   createCard:
-    (Card: CardM): Action<State> =>
+    (Card: CardM, column: Column): Action<State> =>
     async ({ setState }) => {
-      await createCard(Card);
-      setState({
-        cards: await getCards(),
-      });
+      debugger
+      await createCard(Card)
+      actions.setCards(column.cards, column);
     },
 
   editCard:
