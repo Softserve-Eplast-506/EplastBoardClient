@@ -8,31 +8,31 @@ import {
 export const descriptionValidation = {
   TitleColumn: [
     {
-        pattern: /^\S*((?=(\S+))\2\s?)+$/,
-        message: incorrectTitle,
-      },
-      {
-        max: 50,
-        message: maxLength(50),
-      },
-      {
-        required: true,
-        message: emptyInput(),
-      },
+      pattern: /^\S*((?=(\S+))\2\s?)+$/,
+      message: incorrectTitle,
+    },
+    {
+      max: 50,
+      message: maxLength(50),
+    },
+    {
+      required: true,
+      message: emptyInput(),
+    },
   ],
   TitleCard: [
     {
-        pattern: /^\S*((?=(\S+))\2\s?)+$/,
-        message: incorrectTitle,
-      },
-      {
-        max: 200,
-        message: maxLength(200),
-      },
-      {
-        required: true,
-        message: emptyInput(),
-      },
+      pattern: /^\S*((?=(\S+))\2\s?)+$/,
+      message: incorrectTitle,
+    },
+    {
+      max: 200,
+      message: maxLength(200),
+    },
+    {
+      required: true,
+      message: emptyInput(),
+    },
   ],
   Description: [
     {
@@ -47,5 +47,5 @@ export const descriptionValidation = {
       required: false,
       message: emptyInput(),
     },
-  ]
-}
+  ],
+};
