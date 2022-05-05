@@ -6,32 +6,35 @@ import Board from "../models/Board";
 import CardM from "../models/Card";
 import Column from "../models/Column";
 
-import { AddCard, editCard, getAllCards, deleteCard,getCardsByBoard,
-  getCardsByColumn, } from '../api/cardsApi';
-
+import {
+  AddCard,
+  editCard,
+  getAllCards,
+  deleteCard,
+  getCardsByBoard,
+  updateCards,
+} from "../api/cardsApi";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
 type State = {
-    isSideBarHidden: boolean,
-    isEditCardModalHidden: boolean,
-    menuItems: MenuItem[],
-    cards: CardM[],
-    cardsByColumnId: CardM[],
-    currentCard: CardM,
-    columns: Column[],
-    isInputPanelHidden: boolean,
-    isInputPanelHiddenColumn: boolean,
-    addingBoardName: string,
-    editingColumnName: string,
-    hiddenPanelColumn: number,
-    currentColumn: Column,
-  newBoard: string,
-  editBoardName: string,
-  isEditBoardModalShown: boolean,
-  boards: Board[],
-  currentBoard: Board,
-  render: boolean
+  boards: Board[];
+  columns: Column[];
+  cards: CardM[];
+
+  currentBoard: Board;
+  currentColumn: Column;
+  currentCard: CardM;
+
+  menuItems: MenuItem[];
+  addingBoardName: string;
+  newBoard: string;
+  editBoardName: string;
+
+  isSideBarHidden: boolean;
+  isInputPanelHidden: boolean;
+  isEditCardModalHidden: boolean;
+  isEditBoardModalShown: boolean;
   isAddColumnModalHidden: boolean;
 };
 
@@ -40,14 +43,10 @@ const initialState: State = {
   isEditCardModalHidden: false,
   menuItems: [],
   cards: [],
-  cardsByColumnId: [],
   currentCard: new CardM(),
   columns: [],
   isInputPanelHidden: true,
-  isInputPanelHiddenColumn: true,
   addingBoardName: "",
-  editingColumnName: "",
-  hiddenPanelColumn: 0,
   currentColumn: new Column(),
   newBoard: "",
   editBoardName: "",
@@ -55,13 +54,12 @@ const initialState: State = {
   boards: [],
   currentBoard: new Board(),
   isAddColumnModalHidden: false,
-  render: false
 };
 
 const actions = {
   getBoards:
     (): Action<State> =>
-    async ({ setState, getState }) => {
+    async ({ setState }) => {
       const boards: Board[] = (await getAllBoards()).data;
       let items: MenuItem[] = [];
       boards.map((board: Board) => {
@@ -73,12 +71,23 @@ const actions = {
       });
     },
 
-  getColumns:
-    (boardId: number): Action<State> =>
-    async ({ setState, getState }) => {
-      const columns: Column[] = (await columnsApi.getAllColumnsByBoard(boardId)).data;
+  setColumns:
+    (columns: Column[]): Action<State> =>
+    async ({ setState }) => {
+      await columnsApi.updateColumns(columns);
       setState({
         columns: columns,
+      });
+    },
+
+  setCards:
+    (cards: CardM[], col: Column): Action<State> =>
+    async ({ setState, getState }) => {
+      let cols = getState().columns;
+      cols[col.index].cards = cards;
+      await updateCards(cards);
+      setState({
+        columns: cols,
       });
     },
 
@@ -103,7 +112,7 @@ const actions = {
   getColumnByBoard:
     (boardId: number): Action<State> =>
     async ({ setState }) => {
-      const getColumns: Column[] = (
+      let getColumns: Column[] = (
         await columnsApi.getAllColumnsByBoard(boardId)
       ).data;
       setState({ columns: getColumns });
@@ -124,28 +133,11 @@ const actions = {
       });
     },
 
-  openColumnName:
-    (idColumn: number): Action<State> =>
-    ({ setState, getState }) => {
-      setState({
-        isInputPanelHiddenColumn: !getState().isInputPanelHiddenColumn,
-        hiddenPanelColumn: idColumn,
-      });
-    },
-
   setBoardName:
     (name: string): Action<State> =>
-    ({ setState, getState }) => {
+    ({ setState }) => {
       setState({
         addingBoardName: name,
-      });
-    },
-
-  changeColumnName:
-    (name: string): Action<State> =>
-    ({ setState, getState }) => {
-      setState({
-        editingColumnName: name,
       });
     },
 
@@ -159,12 +151,10 @@ const actions = {
         currentColumn: column,
       });
     },
-    setCurrentCard:
-    (cardId: number): Action<State> =>
+  setCurrentCard:
+    (cardId: number, column: Column): Action<State> =>
     async ({ setState, getState }) => {
-      const card = getState().cards.find(
-        (card: CardM) => card.id == cardId
-      );    
+      const card = column.cards.find((card: CardM) => card.id == cardId);
       setState({
         currentCard: card,
       });
@@ -172,17 +162,9 @@ const actions = {
 
   addBoardName:
     (name: string): Action<State> =>
-    ({ setState, getState }) => {
+    ({ setState }) => {
       setState({
         newBoard: name,
-      });
-    },
-
-  setBoadrName:
-    (name: string): Action<State> =>
-    ({ setState, getState }) => {
-      setState({
-        editBoardName: name,
       });
     },
 
@@ -221,44 +203,27 @@ const actions = {
       });
     },
 
-  getAllCards:
-    (): Action<State> =>
-    async ({ setState, getState }) => {
-      setState({
-        cards: await getCards(),
-      });
-    },
-  getCardsByColumnId:
-    (columnId: number): Action<State> =>
-    async ({ setState, getState }) => {
-      setState({
-        cardsByColumnId: await getCardsByColumnId(columnId),
-      });
-    },
-
   createCard:
-    (Card: CardM): Action<State> =>
-    async ({ setState, getState }) => {
-      await createCard(Card);
-      setState({
-        cards: await getCards(),
-      });
+    (Card: CardM, column: Column): Action<State> =>
+    async ({ setState }) => {
+      debugger
+      await createCard(Card)
+      actions.setCards(column.cards, column);
     },
 
   editCard:
     (Card: CardM): Action<State> =>
-    async ({ setState, getState }) => {
+    async ({ setState }) => {
       await editCardAction(Card);
       setState({
         cards: await getCards(),
       });
     },
   deleteCard:
-  (cardId: number): Action<State> =>
-  async ({ setState, getState }) => {
-    await deleteCardAction(cardId);
-   
-  },
+    (cardId: number): Action<State> =>
+    async () => {
+      await deleteCardAction(cardId);
+    },
 };
 
 const Store = createStore({
@@ -280,10 +245,6 @@ function getItem(
 
 const getCards = async () => {
   const response = await getAllCards();
-  return response.data;
-};
-const getCardsByColumnId = async (columnId: number) => {
-  const response = await getCardsByColumn(columnId);
   return response.data;
 };
 

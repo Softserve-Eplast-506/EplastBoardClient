@@ -13,7 +13,6 @@ const ContentSpace = () => {
 
   useEffect(() => {
     actions.getColumnByBoard(state.currentBoard.id);
-    actions.getCardsByBoard(state.currentBoard.id);
   }, [state.currentBoard.id]);
 
   return (

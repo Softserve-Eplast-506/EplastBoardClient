@@ -2,7 +2,6 @@ import { Layout } from "antd";
 import "./App.css";
 import AddNewColumnModal from "./components/Column/AddColumnModal";
 import ContentSpace from "./components/ContentSpace/ContentSpace";
-import CreateCardModal from "./components/ContentSpace/CreateCardModal";
 import EditCardModal from "./components/ContentSpace/EditCardModal";
 import HeaderBar from "./components/HeaderBar/HeaderBar";
 import EditModal from "./components/LeftSideBar/EditModal/EditModal";
@@ -18,9 +17,9 @@ function App() {
       <Layout className="layoutStyles">
         <LeftSideBar />
         <ContentSpace />
-        {state.isEditBoardModalShown ?  <EditModal/>:null}
-        {state.isEditCardModalHidden ?  <EditCardModal/>:null}
-        {state.isAddColumnModalHidden ?  <AddNewColumnModal/>:null}
+        {state.isEditBoardModalShown ? <EditModal /> : null}
+        {state.isEditCardModalHidden ? <EditCardModal /> : null}
+        {state.isAddColumnModalHidden ? <AddNewColumnModal /> : null}
       </Layout>
     </Layout>
   );

@@ -63,7 +63,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
           initialValue={""}
           rules={descriptionValidation.Description}
         >
-          <Input type="textarea"/>
+           <Input.TextArea rows={4}/>
         </Form.Item>
       </Form>
     </Modal>
@@ -74,12 +74,15 @@ const CollectionsPage = (props: any) => {
   const [visible, setVisible] = useState(false);
   const [state, actions] = useTable();
 
-  const onCreate = (values: any) => {
+  const onCreate = async (values: any) => {
     const newCard = new CardM();
     newCard.description = values.description;
     newCard.title = values.title;
     newCard.columnId = props.colId;
-    actions.createCard(newCard);
+    newCard.index = props.column.cards.length;
+    props.column.cards.push(newCard);
+    await actions.createCard(newCard, props.column);
+    await actions.getColumnByBoard(state.currentBoard.id);
     setVisible(false);
   };
 
@@ -106,4 +109,4 @@ const CollectionsPage = (props: any) => {
   );
 };
 
-export default CollectionsPage ;
+export default CollectionsPage;

@@ -64,7 +64,7 @@ const EditModal = () => {
           <Input
             defaultValue={state.currentBoard?.title}
             onChange={(event) => {
-              actions.setBoadrName(event.target.value);
+              actions.setBoardName(event.target.value);
             }}
           />
         </Form.Item>
