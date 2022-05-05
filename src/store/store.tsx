@@ -138,6 +138,7 @@ const actions = {
     ({ setState }) => {
       setState({
         addingBoardName: name,
+        editBoardName: name
       });
     },
 

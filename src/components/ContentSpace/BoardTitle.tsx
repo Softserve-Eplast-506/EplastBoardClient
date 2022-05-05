@@ -9,19 +9,18 @@ const BoardTitle = () => {
   const [state, actions] = useTable();
   const [form] = Form.useForm();
   
-  useEffect(() => {
+  useEffect( () => {
     form.setFieldsValue({
       boardtitle: state.currentBoard.title
     })
-  }, [state.currentBoard]);
+  }, [state.currentBoard,state.boards]);
 
   let renamedBoard = state.currentBoard;
   const handleOk = async (event: any) => {
-    
     form
       .validateFields()
       .then(async (values) => {
-        renamedBoard.title = state.editBoardName;
+        renamedBoard.title = state.addingBoardName;
         await editBoardNameBoard(renamedBoard);
         actions.getBoards();
         event.preventDefault();
@@ -35,7 +34,7 @@ const BoardTitle = () => {
   };
 
   const handleEdit = async (event: any) => {
-    actions.setBoadrName(event.target.value);
+    actions.setBoardName(event.target.value);
   };
   return (
     <Row>
@@ -58,8 +57,6 @@ const BoardTitle = () => {
                 className="input-marginating"
                 onBlur={handleOk}
                 onChange={handleEdit}
-                
-
               />
             </Form.Item>
           </Form>

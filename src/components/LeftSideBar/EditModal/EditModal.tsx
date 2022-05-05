@@ -38,8 +38,8 @@ const EditModal = () => {
             form
               .validateFields()
               .then((values) => {
-                form.resetFields();
                 handleOk();
+                form.resetFields();
               })
               .catch((info) => {
                 console.log("Validate Failed:", info);
