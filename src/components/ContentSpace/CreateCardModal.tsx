@@ -63,7 +63,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
           initialValue={""}
           rules={descriptionValidation.Description}
         >
-          <Input type="textarea" />
+           <Input.TextArea rows={4}/>
         </Form.Item>
       </Form>
     </Modal>

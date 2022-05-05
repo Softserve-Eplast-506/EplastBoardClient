@@ -1,4 +1,16 @@
-import { Button, Modal, Form, Input } from "antd";
+import React, { useState } from "react";
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  Radio,
+  Menu,
+  Popconfirm,
+  message,
+} from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import CardM from "../../models/Card";
 import { useTable } from "../../store/store";
 import { descriptionValidation } from "../../models/Validation/Validation";
 
@@ -30,6 +42,12 @@ const EditCardModal = () => {
     }
     await actions.setCards(cardsDrag, state.currentColumn);
     actions.hideEditCardModal();
+    message.success({
+      content: "Card has been deleted",
+      className: "message-box",
+    });
+    actions.hideEditCardModal();
+    actions.getCardsByBoard(state.currentBoard.id);
   };
 
   return (
@@ -40,16 +58,18 @@ const EditCardModal = () => {
       cancelText="Cancel"
       onCancel={handleCancel}
       footer={[
-        <Button
-          type="primary"
-          danger
-          style={{ float: "left" }}
-          onClick={() => {
-            handleDelete();
-          }}
+        <Popconfirm
+          title="Are you sure ?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={handleDelete}
+          onCancel={handleCancel}
         >
-          Delete
-        </Button>,
+          <Button type="primary" danger style={{ float: "left" }}>
+            Delete
+          </Button>
+        </Popconfirm>,
+
         <Button key="cancel" onClick={handleCancel}>
           Cancel
         </Button>,

@@ -42,7 +42,7 @@ const AddNewColumnModal = () => {
         <Form.Item
           name="title"
           label="Title"
-          rules={descriptionValidation.TitleCard}
+          rules={descriptionValidation.TitleColumn}
         >
           <Input
             onChange={(event) => {
