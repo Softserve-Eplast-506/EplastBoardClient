@@ -30,7 +30,17 @@ const AddNewColumnModal = () => {
       className="modal-container"
       title="Add new column"
       visible={state.isAddColumnModalHidden}
-      onOk={addNewColumn}
+      onOk={() => {
+        form
+          .validateFields()
+          .then(() => {
+            form.resetFields();
+            addNewColumn();
+          })
+          .catch((info) => {
+            console.log("Validate Failed:", info);
+          });
+      }}
       onCancel={handleCancel}
     >
       <Form
